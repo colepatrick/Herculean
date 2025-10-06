@@ -1,6 +1,7 @@
 package com.example.herculean;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.Menu;
 
@@ -25,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        loadAccounts();
 
         ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -86,5 +88,17 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
+    }
+
+    private void loadAccounts() {
+        GlobalData.loadAccounts(this);
+        Log.d("STATE", "LOADING ACCOUNTS");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d("STATE", "DETECTED STOP, SAVING");
+        GlobalData.saveAccounts(this);
     }
 }
