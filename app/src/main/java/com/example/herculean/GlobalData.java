@@ -22,7 +22,7 @@ public class GlobalData {
     public static void loadAccounts(Context context) {
         SharedPreferences prefs = context.getSharedPreferences("app_data", Context.MODE_PRIVATE);
         Gson gson = new Gson();
-        String json = prefs.getString("workouts", null);
+        String json = prefs.getString("accounts", null);
         Type type = new TypeToken<ArrayList<UserAccount>>(){}.getType();
         ArrayList<UserAccount> list = gson.fromJson(json, type);
         if (list != null) GlobalData.accounts = list;
