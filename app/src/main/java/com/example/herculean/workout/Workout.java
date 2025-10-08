@@ -1,9 +1,12 @@
 package com.example.herculean.workout;
 
+import android.os.Build;
+
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class Workout {
-    private String exerciseName;
+public abstract class Workout implements Serializable {
+    private String exerciseName, bodyPart;
     private int sets;
     private int reps;
     private double weight;
@@ -12,19 +15,18 @@ public class Workout {
 
 
     //  constructor
-    public Workout(String exerciseName, int sets, int reps, double weight) {
+    public Workout(String exerciseName, String bodyPart, int sets, int reps, double weight) {
         this.exerciseName = exerciseName;
+        this.bodyPart = bodyPart;
         this.sets = sets;
         this.reps = reps;
         this.weight = weight;
-        this.date = LocalDate.now(); // Automatically assigns date
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            this.date = LocalDate.now(); // Automatically assigns date
+        }
     }
 
     // ---------- Getters ----------
-    public String getExerciseName() {
-        return exerciseName;
-    }
-
     public int getSets() {
         return sets;
     }
@@ -66,8 +68,8 @@ public class Workout {
     @Override
     public String toString() {
         return String.format(
-                "%s | %s - %d sets x %d reps @ %.1f lbs",
-                date, exerciseName, sets, reps, weight
+                "%s | %s, %s - %d sets x %d reps @ %.1f lbs",
+                date, exerciseName, bodyPart, sets, reps, weight
         );
     }
 }
