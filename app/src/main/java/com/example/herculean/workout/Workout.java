@@ -13,7 +13,6 @@ public abstract class Workout implements Serializable {
     private LocalDate date;
 
 
-
     //  constructor
     public Workout(String exerciseName, String bodyPart, int sets, int reps, double weight) {
         this.exerciseName = exerciseName;

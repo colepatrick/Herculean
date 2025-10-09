@@ -23,8 +23,6 @@ public class UploadWorkoutActivity extends AppCompatActivity {
         editTextReps   = findViewById(R.id.editTextReps);
         buttonUploadWorkout = findViewById(R.id.buttonUploadWorkout);
         backButton = findViewById(R.id.backButton);
-
-
     }
 }
 

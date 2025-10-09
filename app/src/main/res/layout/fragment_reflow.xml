@@ -9,15 +9,17 @@
 
     <LinearLayout
         android:id="@+id/uploadLayout"
-        android:orientation="vertical"
-        android:padding="24dp"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        app:layout_constraintTop_toTopOf="parent"
+        android:orientation="vertical"
+        android:padding="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.952">
 
         <!-- all your fields go here -->
 
@@ -33,34 +35,34 @@
 
         <EditText
             android:id="@+id/editTextWeight"
-            android:hint="Weight (lbs)"
-            android:inputType="numberDecimal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp" />
+            android:layout_marginBottom="16dp"
+            android:hint="Weight (lbs)"
+            android:inputType="numberDecimal" />
 
         <EditText
             android:id="@+id/editTextSets"
-            android:hint="Sets"
-            android:inputType="number"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp" />
+            android:layout_marginBottom="16dp"
+            android:hint="Sets"
+            android:inputType="number" />
 
         <EditText
             android:id="@+id/editTextReps"
-            android:hint="Reps"
-            android:inputType="number"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp" />
+            android:layout_marginBottom="24dp"
+            android:hint="Reps"
+            android:inputType="number" />
 
         <Button
             android:id="@+id/buttonUploadWorkout"
-            android:text="Upload Workout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/teal_700"
+            android:text="Upload Workout"
             android:textColor="@android:color/white" />
 
         <Button
