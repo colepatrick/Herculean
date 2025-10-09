@@ -70,4 +70,14 @@
             android:layout_gravity="top|left"
             android:text="Back" />
     </LinearLayout>
+
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="409dp"
+        android:layout_height="wrap_content"
+        android:entries="@array/spinnerValue"
+        app:layout_constraintBottom_toTopOf="@+id/uploadLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

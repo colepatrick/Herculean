@@ -1,17 +1,11 @@
-package com.example.herculean;
+package com.example.herculean.workout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.*;
-import android.view.View;
-import java.util.ArrayList;
 
 // Import your model classes from the workout folder
-import com.example.herculean.workout.Workout;
-import com.example.herculean.workout.WorkoutLog;
-import com.example.herculean.workout.workoutCardio;
-import com.example.herculean.workout.workoutStrength;
-import com.example.herculean.workout.workoutCustom;
+import com.example.herculean.R;
 
 
 public class UploadWorkoutActivity extends AppCompatActivity {
@@ -30,7 +24,7 @@ public class UploadWorkoutActivity extends AppCompatActivity {
         buttonUploadWorkout = findViewById(R.id.buttonUploadWorkout);
         backButton = findViewById(R.id.backButton);
 
-        // now you can use the views, e.g. set listeners, read text, etc.
+
     }
 }
 
