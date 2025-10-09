@@ -1,10 +1,10 @@
 package com.example.herculean.workout;
 
-public class workoutCardio extends Workout {
+public class Cardio extends Workout {
     private double duration;
     private double distance;
 
-    public workoutCardio(String exerciseName, String bodyPart, int duration, double distance) {
+    public Cardio(String exerciseName, String bodyPart, int duration, double distance) {
         super(exerciseName, bodyPart, 0, 0, 0.0);
         this.duration = duration;
         this.distance = distance;

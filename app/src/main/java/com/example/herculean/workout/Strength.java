@@ -1,7 +1,7 @@
 package com.example.herculean.workout;
 
-public class workoutStrength extends Workout {
-    public workoutStrength(String exerciseName, String bodyPart, int sets, int reps, double weight) {
+public class Strength extends Workout {
+    public Strength(String exerciseName, String bodyPart, int sets, int reps, double weight) {
         super(exerciseName, bodyPart, sets, reps, weight);
     }
 

@@ -8,23 +8,24 @@ import android.widget.*;
 import com.example.herculean.R;
 
 
-public class UploadWorkoutActivity extends AppCompatActivity {
+public class Upload extends AppCompatActivity {
     private EditText editTextWeight, editTextSets, editTextReps;
     private Button buttonUploadWorkout, backButton;
-    private WorkoutLog workoutLog;
+    private Spinner spinner;
+    private Logger workoutLog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_reflow);
 
+
         editTextWeight = findViewById(R.id.editTextWeight);
-        editTextSets   = findViewById(R.id.editTextSets);
-        editTextReps   = findViewById(R.id.editTextReps);
+        editTextSets = findViewById(R.id.editTextSets);
+        editTextReps = findViewById(R.id.editTextReps);
         buttonUploadWorkout = findViewById(R.id.buttonUploadWorkout);
         backButton = findViewById(R.id.backButton);
+        spinner = findViewById(R.id.spinner);
+
     }
 }
-
-
-

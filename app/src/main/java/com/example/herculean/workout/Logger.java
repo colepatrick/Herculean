@@ -6,11 +6,11 @@ import java.util.List;
 /**
  * Manages a list of Workout objects — adding, viewing, or clearing them.
  */
-public class WorkoutLog {
+public class Logger {
 
     private final ArrayList<Workout> workouts;
 
-    public WorkoutLog() {
+    public Logger() {
         workouts = new ArrayList<>();
     }
 
