@@ -11,9 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/Theme.Herculean">
-
         <activity
-            android:name=".MainActivity"
+            android:name=".LoginActivity"
             android:exported="true"
             android:theme="@style/Theme.Herculean.NoActionBar">
             <intent-filter>
@@ -21,6 +20,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".MainActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Herculean.NoActionBar"/>
+        <activity android:name=".RegisterAccount" android:exported="false"/>
         <activity android:name=".workout.Upload" android:exported="false"/>
     </application>
 

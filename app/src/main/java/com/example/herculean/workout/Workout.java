@@ -42,6 +42,8 @@ public class Workout implements Serializable {
         return date;
     }
 
+    public String getExerciseName() { return this.exerciseName; }
+
     // ---------- Setters ----------
     public void setExerciseName(String exerciseName) {
         this.exerciseName = exerciseName;

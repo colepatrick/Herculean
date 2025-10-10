@@ -19,6 +19,7 @@
             android:orientation="vertical"
             android:padding="24dp">
 
+
             <Spinner
                 android:id="@+id/spinner"
                 android:layout_width="match_parent"
@@ -26,7 +27,6 @@
                 android:entries="@array/spinnerValue"
                 android:gravity="center"
                 android:padding="8dp" />
-
 
             <ListView
                 android:id="@+id/workoutList"

@@ -5,11 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
 import android.widget.*;
 
 // Import your model classes from the workout folder
+import com.example.herculean.GlobalData;
 import com.example.herculean.MainActivity;
 import com.example.herculean.R;
 
@@ -35,7 +34,7 @@ public class Upload extends AppCompatActivity {
         homeButton = findViewById(R.id.homeButton);
         workoutList = findViewById(R.id.workoutList);
 
-        workoutLog = new Logger();
+        workoutLog = GlobalData.currentUser.workoutLog;
 
 
 //        buttonUploadWorkout.setClickable(true);

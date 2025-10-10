@@ -18,10 +18,15 @@ public class RegisterAccount extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_account);
 
+        GlobalData.loadAccounts(this);
+
         usernameInput = findViewById(R.id.username_input);
         passwordInput = findViewById(R.id.password_input);
         emailInput = findViewById(R.id.email_input);
         Button registerButton = findViewById(R.id.register_button);
+        Button backButton = findViewById(R.id.back_button);
+
+        backButton.setOnClickListener(v -> { finish(); });
 
         registerButton.setOnClickListener(v -> {
             String username = usernameInput.getText().toString().trim();

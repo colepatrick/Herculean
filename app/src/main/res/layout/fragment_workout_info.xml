@@ -6,7 +6,7 @@
     android:padding="24dp"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.pastworkouts.WorkoutInfoDummyFragment">
+    tools:context=".ui.past_workouts.WorkoutInfoFragment">
 
     <TextView
         android:id="@+id/text_workout_name"

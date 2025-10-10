@@ -1,4 +1,4 @@
-package com.example.herculean.ui.pastworkouts;
+package com.example.herculean.ui.past_workouts;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,9 +13,10 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
+import com.example.herculean.GlobalData;
 import com.example.herculean.R;
 import com.example.herculean.databinding.FragmentPastWorkoutsBinding;
-import com.example.herculean.ui.past_workouts.WorkoutDummy;
+import com.example.herculean.workout.Workout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +28,7 @@ import java.util.List;
 public class PastWorkoutsFragment extends Fragment {
 
     private FragmentPastWorkoutsBinding binding;
-    private List<WorkoutDummy> allWorkouts;
+    private List<Workout> allWorkouts;
 
     @Override //god bless chatgpt inshallah
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -40,7 +41,7 @@ public class PastWorkoutsFragment extends Fragment {
 
         //OBSERVER WAHOO
         viewModel.getWorkouts().observe(getViewLifecycleOwner(), workouts -> {
-            allWorkouts = workouts;
+            allWorkouts = GlobalData.currentUser.workoutLog.getWorkouts();
             displayRecentWorkouts(workouts); // show 7 most recent workouts
         });
 
@@ -65,7 +66,7 @@ public class PastWorkoutsFragment extends Fragment {
     }
 
     // This makes sure that there are only the 7 most recent workouts displayed at a time
-    private void displayRecentWorkouts(List<WorkoutDummy> Dummies) {
+    private void displayRecentWorkouts(List<Workout> Dummies) {
         binding.layoutPastWorkouts.removeAllViews();
 
         if (Dummies == null || Dummies.isEmpty()) return;
@@ -74,13 +75,13 @@ public class PastWorkoutsFragment extends Fragment {
         Dummies.sort((w1, w2) -> w2.getDate().compareTo(w1.getDate()));
 
         // selecting only seven
-        List<WorkoutDummy> rec = Dummies.size() > 7 ? Dummies.subList(0, 7) : Dummies;
+        List<Workout> rec = Dummies.size() > 7 ? Dummies.subList(0, 7) : Dummies;
 
         int count = rec.size();
 
-        for (WorkoutDummy workout : rec) { //cycles through each workout object
+        for (Workout workout : rec) { //cycles through each workout object
             Button btn = new Button(requireContext()); // creates a button for each workout up to 7
-            btn.setText(workout.getWorkoutName() + "\n" + workout.getDate());
+            btn.setText(workout.toString());
             //The line above is what is shown ontop
             // the button I.E the workout name and below it, date
             btn.setAllCaps(false);
@@ -97,7 +98,7 @@ public class PastWorkoutsFragment extends Fragment {
             btn.setOnClickListener(v -> { // this sets up what happens when the button is pressed
                 Bundle args = new Bundle();
                 args.putSerializable("workout", workout);
-                Navigation.findNavController(v).navigate(R.id.nav_workout_info_dummy, args);
+                Navigation.findNavController(v).navigate(R.id.nav_past_workouts, args);
             });
 
             binding.layoutPastWorkouts.addView(btn);
@@ -109,9 +110,9 @@ public class PastWorkoutsFragment extends Fragment {
     private void filterWorkouts(String in) {
         if (allWorkouts == null) return;
 
-        List<WorkoutDummy> filt = new ArrayList<>();
-        for (WorkoutDummy w : allWorkouts) {
-            if (w.getDate().contains(in)) {
+        List<Workout> filt = new ArrayList<>();
+        for (Workout w : allWorkouts) {
+            if (w.getDate().toString().contains(in)) {
                 filt.add(w);
             }
         }

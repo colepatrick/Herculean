@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_past_workouts">
+    app:startDestination="@+id/nav_transform">
 
     <fragment
         android:id="@+id/nav_transform"
@@ -31,14 +31,8 @@
 
     <fragment
         android:id="@+id/nav_past_workouts"
-        android:name="com.example.herculean.ui.pastworkouts.PastWorkoutsFragment"
+        android:name="com.example.herculean.ui.past_workouts.PastWorkoutsFragment"
         android:label="Past Workouts"
         tools:layout="@layout/fragment_past_workouts" />
-
-    <fragment
-        android:id="@+id/nav_workout_info_dummy"
-        android:name="com.example.herculean.ui.pastworkouts.WorkoutInfoDummyFragment"
-        android:label="Workout Info"
-        tools:layout="@layout/fragment_workout_info_dummy" />
 
 </navigation>
