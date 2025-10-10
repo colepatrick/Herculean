@@ -16,6 +16,8 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import androidx.appcompat.app.AppCompatActivity;
+import android.content.Intent;
+
 
 import com.example.herculean.databinding.ActivityMainBinding;
 
@@ -27,6 +29,19 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         loadAccounts();
+
+
+        // runs the register account stuff
+        if (GlobalData.accounts.isEmpty()) {
+            Intent intent = new Intent(this, RegisterAccount.class);
+            startActivity(intent);
+        }
+
+        android.util.Log.d("REGISTER", "Saved accounts: " + GlobalData.accounts.size());
+        for (UserAccount user : GlobalData.accounts) {
+            android.util.Log.d("REGISTER", "User: " + user.getUsername() + " | " + user.getEmail());
+        }
+
 
         ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
