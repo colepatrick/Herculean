@@ -6,7 +6,16 @@ public class UserAccount implements Serializable {
     private String username, password, email;
     private int level;
 
-    public UserAccount(String username, String password, String email){
+    // No-argument constructor (required for Gson deserialization)
+    public UserAccount() {
+        this.username = "";
+        this.password = "";
+        this.email = "";
+        this.level = 1;
+    }
+
+    // Constructor with parameters
+    public UserAccount(String username, String password, String email) {
         this.username = username;
         this.password = password;
         this.email = email;
@@ -47,8 +56,4 @@ public class UserAccount implements Serializable {
     public void setLevel(int level) {
         this.level = level;
     }
-
-
-
-
 }
