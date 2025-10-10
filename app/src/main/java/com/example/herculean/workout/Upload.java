@@ -1,5 +1,6 @@
 package com.example.herculean.workout;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -15,10 +16,11 @@ import com.example.herculean.R;
 
 public class Upload extends AppCompatActivity {
     private EditText editTextWeight, editTextSets, editTextReps;
-    private TextView workoutView;
+    private ListView workoutList;
     private Button buttonUploadWorkout, homeButton;
     private Spinner spinner;
     private Logger workoutLog;
+    private ArrayAdapter<Workout> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,13 +32,14 @@ public class Upload extends AppCompatActivity {
         editTextReps = findViewById(R.id.editTextReps);
         buttonUploadWorkout = findViewById(R.id.buttonUploadWorkout);
         spinner = findViewById(R.id.spinner);
-        workoutView = findViewById(R.id.workoutView);
         homeButton = findViewById(R.id.homeButton);
+        workoutList = findViewById(R.id.workoutList);
 
         workoutLog = new Logger();
 
-        buttonUploadWorkout.setClickable(true);
-        buttonUploadWorkout.setEnabled(true);
+
+//        buttonUploadWorkout.setClickable(true);
+//        buttonUploadWorkout.setEnabled(true);
 
         buttonUploadWorkout.setOnClickListener(v -> {
             uploadWorkout();
@@ -47,6 +50,21 @@ public class Upload extends AppCompatActivity {
             startActivity(intent);
         });
 
+
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, workoutLog.getWorkouts());
+        workoutList.setAdapter(adapter);
+
+        workoutList.setOnItemLongClickListener((parent, view, position, id) -> {
+            new AlertDialog.Builder(this)
+                    .setTitle("Delete workout?").setMessage(workoutLog.getWorkouts().get(position).toString())
+                    .setPositiveButton("Delete", (d, w) -> {
+                        workoutLog.getWorkouts().remove(position);
+                        adapter.notifyDataSetChanged();
+                        Toast.makeText(this, "Deleted", Toast.LENGTH_SHORT).show();
+                    })
+                    .setNegativeButton("Cancel", null).show();
+            return true;
+        });
     }
 
     private void uploadWorkout() {
@@ -100,25 +118,12 @@ public class Upload extends AppCompatActivity {
         }
 
         workoutLog.addWorkout(newWorkout);
-        renderWorkouts();
+        adapter.notifyDataSetChanged();
 
         Toast.makeText(this, "Workout uploaded successfully", Toast.LENGTH_SHORT).show();
         editTextWeight.setText("");
         editTextSets.setText("");
         editTextReps.setText("");
         spinner.setSelection(0);
-    }
-
-    private void renderWorkouts() {
-        if (workoutLog.getWorkouts().isEmpty()) {
-            workoutView.setText("Add exercises!");
-            return;
-        }
-
-        StringBuilder sb = new StringBuilder();
-        for (Workout w : workoutLog.getWorkouts()) {
-            sb.append(w).append("\n");
-        }
-        workoutView.setText(sb.toString().trim());
     }
 }
