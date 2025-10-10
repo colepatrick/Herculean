@@ -16,12 +16,23 @@
         android:padding="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.952">
+        app:layout_constraintTop_toTopOf="parent">
 
-        <!-- all your fields go here -->
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:entries="@array/spinnerValue"
+            android:gravity="center"
+            android:padding="8dp" />
+
+
+        <ListView
+            android:id="@+id/workoutList"
+            android:layout_width="match_parent"
+            android:layout_height="214dp"
+            android:layout_marginTop="16dp"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -72,28 +83,5 @@
             android:text="Home" />
 
     </LinearLayout>
-
-
-    <Spinner
-        android:id="@+id/spinner"
-        android:layout_width="409dp"
-        android:layout_height="48dp"
-        android:entries="@array/spinnerValue"
-        android:gravity="center"
-        android:padding="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/uploadLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.186" />
-
-    <ListView
-        android:id="@+id/workoutList"
-        android:layout_width="409dp"
-        android:layout_height="214dp"
-        app:layout_constraintBottom_toTopOf="@+id/uploadLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinner" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
