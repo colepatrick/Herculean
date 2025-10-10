@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChatHistoryState">
+    <option name="chatSessions" value="{&quot;9863111e-5af6-41ef-80e6-630edd9c144d&quot;:{&quot;id&quot;:&quot;9863111e-5af6-41ef-80e6-630edd9c144d&quot;,&quot;name&quot;:&quot;UserAccount Class Setup and Purpose&quot;,&quot;timestamp&quot;:1759782411008,&quot;messages&quot;:[{&quot;role&quot;:&quot;user&quot;,&quot;content&quot;:[{&quot;type&quot;:&quot;text&quot;,&quot;text&quot;:&quot;\n\u003cadditional_data\u003e\nBelow are some potentially helpful/relevant pieces of information for figuring out to respond\n\u003ccurrent_file\u003e\n```java:app/src/main/java/com/example/herculean/UserAccount.java, lines\u003dALL(1-8)\npackage com.example.herculean;\n\nimport java.io.Serializable;\n\npublic class UserAccount implements Serializable {\n\n}\n\n```\n\u003c/current_file\u003e\n\u003c/additional_data\u003e\n\u003cuser_query\u003e\nis the main class prepping for the useraccount class to make user account objects?\n\u003c/user_query\u003e&quot;}]},{&quot;role&quot;:&quot;assistant&quot;,&quot;content&quot;:[]}]}}" />
+  </component>
+</project>
