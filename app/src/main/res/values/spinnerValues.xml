@@ -2,8 +2,9 @@
 
 <resources>
     <string-array name="spinnerValue">
-        <item>Bicep</item>
-        <item>Tricep</item>
+        <item>Select an exercise</item>
+        <item>Bicep Curls</item>
+        <item>Tricep Pulldown</item>
         <item>Squat</item>
         <item>Deadlift</item>
     </string-array>

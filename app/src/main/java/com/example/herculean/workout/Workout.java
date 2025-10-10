@@ -5,7 +5,7 @@ import android.os.Build;
 import java.io.Serializable;
 import java.time.LocalDate;
 
-public abstract class Workout implements Serializable {
+public class Workout implements Serializable {
     private String exerciseName, bodyPart;
     private int sets;
     private int reps;
