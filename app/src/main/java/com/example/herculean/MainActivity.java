@@ -1,11 +1,12 @@
 package com.example.herculean;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.Menu;
-import android.content.Intent;
 
+import com.example.herculean.workout.Upload;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
@@ -55,8 +56,12 @@ public class MainActivity extends AppCompatActivity {
 
         setSupportActionBar(binding.appBarMain.toolbar);
         if (binding.appBarMain.fab != null) {
-            binding.appBarMain.fab.setOnClickListener(view -> Snackbar.make(view, "q", Snackbar.LENGTH_LONG)
-                    .setAction("Test", null).setAnchorView(R.id.fab).show());
+            binding.appBarMain.fab.setOnClickListener(view -> {
+                Snackbar.make(view, "Opening new Workout", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).setAnchorView(R.id.fab).show();
+            Intent intent = new Intent(MainActivity.this, Upload.class);
+            startActivity(intent);
+            });
         }
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment_content_main);
         assert navHostFragment != null;

@@ -21,17 +21,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity
-            android:name=".LoginActivity"
-            android:exported="true"
-            android:theme="@style/Theme.Herculean.NoActionBar" />
-
-        <activity
-            android:name=".RegisterAccount"
-            android:exported="true"
-            android:theme="@style/Theme.Herculean.NoActionBar" />
-
+        <activity android:name=".workout.Upload" android:exported="false"/>
     </application>
 
 </manifest>

@@ -1,10 +1,13 @@
 package com.example.herculean;
 
+import com.example.herculean.workout.Logger;
+
 import java.io.Serializable;
 
 public class UserAccount implements Serializable {
     private String username, password, email;
     private int level;
+    public Logger workoutLog;
 
     // No-argument constructor (required for Gson deserialization)
     public UserAccount() {
@@ -12,6 +15,7 @@ public class UserAccount implements Serializable {
         this.password = "";
         this.email = "";
         this.level = 1;
+        workoutLog = new Logger();
     }
 
     // Constructor with parameters
@@ -20,6 +24,7 @@ public class UserAccount implements Serializable {
         this.password = password;
         this.email = email;
         this.level = 1;
+        workoutLog = new Logger();
     }
 
     /**************************************************************************************
@@ -39,6 +44,9 @@ public class UserAccount implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+    public Logger getWorkoutLog() {
+        return workoutLog;
     }
 
     public String getEmail() {

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <string-array name="spinnerValue">
+        <item>Select an exercise</item>
+        <item>Bicep Curls</item>
+        <item>Tricep Pulldown</item>
+        <item>Squat</item>
+        <item>Deadlift</item>
+    </string-array>
+</resources>

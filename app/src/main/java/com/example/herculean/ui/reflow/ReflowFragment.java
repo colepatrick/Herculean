@@ -24,8 +24,7 @@ public class ReflowFragment extends Fragment {
         binding = FragmentReflowBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.textReflow;
-        reflowViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+
         return root;
     }
 
