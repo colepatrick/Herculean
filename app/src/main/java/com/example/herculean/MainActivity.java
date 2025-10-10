@@ -29,9 +29,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Load accounts from storage FIRST
-        loadAccounts();
-
         Log.d("MAIN", "Total accounts loaded: " + GlobalData.accounts.size());
         for (UserAccount account : GlobalData.accounts) {
             Log.d("MAIN", "Account: " + account.getUsername() + " | " + account.getEmail());
@@ -70,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
         NavigationView navigationView = binding.navView;
         if (navigationView != null) {
             mAppBarConfiguration = new AppBarConfiguration.Builder(
-                    R.id.nav_transform, R.id.nav_reflow, R.id.nav_slideshow, R.id.nav_settings)
+                    R.id.nav_past_workouts, R.id.nav_reflow, R.id.nav_slideshow, R.id.nav_settings)
                     .setOpenableLayout(binding.drawerLayout)
                     .build();
             NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
@@ -80,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView bottomNavigationView = binding.appBarMain.contentMain.bottomNavView;
         if (bottomNavigationView != null) {
             mAppBarConfiguration = new AppBarConfiguration.Builder(
-                    R.id.nav_transform, R.id.nav_reflow, R.id.nav_slideshow)
+                    R.id.nav_past_workouts, R.id.nav_reflow, R.id.nav_slideshow)
                     .build();
             NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
             NavigationUI.setupWithNavController(bottomNavigationView, navController);
@@ -111,18 +108,6 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
-    }
-
-    private void loadAccounts() {
-        GlobalData.loadAccounts(this);
-        Log.d("MAIN", "Loaded accounts: " + GlobalData.accounts.size());
-
-        // Log all accounts
-        for (UserAccount account : GlobalData.accounts) {
-            Log.d("ACCOUNTS", "Username: " + account.getUsername() +
-                    " | Email: " + account.getEmail() +
-                    " | Level: " + account.getLevel());
-        }
     }
 
     @Override

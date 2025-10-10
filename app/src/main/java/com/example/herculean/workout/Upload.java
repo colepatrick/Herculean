@@ -18,7 +18,6 @@ public class Upload extends AppCompatActivity {
     private ListView workoutList;
     private Button buttonUploadWorkout, homeButton;
     private Spinner spinner;
-    private Logger workoutLog;
     private ArrayAdapter<Workout> adapter;
 
     @Override
@@ -34,9 +33,6 @@ public class Upload extends AppCompatActivity {
         homeButton = findViewById(R.id.homeButton);
         workoutList = findViewById(R.id.workoutList);
 
-        workoutLog = GlobalData.currentUser.workoutLog;
-
-
 //        buttonUploadWorkout.setClickable(true);
 //        buttonUploadWorkout.setEnabled(true);
 
@@ -50,14 +46,15 @@ public class Upload extends AppCompatActivity {
         });
 
 
-        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, workoutLog.getWorkouts());
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, GlobalData.currentUser.workoutLog.getWorkouts());
         workoutList.setAdapter(adapter);
 
         workoutList.setOnItemLongClickListener((parent, view, position, id) -> {
             new AlertDialog.Builder(this)
-                    .setTitle("Delete workout?").setMessage(workoutLog.getWorkouts().get(position).toString())
+                    .setTitle("Delete workout?").setMessage(GlobalData.currentUser.workoutLog.getWorkouts().get(position).toString())
                     .setPositiveButton("Delete", (d, w) -> {
-                        workoutLog.getWorkouts().remove(position);
+                        GlobalData.currentUser.workoutLog.getWorkouts().remove(position);
+                        GlobalData.saveAccounts(this);
                         adapter.notifyDataSetChanged();
                         Toast.makeText(this, "Deleted", Toast.LENGTH_SHORT).show();
                     })
@@ -116,8 +113,9 @@ public class Upload extends AppCompatActivity {
             }
         }
 
-        workoutLog.addWorkout(newWorkout);
+        GlobalData.currentUser.workoutLog.addWorkout(newWorkout);
         adapter.notifyDataSetChanged();
+        GlobalData.saveAccounts(this);
 
         Toast.makeText(this, "Workout uploaded successfully", Toast.LENGTH_SHORT).show();
         editTextWeight.setText("");

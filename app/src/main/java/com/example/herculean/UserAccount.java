@@ -15,7 +15,7 @@ public class UserAccount implements Serializable {
         this.password = "";
         this.email = "";
         this.level = 1;
-        workoutLog = new Logger();
+        this.workoutLog = new Logger();
     }
 
     // Constructor with parameters
@@ -24,7 +24,7 @@ public class UserAccount implements Serializable {
         this.password = password;
         this.email = email;
         this.level = 1;
-        workoutLog = new Logger();
+        this.workoutLog = new Logger();
     }
 
     /**************************************************************************************
@@ -45,9 +45,6 @@ public class UserAccount implements Serializable {
     public void setPassword(String password) {
         this.password = password;
     }
-    public Logger getWorkoutLog() {
-        return workoutLog;
-    }
 
     public String getEmail() {
         return email;
@@ -63,5 +60,13 @@ public class UserAccount implements Serializable {
 
     public void setLevel(int level) {
         this.level = level;
+    }
+
+    public Logger getWorkoutLog() {
+        return workoutLog;
+    }
+
+    public void setWorkoutLog(Logger workoutLog) {
+        this.workoutLog = workoutLog;
     }
 }

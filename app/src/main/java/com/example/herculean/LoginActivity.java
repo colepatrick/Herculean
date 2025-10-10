@@ -48,6 +48,13 @@ public class LoginActivity extends AppCompatActivity {
         Log.d("LOGIN", "===== END ACCOUNTS =====");
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d("STATE", "Saving data");
+        GlobalData.saveAccounts(this);
+    }
+
     private void handleLogin() {
         String username = usernameInput.getText().toString().trim();
         String password = passwordInput.getText().toString().trim();

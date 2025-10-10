@@ -9,18 +9,18 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.herculean.databinding.FragmentReflowBinding;
+import com.example.herculean.databinding.FragmentProfileBinding;
 
 public class ReflowFragment extends Fragment {
 
-    private FragmentReflowBinding binding;
+    private FragmentProfileBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         ReflowViewModel reflowViewModel =
                 new ViewModelProvider(this).get(ReflowViewModel.class);
 
-        binding = FragmentReflowBinding.inflate(inflater, container, false);
+        binding = FragmentProfileBinding.inflate(inflater, container, false);
 
         return binding.getRoot();
     }

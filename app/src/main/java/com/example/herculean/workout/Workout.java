@@ -14,6 +14,17 @@ public class Workout implements Serializable {
 
 
     //  constructor
+    public Workout() {
+        this.exerciseName = "";
+        this.bodyPart = "";
+        this.sets = 0;
+        this.reps = 0;
+        this.weight = 0;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            this.date = LocalDate.now(); // Automatically assigns date
+        }
+    }
+
     public Workout(String exerciseName, String bodyPart, int sets, int reps, double weight) {
         this.exerciseName = exerciseName;
         this.bodyPart = bodyPart;

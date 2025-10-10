@@ -37,7 +37,6 @@ public class PastWorkoutsFragment extends Fragment {
         PastWorkoutsViewModel viewModel = new ViewModelProvider(this).get(PastWorkoutsViewModel.class);
 
         binding = FragmentPastWorkoutsBinding.inflate(inflater, container, false);
-        View root = binding.getRoot();
 
         //OBSERVER WAHOO
         viewModel.getWorkouts().observe(getViewLifecycleOwner(), workouts -> {
@@ -62,7 +61,7 @@ public class PastWorkoutsFragment extends Fragment {
             }
         });
 
-        return root;
+        return binding.getRoot();
     }
 
     // This makes sure that there are only the 7 most recent workouts displayed at a time
@@ -98,7 +97,7 @@ public class PastWorkoutsFragment extends Fragment {
             btn.setOnClickListener(v -> { // this sets up what happens when the button is pressed
                 Bundle args = new Bundle();
                 args.putSerializable("workout", workout);
-                Navigation.findNavController(v).navigate(R.id.nav_past_workouts, args);
+                Navigation.findNavController(v).navigate(R.id.action_pastWorkouts_to_workoutInfo, args);
             });
 
             binding.layoutPastWorkouts.addView(btn);

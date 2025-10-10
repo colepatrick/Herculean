@@ -6,8 +6,11 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import java.lang.reflect.Type;
+
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class GlobalData {
@@ -17,7 +20,9 @@ public class GlobalData {
     public static void saveAccounts(Context context) {
         try {
             SharedPreferences prefs = context.getSharedPreferences("app_data", Context.MODE_PRIVATE);
-            Gson gson = new Gson();
+            Gson gson = new GsonBuilder()
+                    .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
+                    .create();
             String json = gson.toJson(GlobalData.accounts);
             prefs.edit().putString("accounts", json).apply();
             Log.d("SAVE", "✓ SAVED " + GlobalData.accounts.size() + " accounts to SharedPreferences");
@@ -30,7 +35,9 @@ public class GlobalData {
     public static void loadAccounts(Context context) {
         try {
             SharedPreferences prefs = context.getSharedPreferences("app_data", Context.MODE_PRIVATE);
-            Gson gson = new Gson();
+            Gson gson = new GsonBuilder()
+                    .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
+                    .create();
             String json = prefs.getString("accounts", null);
 
             Log.d("LOAD", "Retrieved JSON from SharedPreferences: " + json);

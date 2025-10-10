@@ -1,12 +1,13 @@
 package com.example.herculean.workout;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Manages a list of Workout objects — adding, viewing, or clearing them.
  */
-public class Logger {
+public class Logger implements Serializable {
 
     private final ArrayList<Workout> workouts;
 
@@ -22,6 +23,11 @@ public class Logger {
     /*
      Get all workouts in the log.
      */
+
+    public void setWorkouts(ArrayList<Workout> workouts) {
+        this.workouts.clear();
+        this.workouts.addAll(workouts);
+    }
     public List<Workout> getWorkouts() {
         return workouts;
     }
