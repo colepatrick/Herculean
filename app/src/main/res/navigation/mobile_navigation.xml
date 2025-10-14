@@ -19,8 +19,8 @@
 
 
     <fragment
-        android:id="@+id/nav_reflow"
-        android:name="com.example.herculean.ui.reflow.ReflowFragment"
+        android:id="@+id/nav_profile"
+        android:name="com.example.herculean.ui.profile.ProfileFragment"
         android:label="@string/menu_reflow"
         tools:layout="@layout/fragment_profile" />
 
@@ -52,8 +52,8 @@
         android:id="@+id/action_global_nav_past_workouts"
         app:destination="@id/nav_past_workouts" />
     <action
-        android:id="@+id/action_global_nav_reflow"
-        app:destination="@id/nav_reflow" />
+        android:id="@+id/action_global_nav_profile"
+        app:destination="@id/nav_profile" />
     <action
         android:id="@+id/action_global_nav_slideshow"
         app:destination="@id/nav_slideshow" />
