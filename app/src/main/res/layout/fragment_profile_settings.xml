@@ -13,7 +13,7 @@
         android:layout_height="wrap_content">
 
         <Button
-            android:id="@+id/customize_button"
+            android:id="@+id/customize_back_button"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_marginStart="8dp"
@@ -46,13 +46,13 @@
                 android:id="@+id/profile_image_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_profile"
-                tools:src="@tools:sample/avatars" />
+                android:src="@drawable/avatar_filler"
+                tools:src="@drawable/avatar_filler" />
 
         </LinearLayout>
 
         <Switch
-            android:id="@+id/switch1"
+            android:id="@+id/email_switch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Public Email?" />

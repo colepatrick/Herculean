@@ -9,6 +9,7 @@
 
     <string name="menu_transform">Workouts</string>
     <string name="menu_reflow">Profile</string>
+    <string name="menu_reflow_settings">Profile Settings</string>
     <string name="menu_slideshow">Leaderboard</string>
     <string name="menu_settings">Settings</string>
 

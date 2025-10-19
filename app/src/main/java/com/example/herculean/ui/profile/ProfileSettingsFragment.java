@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -12,21 +11,21 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import com.example.herculean.R;
-import com.example.herculean.databinding.FragmentProfileBinding;
+import com.example.herculean.databinding.FragmentProfileSettingsBinding;
 
-public class ProfileFragment extends Fragment {
+public class ProfileSettingsFragment extends Fragment {
 
-    private FragmentProfileBinding binding;
+    private FragmentProfileSettingsBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        ProfileViewModel profileViewModel =
-                new ViewModelProvider(this).get(ProfileViewModel.class);
+        ProfileSettingsViewModel profileSettingsViewModel =
+                new ViewModelProvider(this).get(ProfileSettingsViewModel.class);
 
-        binding = FragmentProfileBinding.inflate(inflater, container, false);
+        binding = FragmentProfileSettingsBinding.inflate(inflater, container, false);
 
-        binding.customizeButton.setOnClickListener(v -> {
-            Navigation.findNavController(v).navigate(R.id.action_nav_profile_to_nav_profile_settings);
+        binding.customizeBackButton.setOnClickListener(v -> {
+            Navigation.findNavController(v).navigate(R.id.action_global_nav_profile);
         });
 
         return binding.getRoot();
