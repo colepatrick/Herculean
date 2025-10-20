@@ -9,6 +9,14 @@ public class UserAccount implements Serializable {
     private int level;
     public Logger workoutLog;
 
+    public int[] customization; // [emailDisplayed]
+    private String profileImageUri; // URI of the profile image
+
+    public static int[] defaultSettings = {0}; // Default customization settings
+    public enum CustomizationOptions {
+        EMAIL_DISPLAYED
+    }
+
     // No-argument constructor (required for Gson deserialization)
     public UserAccount() {
         this.username = "";
@@ -16,6 +24,8 @@ public class UserAccount implements Serializable {
         this.email = "";
         this.level = 1;
         this.workoutLog = new Logger();
+        this.customization = defaultSettings.clone();
+        this.profileImageUri = null;
     }
 
     // Constructor with parameters
@@ -25,6 +35,14 @@ public class UserAccount implements Serializable {
         this.email = email;
         this.level = 1;
         this.workoutLog = new Logger();
+        this.customization = defaultSettings.clone(); // Default customization settings
+        this.profileImageUri = null;
+    }
+
+    // Constructor with customization parameters
+    public UserAccount(String username, String password, String email, int[] customization) {
+        this(username, password, email); // Call the other constructor
+        this.customization = customization;
     }
 
     /**************************************************************************************
@@ -69,4 +87,11 @@ public class UserAccount implements Serializable {
     public void setWorkoutLog(Logger workoutLog) {
         this.workoutLog = workoutLog;
     }
+
+    public boolean isEmailDisplayed() { return this.customization[CustomizationOptions.EMAIL_DISPLAYED.ordinal()] == 1; }
+    public void emailDisplayed(boolean displayed) { this.customization[CustomizationOptions.EMAIL_DISPLAYED.ordinal()] = displayed ? 1 : 0; }
+
+    public String getProfileImageUri() { return profileImageUri; }
+
+    public void setProfileImageUri(String profileImageUri) { this.profileImageUri = profileImageUri; }
 }
