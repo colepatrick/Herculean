@@ -12,7 +12,7 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 public class AdviceAI {
-    private static final String GEMINI_API_KEY = "AIzaSyAUPdeQYh8sbVyZ8KDfV3_yO5WczgD00ak";
+    private static final String GEMINI_API_KEY = "";
     private GenerativeModelFutures model;
     private final Executor executor = Executors.newSingleThreadExecutor(); //Runnable::run
     //private final Executor executor = Executors.newFixedThreadPool(3);
