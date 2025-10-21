@@ -9,6 +9,10 @@ public class UserAccount implements Serializable {
     private int level;
     public Logger workoutLog;
 
+    private UserGoal userGoal;
+    private UserSchedule userSchedule;
+
+
     // No-argument constructor (required for Gson deserialization)
     public UserAccount() {
         this.username = "";
@@ -16,6 +20,9 @@ public class UserAccount implements Serializable {
         this.email = "";
         this.level = 1;
         this.workoutLog = new Logger();
+        this.userGoal = new UserGoal("General Fitness", 3);
+        this.userSchedule = new UserSchedule("Rest", "Rest", "Rest", "Rest", "Rest", "Rest", "Rest");
+
     }
 
     // Constructor with parameters
@@ -69,4 +76,21 @@ public class UserAccount implements Serializable {
     public void setWorkoutLog(Logger workoutLog) {
         this.workoutLog = workoutLog;
     }
+
+    public UserGoal getUserGoal() {
+        return userGoal;
+    }
+
+    public void setUserGoal(UserGoal userGoal) {
+        this.userGoal = userGoal;
+    }
+
+    public UserSchedule getUserSchedule() {
+        return userSchedule;
+    }
+
+    public void setUserSchedule(UserSchedule userSchedule) {
+        this.userSchedule = userSchedule;
+    }
+
 }

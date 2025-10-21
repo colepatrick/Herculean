@@ -1,11 +1,12 @@
 package com.example.herculean;
+import java.io.Serializable;
 
 import android.content.Context;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.io.*;
 
-public class UserGoal {
+public class UserGoal implements Serializable {
 
     // Fields
     private String goalType;     // Example: "Strength", "Weight Loss", "Endurance"
@@ -56,35 +57,4 @@ public class UserGoal {
         );
     }
 
-    // --- Save to File ---
-    public void saveToFile(Context context) {
-        try {
-            JSONObject json = toJSON();
-            String jsonString = json.toString();
-            FileOutputStream fos = context.openFileOutput("user_goal.json", Context.MODE_PRIVATE);
-            fos.write(jsonString.getBytes());
-            fos.close();
-        } catch (IOException | JSONException e) {
-            e.printStackTrace();
-        }
-    }
-
-    // --- Load from File ---
-    public static UserGoal loadFromFile(Context context) {
-        try {
-            FileInputStream fis = context.openFileInput("user_goal.json");
-            BufferedReader reader = new BufferedReader(new InputStreamReader(fis));
-            StringBuilder builder = new StringBuilder();
-            String line;
-            while ((line = reader.readLine()) != null) {
-                builder.append(line);
-            }
-            reader.close();
-            JSONObject json = new JSONObject(builder.toString());
-            return fromJSON(json);
-        } catch (IOException | JSONException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
 }
