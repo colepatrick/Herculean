@@ -41,20 +41,6 @@ public class UserGoal implements Serializable {
     public String getGoalType() { return goalType; }
     public int getDaysPerWeek() { return daysPerWeek; }
 
-    // --- Convert to JSON ---
-    public JSONObject toJSON() throws JSONException {
-        JSONObject json = new JSONObject();
-        json.put("goalType", goalType);
-        json.put("daysPerWeek", daysPerWeek);
-        return json;
-    }
 
-    // --- Create from JSON ---
-    public static UserGoal fromJSON(JSONObject json) throws JSONException {
-        return new UserGoal(
-                json.getString("goalType"),
-                json.getInt("daysPerWeek")
-        );
-    }
 
 }

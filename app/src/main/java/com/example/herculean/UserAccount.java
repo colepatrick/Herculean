@@ -32,6 +32,8 @@ public class UserAccount implements Serializable {
         this.email = email;
         this.level = 1;
         this.workoutLog = new Logger();
+        this.userGoal = new UserGoal("General Fitness", 3);
+        this.userSchedule = new UserSchedule("Rest", "Rest", "Rest", "Rest", "Rest", "Rest", "Rest");
     }
 
     /**************************************************************************************

@@ -92,29 +92,4 @@ public class UserSchedule implements Serializable {
         this.sun = sun;
     }
 
-    // --- Convert to JSON ---
-    public JSONObject toJSON() throws JSONException {
-        JSONObject json = new JSONObject();
-        json.put("mon", mon);
-        json.put("tue", tue);
-        json.put("wen", wen);
-        json.put("thur", thur);
-        json.put("fri", fri);
-        json.put("sat", sat);
-        json.put("sun", sun);
-        return json;
-    }
-
-    // --- Create from JSON ---
-    public static UserSchedule fromJSON(JSONObject json) throws JSONException {
-        return new UserSchedule(
-                json.getString("mon"),
-                json.getString("tue"),
-                json.getString("wen"),
-                json.getString("thur"),
-                json.getString("fri"),
-                json.getString("sat"),
-                json.getString("sun")
-        );
-    }
 }
