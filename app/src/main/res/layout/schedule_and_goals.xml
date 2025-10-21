@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".GoalAndScheduleActivity"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp"
+        android:gravity="center_horizontal">
+
+        <!-- Header -->
+        <TextView
+            android:id="@+id/headerText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Set Your Goal & Schedule"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"
+            android:layout_marginBottom="24dp" />
+
+        <!-- Goal Section -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Set Goal"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp" />
+
+        <EditText
+            android:id="@+id/editTextGoal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter your goal (e.g. Strength, Weight Loss)"
+            android:inputType="text"
+            android:textColor="#000000"
+            android:textSize="16sp"
+            android:padding="10dp"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Spinner for number of workouts -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Workouts per Week"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp" />
+
+        <Spinner
+            android:id="@+id/spinnerWeekWorkouts"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp" />
+
+        <!-- Weekly Split Section -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Weekly Split"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp">
+
+            <!-- Row 1 -->
+            <EditText
+                android:id="@+id/editTextMon"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="Monday"
+                android:inputType="text"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/editTextTue"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintHorizontal_weight="1"
+                android:layout_marginEnd="8dp" />
+
+            <EditText
+                android:id="@+id/editTextTue"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="Tuesday"
+                android:inputType="text"
+                app:layout_constraintStart_toEndOf="@+id/editTextMon"
+                app:layout_constraintEnd_toStartOf="@+id/editTextWed"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintHorizontal_weight="1"
+                android:layout_marginEnd="8dp" />
+
+            <EditText
+                android:id="@+id/editTextWed"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="Wednesday"
+                android:inputType="text"
+                app:layout_constraintStart_toEndOf="@+id/editTextTue"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintHorizontal_weight="1" />
+
+            <!-- Row 2 -->
+            <EditText
+                android:id="@+id/editTextThur"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="Thursday"
+                android:inputType="text"
+                app:layout_constraintTop_toBottomOf="@+id/editTextMon"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/editTextFri"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="8dp" />
+
+            <EditText
+                android:id="@+id/editTextFri"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="Friday"
+                android:inputType="text"
+                app:layout_constraintTop_toBottomOf="@+id/editTextTue"
+                app:layout_constraintStart_toEndOf="@+id/editTextThur"
+                app:layout_constraintEnd_toStartOf="@+id/editTextSat"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="8dp" />
+
+            <EditText
+                android:id="@+id/editTextSat"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="Saturday"
+                android:inputType="text"
+                app:layout_constraintTop_toBottomOf="@+id/editTextWed"
+                app:layout_constraintStart_toEndOf="@+id/editTextFri"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="12dp" />
+
+            <!-- Sunday -->
+            <EditText
+                android:id="@+id/editTextSun"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Sunday"
+                android:inputType="text"
+                app:layout_constraintTop_toBottomOf="@+id/editTextFri"
+                android:layout_marginTop="12dp" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- Save Button -->
+        <Button
+            android:id="@+id/saveButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Save Goal & Schedule"
+            android:backgroundTint="@color/teal_700"
+            android:textColor="@android:color/white"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp" />
+
+        <Button
+            android:id="@+id/homeButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Back to Home"
+            android:layout_marginTop="8dp" />
+
+    </LinearLayout>
+</ScrollView>
