@@ -45,6 +45,11 @@ dependencies {
     implementation(libs.navigation.fragment)
     implementation(libs.navigation.ui)
     implementation("com.google.code.gson:gson:2.8.8")
+    // Google Gemini API
+    implementation("com.google.ai.client.generativeai:generativeai:0.9.0")
+    implementation("com.google.guava:guava:33.4.1-android")
+    implementation("org.reactivestreams:reactive-streams:1.0.4")
+
     implementation(libs.coordinatorlayout)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
