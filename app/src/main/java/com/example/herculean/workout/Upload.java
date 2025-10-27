@@ -95,8 +95,8 @@ public class Upload extends AppCompatActivity {
                 newWorkout = new Workout("Bicep Curls", "Biceps", setValue, repValue, weightValue);
                 break;
             }
-            case "Tricep Pulldown": {
-                newWorkout = new Workout("Tricep Pulldown", "Triceps", setValue, repValue, weightValue);
+            case "Tricep Pushdown": {
+                newWorkout = new Workout("Tricep Pushdown", "Triceps", setValue, repValue, weightValue);
                 break;
             }
             case "Squat": {
@@ -105,6 +105,14 @@ public class Upload extends AppCompatActivity {
             }
             case "Deadlift": {
                 newWorkout = new Workout("Deadlift", "Back", setValue, repValue, weightValue);
+                break;
+            }
+            case "Bench Press": {
+                newWorkout = new Workout("Bench Press", "Chest", setValue, repValue, weightValue);
+                break;
+            }
+            case "Lat Pulldown": {
+                newWorkout = new Workout("Lat Pulldown", "Back", setValue, repValue, weightValue);
                 break;
             }
             default: {
