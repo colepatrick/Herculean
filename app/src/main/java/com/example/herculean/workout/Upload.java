@@ -36,9 +36,7 @@ public class Upload extends AppCompatActivity {
 //        buttonUploadWorkout.setClickable(true);
 //        buttonUploadWorkout.setEnabled(true);
 
-        buttonUploadWorkout.setOnClickListener(v -> {
-            uploadWorkout();
-        });
+        buttonUploadWorkout.setOnClickListener(v -> uploadWorkout());
 
         homeButton.setOnClickListener(v -> {
             Intent intent = new Intent(Upload.this, MainActivity.class);
@@ -92,11 +90,11 @@ public class Upload extends AppCompatActivity {
         Workout newWorkout;
         switch (exercise) {
             case "Bicep Curls": {
-                newWorkout = new Workout("Bicep Curls", "Biceps", setValue, repValue, weightValue);
+                newWorkout = new Workout("Bicep Curls", "Arms", setValue, repValue, weightValue);
                 break;
             }
             case "Tricep Pushdown": {
-                newWorkout = new Workout("Tricep Pushdown", "Triceps", setValue, repValue, weightValue);
+                newWorkout = new Workout("Tricep Pushdown", "Arms", setValue, repValue, weightValue);
                 break;
             }
             case "Squat": {
