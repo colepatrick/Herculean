@@ -19,7 +19,7 @@
             android:id="@+id/headerText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Set Your Goal & Schedule"
+            android:text="Set Your Goal &amp; Schedule"
             android:textSize="24sp"
             android:textStyle="bold"
             android:textColor="@android:color/black"
@@ -58,7 +58,8 @@
             android:id="@+id/spinnerWeekWorkouts"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp" />
+            android:layout_marginBottom="24dp"
+            android:entries="@array/workouts_per_week" />
 
         <!-- Weekly Split Section -->
         <TextView
@@ -162,7 +163,7 @@
             android:id="@+id/saveButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Save Goal & Schedule"
+            android:text="Save Goal &amp; Schedule"
             android:backgroundTint="@color/teal_700"
             android:textColor="@android:color/white"
             android:layout_marginTop="16dp"
