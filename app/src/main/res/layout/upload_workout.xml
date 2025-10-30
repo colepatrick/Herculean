@@ -41,7 +41,7 @@
             android:layout_gravity="end|top"
             android:layout_marginBottom="24dp"
             android:text="Upload Workout"
-            android:textColor="@android:color/black"
+            android:textColor="?attr/colorOnSecondary"
             android:textSize="26sp"
             android:textStyle="bold" />
 
@@ -73,9 +73,9 @@
             android:id="@+id/buttonUploadWorkout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/teal_700"
+            android:backgroundTint="?attr/colorPrimary"
             android:text="Upload Workout"
-            android:textColor="@android:color/white" />
+            android:textColor="?attr/colorOnPrimary" />
 
         <Button
             android:id="@+id/homeButton"
