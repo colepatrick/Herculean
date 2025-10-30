@@ -17,12 +17,12 @@
             android:name=".LoginActivity"
             android:exported="true"
             android:theme="@style/Theme.Herculean.NoActionBar">
-            <!--
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            -->
+
         </activity>
 
         <!-- Main app screens -->
@@ -37,15 +37,16 @@
             android:name=".workout.Upload"
             android:exported="false" />
 
-        <!-- ✅ Temporary launcher for testing -->
+        <!--  Temporary launcher for testing -->
         <activity
             android:name=".GoalAndScheduleActivity"
             android:exported="true"
             android:label="Goals &amp; Schedule">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+        <!--<intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+        -->
         </activity>
 
     </application>
