@@ -35,4 +35,10 @@
     <string name="register_here">Register here</string>
     <string name="back">Back</string>
     <string name="customize">Customize</string>
+    <string name="change_password">Change Password</string>
+    <string name="change_username">Change Username</string>
+    <string name="delete_account">Delete Account</string>
+    <string name="ok">Ok</string>
+    <string name="cancel">Cancel</string>
+    <string name="confirm_delete">Are you sure you want to delete?</string>
 </resources>

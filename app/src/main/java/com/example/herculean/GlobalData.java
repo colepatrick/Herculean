@@ -64,4 +64,13 @@ public class GlobalData {
             GlobalData.accounts = new ArrayList<>();
         }
     }
+
+    public static boolean usernameExists(String username) {
+        for (UserAccount account : accounts) {
+            if (account.getUsername().equalsIgnoreCase(username)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

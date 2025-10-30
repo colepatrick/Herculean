@@ -1,5 +1,7 @@
 package com.example.herculean;
 
+import android.util.Patterns;
+
 import com.example.herculean.workout.Logger;
 
 import java.io.Serializable;
@@ -94,4 +96,16 @@ public class UserAccount implements Serializable {
     public String getProfileImageUri() { return profileImageUri; }
 
     public void setProfileImageUri(String profileImageUri) { this.profileImageUri = profileImageUri; }
+
+    public static boolean validPassword(String password) {
+        return password.length() >= 6;
+    }
+
+    public static boolean validUsername(String username) {
+        return username.length() >= 3;
+    }
+
+    public static boolean validEmail(String email) {
+        return Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    }
 }
