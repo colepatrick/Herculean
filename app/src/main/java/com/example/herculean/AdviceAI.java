@@ -20,13 +20,24 @@ import java.util.concurrent.Executors;
 
 
 public class AdviceAI {
-
+    // Gemini
     private static final String GEMINI_API_KEY = "";
     //private final Executor executor = Executors.newFixedThreadPool(3);
     private final Executor executor = Executors.newSingleThreadExecutor(); //Runnable::run
-    TextToSpeech tts;
     private GenerativeModelFutures model;
+    // TTS
+    TextToSpeech tts;
+    private boolean ttsReady = false;
+    private boolean allowInterruption = false;
 
+
+    public interface onResultTextCallback {
+        void onResultText(String text);
+    }
+
+    public void setAllowInterrupt(boolean allow) {
+        this.allowInterruption = allow;
+    }
 
     public AdviceAI(Context context, String GEMINI_API_KEY) {
         model = GenerativeModelFutures.from(new GenerativeModel("gemini-2.0-flash", GEMINI_API_KEY));
@@ -36,18 +47,28 @@ public class AdviceAI {
             public void onInit(int status) {
                 if (status != TextToSpeech.ERROR) {
                     int result = tts.setLanguage(Locale.US);
-                    tts.setSpeechRate(1);
+                    tts.setSpeechRate(1f);
+                    if (result != TextToSpeech.LANG_MISSING_DATA && result != TextToSpeech.LANG_NOT_SUPPORTED) {
+                        ttsReady = true;
+                        Log.i(TAG, "TTS initialized successfully.");
+                    }
+                    else {
+                        Log.e(TAG, "TTS language not supported or missing data.");
+                    }
+                }
+                else {
+                    Log.e(TAG, "TTS initialization failed.");
                 }
             }
         });
     }
 
     public void sendToGeminiText(String originalPrompt, Runnable onDone, Runnable onError) {
-        // Keep your instructions but no image
         String formattedPrompt =
-                "You are a technical assistant being integrated into an Android app for interactive data visualization using charts, images, and gesture input." +
-                        "Do not over explain; answer directly and concisely. " +
-                        "Follow these formatting principles. " +
+                "You are a knowledgeable fitness and workout coach integrated into an Android app that gives short, practical exercise tips through voice feedback. " +
+                        "Provide clear, motivational, and concise advice about workouts, training form, recovery, or fitness routines. " +
+                        "Avoid long explanations or unnecessary details — keep responses under 3 sentences and easy to understand when spoken aloud. " +
+                        "Use an encouraging and positive tone. " +
                         originalPrompt;
 
         Content content = new Content.Builder()
@@ -77,5 +98,18 @@ public class AdviceAI {
             }
         }, executor);
     }
+
+    public void release() {
+        if (tts != null) {
+            try {
+                tts.stop();
+                tts.shutdown();
+            }
+            catch (Exception e) {
+                Log.e(TAG, "Error shutting down TTS", e);
+            }
+        }
+    }
 }
+
 
