@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base light theme -->
-    <style name="Theme.Herculean" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Theme.Herculean" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Primary brand color -->
         <item name="colorPrimary">@color/purple_500</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>
@@ -19,5 +19,7 @@
 
         <!-- Status bar color -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+
+        <item name="searchViewStyle">@style/Widget.AppCompat.SearchView</item>
     </style>
 </resources>
