@@ -22,7 +22,6 @@ import java.util.concurrent.Executors;
 public class AdviceAI {
     // Gemini
     private static final String GEMINI_API_KEY = "";
-    //private final Executor executor = Executors.newFixedThreadPool(3);
     private final Executor executor = Executors.newSingleThreadExecutor(); //Runnable::run
     private GenerativeModelFutures model;
     // TTS
@@ -33,6 +32,7 @@ public class AdviceAI {
 
     public interface onResultTextCallback {
         void onResultText(String text);
+        void onError(String errorMessage);
     }
 
     public void setAllowInterrupt(boolean allow) {
@@ -47,10 +47,10 @@ public class AdviceAI {
             public void onInit(int status) {
                 if (status != TextToSpeech.ERROR) {
                     int result = tts.setLanguage(Locale.US);
-                    tts.setSpeechRate(1f);
+                    tts.setSpeechRate(1.0f);
                     if (result != TextToSpeech.LANG_MISSING_DATA && result != TextToSpeech.LANG_NOT_SUPPORTED) {
                         ttsReady = true;
-                        Log.i(TAG, "TTS initialized successfully.");
+                        Log.d(TAG, "TTS initialized successfully.");
                     }
                     else {
                         Log.e(TAG, "TTS language not supported or missing data.");
@@ -63,7 +63,7 @@ public class AdviceAI {
         });
     }
 
-    public void sendToGeminiText(String originalPrompt, Runnable onDone, Runnable onError) {
+    public void sendToGeminiText(String originalPrompt, boolean speakResponse, onResultTextCallback callBack, Runnable onDone, Runnable onError) {
         String formattedPrompt =
                 "You are a knowledgeable fitness and workout coach integrated into an Android app that gives short, practical exercise tips through voice feedback. " +
                         "Provide clear, motivational, and concise advice about workouts, training form, recovery, or fitness routines. " +
@@ -80,23 +80,56 @@ public class AdviceAI {
         Futures.addCallback(future, new FutureCallback<GenerateContentResponse>() {
             @Override
             public void onSuccess(GenerateContentResponse result) {
-                String responseText = result != null ? result.getText() : null;
+                String responseText = (result != null) ? result.getText() : null;
                 if (responseText == null || responseText.isEmpty()) {
-                    tts.speak("I didn't get any response.", TextToSpeech.QUEUE_FLUSH, null);
-                    if (onError != null) onError.run();
-                } else {
-                    tts.speak(responseText, TextToSpeech.QUEUE_FLUSH, null);
-                    if (onDone != null) onDone.run();
+                    // Errors
+                    if (speakResponse && ttsReady) {
+                        safeSpeak("Prompt did not go through.");
+                    }
+                    if (callBack != null) {
+                        callBack.onError("Prompt did not go through.");
+                    }
+                    if (onError != null) {
+                        onError.run();
+                    }
+                    return;
+                }
+                // Success
+                if (callBack != null) {
+                    callBack.onResultText(responseText);
+                }
+                if (speakResponse && ttsReady) {
+                    safeSpeak(responseText);
+                }
+                if (onDone != null) {
+                    onDone.run();
                 }
             }
-
             @Override
             public void onFailure(Throwable t) {
-                tts.speak("Error: " + t.getMessage(), TextToSpeech.QUEUE_FLUSH, null);
+                Log.d(TAG, "Gemini call failed", t);
+                String errorMsg = "Error: " + t.getMessage();
+                if (speakResponse && ttsReady) {
+                    safeSpeak(errorMsg);
+                }
+                if (callBack != null) {
+                    callBack.onError(errorMsg);
+                }
                 if (onError != null) onError.run();
-                Log.e(TAG, "Gemini call failed", t);
             }
         }, executor);
+    }
+
+    private void safeSpeak(String text) {
+        if (!ttsReady) {
+            return;
+        }
+        if (!allowInterruption) {
+            tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, null);
+        }
+        else {
+            tts.speak(text, TextToSpeech.QUEUE_ADD, null, null);
+        }
     }
 
     public void release() {
