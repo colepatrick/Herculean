@@ -15,6 +15,8 @@ import com.example.herculean.R;
 public class Exercises extends Dialog {
 
     private OnCategorySelectedListener listener;
+
+    // change instead of strings use Workout objects
     private String[] workouts = {
             "Weightlifting",
             "Plyometrics",

@@ -25,6 +25,14 @@ public class Workout implements Serializable {
         }
     }
 
+    public Workout(String exerciseName, String bodyPart) {
+        this.exerciseName = exerciseName;
+        this.bodyPart  = bodyPart;
+        this.sets = 0;
+        this.reps = 0;
+        this.weight = 0;
+    }
+
     public Workout(String exerciseName, String bodyPart, int sets, int reps, double weight) {
         this.exerciseName = exerciseName;
         this.bodyPart = bodyPart;
