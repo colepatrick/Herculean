@@ -11,6 +11,7 @@ public class UserAccount implements Serializable {
 
     private UserGoal userGoal;
     private UserSchedule userSchedule;
+    private UserStreak userStreak;
 
 
     // No-argument constructor (required for Gson deserialization)
@@ -22,6 +23,7 @@ public class UserAccount implements Serializable {
         this.workoutLog = new Logger();
         this.userGoal = new UserGoal("General Fitness", 3);
         this.userSchedule = new UserSchedule("Rest", "Rest", "Rest", "Rest", "Rest", "Rest", "Rest");
+        this.userStreak = new UserStreak();
 
     }
 
@@ -34,6 +36,7 @@ public class UserAccount implements Serializable {
         this.workoutLog = new Logger();
         this.userGoal = new UserGoal("General Fitness", 3);
         this.userSchedule = new UserSchedule("Rest", "Rest", "Rest", "Rest", "Rest", "Rest", "Rest");
+        this.userStreak = new UserStreak();
     }
 
     /**************************************************************************************
@@ -95,4 +98,11 @@ public class UserAccount implements Serializable {
         this.userSchedule = userSchedule;
     }
 
+    public UserStreak getUserStreak() {
+        return userStreak;
+    }
+
+    public void setUserStreak(UserStreak userStreak) {
+        this.userStreak = userStreak;
+    }
 }
