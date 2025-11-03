@@ -34,7 +34,13 @@
         android:id="@+id/nav_settings"
         android:name="com.example.herculean.ui.settings.SettingsFragment"
         android:label="@string/menu_settings"
-        tools:layout="@layout/fragment_settings" />
+        tools:layout="@layout/fragment_settings">
+
+        <action
+            android:id="@+id/action_nav_settings_to_themesSettingsFragment"
+            app:destination="@id/themesSettingsFragment" />
+    </fragment>
+
 
     <fragment
         android:id="@+id/nav_workout_info"
@@ -47,6 +53,12 @@
             app:argType="com.example.herculean.workout.Workout" />
 
     </fragment>
+
+    <fragment
+        android:id="@+id/themesSettingsFragment"
+        android:name="com.example.herculean.ui.settings.theme.ThemesSettingsFragment"
+        android:label="Theme Settings" />
+
 
     <action
         android:id="@+id/action_global_nav_past_workouts"
