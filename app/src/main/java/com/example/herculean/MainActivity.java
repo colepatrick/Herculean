@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.Menu;
 
+import com.example.herculean.ai.ChatBot;
 import com.example.herculean.workout.Upload;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.snackbar.Snackbar;
@@ -60,6 +61,16 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
             });
         }
+
+        if (binding.appBarMain.chatFab != null) {
+            binding.appBarMain.chatFab.setOnClickListener(view -> {
+                Snackbar.make(view, "Opening Gemini Chat", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).setAnchorView(R.id.chatFab).show();
+                Intent intent = new Intent(MainActivity.this, ChatBot.class);
+                startActivity(intent);
+            });
+        }
+
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment_content_main);
         assert navHostFragment != null;
         NavController navController = navHostFragment.getNavController();

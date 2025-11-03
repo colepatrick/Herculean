@@ -1,4 +1,4 @@
-package com.example.herculean;
+package com.example.herculean.ai;
 
 import static android.content.ContentValues.TAG;
 
@@ -7,6 +7,7 @@ import android.speech.tts.TextToSpeech;
 import android.util.Log;
 
 
+import com.example.herculean.R;
 import com.google.ai.client.generativeai.GenerativeModel;
 import com.google.ai.client.generativeai.java.GenerativeModelFutures;
 import com.google.ai.client.generativeai.type.Content;
