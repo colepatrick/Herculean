@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp"
+        android:padding="24dp"
         android:gravity="center_horizontal"
         android:background="?attr/colorSurface">
 
@@ -21,8 +21,6 @@
             android:queryHint="YYYY-MM-DD"
             android:iconifiedByDefault="false"
             android:background="?attr/colorSurfaceVariant"
-            android:queryBackground="?attr/colorSurface"
-            android:textColor="?attr/colorOnSurface"
             android:layout_marginBottom="16dp" />
 
         <LinearLayout
@@ -33,6 +31,5 @@
             android:gravity="center_horizontal"
             android:layout_marginTop="16dp"
             android:background="?attr/colorSurface" />
-
     </LinearLayout>
 </ScrollView>

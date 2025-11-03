@@ -6,19 +6,18 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    android:padding="16dp"
+    android:padding="24dp"
     android:background="?attr/colorSurface"
     tools:context=".ui.reflow.ReflowFragment">
 
     <TextView
         android:id="@+id/text_profile"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:text="Profile in Development"
-        android:textAlignment="center"
         android:textSize="20sp"
         android:textColor="?attr/colorOnSurface"
         android:fontFamily="sans-serif-medium"
         android:padding="8dp" />
-
 </LinearLayout>
