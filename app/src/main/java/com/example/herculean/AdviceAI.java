@@ -6,6 +6,7 @@ import android.content.Context;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
 
+
 import com.google.ai.client.generativeai.GenerativeModel;
 import com.google.ai.client.generativeai.java.GenerativeModelFutures;
 import com.google.ai.client.generativeai.type.Content;
@@ -20,8 +21,10 @@ import java.util.concurrent.Executors;
 
 
 public class AdviceAI {
+
+    private static AdviceAI instance;
+
     // Gemini
-    private static final String GEMINI_API_KEY = "";
     private final Executor executor = Executors.newSingleThreadExecutor(); //Runnable::run
     private GenerativeModelFutures model;
     // TTS
@@ -35,12 +38,20 @@ public class AdviceAI {
         void onError(String errorMessage);
     }
 
+    public static synchronized AdviceAI getInstance(Context context) {
+        if (instance == null) {
+            instance = new AdviceAI(context.getApplicationContext());
+        }
+        return instance;
+    }
+
     public void setAllowInterrupt(boolean allow) {
         this.allowInterruption = allow;
     }
 
-    public AdviceAI(Context context, String GEMINI_API_KEY) {
-        model = GenerativeModelFutures.from(new GenerativeModel("gemini-2.0-flash", GEMINI_API_KEY));
+    private AdviceAI(Context context) {
+        String apiKey = context.getString(R.string.gemini_api_key);
+        model = GenerativeModelFutures.from(new GenerativeModel("gemini-2.0-flash", apiKey));
         // Initializing TTS language and speechrate
         tts = new TextToSpeech(context, new TextToSpeech.OnInitListener() {
             @Override
@@ -63,16 +74,16 @@ public class AdviceAI {
         });
     }
 
-    public void sendToGeminiText(String originalPrompt, boolean speakResponse, onResultTextCallback callBack, Runnable onDone, Runnable onError) {
+    public void sendToGeminiText(String userPrompt, boolean speakResponse, onResultTextCallback callBack, Runnable onDone, Runnable onError) {
         String formattedPrompt =
                 "You are a knowledgeable fitness and workout coach integrated into an Android app that gives short, practical exercise tips through voice feedback. " +
                         "Provide clear, motivational, and concise advice about workouts, training form, recovery, or fitness routines. " +
                         "Avoid long explanations or unnecessary details — keep responses under 3 sentences and easy to understand when spoken aloud. " +
                         "Use an encouraging and positive tone. " +
-                        originalPrompt;
+                        userPrompt;
 
         Content content = new Content.Builder()
-                .addText(formattedPrompt)
+                .addText(userPrompt)
                 .build();
 
         ListenableFuture<GenerateContentResponse> future = model.generateContent(content);

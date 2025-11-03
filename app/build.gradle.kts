@@ -1,10 +1,22 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
 }
 
+val localProps = Properties()
+val localPropsFile = rootProject.file("local.properties")
+if (localPropsFile.exists()) {
+    localProps.load(localPropsFile.inputStream())
+}
+
+val geminiApiKey = localProps.getProperty("GEMINI_API_KEY") ?: ""
+
 android {
     namespace = "com.example.herculean"
     compileSdk = 36
+
 
     defaultConfig {
         applicationId = "com.example.herculean"
@@ -12,6 +24,8 @@ android {
         targetSdk = 36
         versionCode = 1
         versionName = "1.0"
+        buildConfigField("String", "GEMINI_API_KEY", "\"$geminiApiKey\"")
+        resValue("string", "gemini_api_key", geminiApiKey)
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
