@@ -184,6 +184,48 @@ public class ProfileSettingsFragment extends Fragment {
             dialog.show();
         });
 
+        binding.logoutAccountButton.setOnClickListener(v -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setTitle(R.string.logout_account);
+
+            builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                // Confirmation Window
+                public void onClick(DialogInterface dialog, int id) {
+                    AlertDialog.Builder builder2 = new AlertDialog.Builder(getActivity());
+                    builder2.setTitle(R.string.confirm_logout);
+
+                    // Second Confirmation Window
+                    builder2.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog2, int id) {
+                            Toast.makeText(getContext(), "Account successfully logged out", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(getContext(), LoginActivity.class);
+                            startActivity(intent);
+                            getActivity().finish();
+                            dialog2.dismiss();
+                            dialog.dismiss();
+                        }
+                    });
+                    builder2.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog2, int id) {
+                            dialog2.cancel();
+                            dialog.cancel();
+                        }
+                    });
+
+                    AlertDialog dialog2 = builder2.create();
+                    dialog2.show();
+                }
+            });
+            builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    dialog.cancel();
+                }
+            });
+
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        });
+
         binding.deleteAccountButton.setOnClickListener(v -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder.setTitle(R.string.delete_account);
