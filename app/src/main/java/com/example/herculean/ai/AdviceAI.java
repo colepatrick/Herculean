@@ -84,7 +84,7 @@ public class AdviceAI {
                         userPrompt;
 
         Content content = new Content.Builder()
-                .addText(userPrompt)
+                .addText(formattedPrompt)
                 .build();
 
         ListenableFuture<GenerateContentResponse> future = model.generateContent(content);

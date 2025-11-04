@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(binding.appBarMain.toolbar);
         if (binding.appBarMain.fab != null) {
             binding.appBarMain.fab.setOnClickListener(view -> {
-                Snackbar.make(view, "Opening new Workout", Snackbar.LENGTH_LONG)
+             Snackbar.make(view, "Opening new Workout", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).setAnchorView(R.id.fab).show();
             Intent intent = new Intent(MainActivity.this, Upload.class);
             startActivity(intent);

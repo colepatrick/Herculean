@@ -33,6 +33,7 @@
             android:theme="@style/Theme.Herculean.NoActionBar"/>
         <activity android:name=".RegisterAccount" android:exported="false"/>
         <activity android:name=".workout.Upload" android:exported="false"/>
+        <activity android:name=".ai.ChatBot" android:exported="false"/>
     </application>
 
 </manifest>

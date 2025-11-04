@@ -43,6 +43,7 @@ public class Upload extends AppCompatActivity {
         homeButton.setOnClickListener(v -> {
             Intent intent = new Intent(Upload.this, MainActivity.class);
             startActivity(intent);
+            finish();
         });
 
 
