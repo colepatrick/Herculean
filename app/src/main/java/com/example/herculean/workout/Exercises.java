@@ -1,5 +1,6 @@
 package com.example.herculean.workout;
 
+import java.util.List;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
@@ -12,35 +13,29 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import com.example.herculean.R;
+
 public class Exercises extends Dialog {
 
-    private OnCategorySelectedListener listener;
+    private OnExerciseSelectedListener listener;
+    private OnWorkoutSelectedListener workoutListener;
+    private List<Workout> allExercises = ExerciseDatabase.getAllExercises();
 
-    private String[] workouts = {
-            "Weightlifting",
-            "Plyometrics",
-            "Calisthenics",
-            "Cardio",
-            "Yoga",
-            "Stretching",
-            "CrossFit",
-            "Powerlifting",
-            "Olympic Lifting",
-            "Bodybuilding",
-            "HIIT"
-    };
-
-    public interface OnCategorySelectedListener {
-        void onCategorySelected(String workout);
+    public interface OnExerciseSelectedListener {
+        void onExerciseSelected(String workout);
     }
 
-    public Exercises(@NonNull Context context, OnCategorySelectedListener listener) {
+    public interface OnWorkoutSelectedListener {
+        void onExerciseSelected(Workout workout);
+    }
+
+    public Exercises(Context context, OnExerciseSelectedListener listener) {
         super(context);
         this.listener = listener;
     }
 
-    public void setOnCategorySelectedListener(OnCategorySelectedListener listener) {
-        this.listener = listener;
+    public Exercises(Context context, OnWorkoutSelectedListener workoutListener) {
+        super(context);
+        this.workoutListener = workoutListener;
     }
 
     @SuppressLint("SetTextI18n")
@@ -57,35 +52,37 @@ public class Exercises extends Dialog {
         title.setText("Select Exercise");
 
         // Create buttons for each workout
-        for (String exercise : workouts) {
-            Button categoryButton = getButton(exercise);
-
-            buttonContainer.addView(categoryButton);
+        for (Workout exercise : allExercises) {
+            Button exerciseButton = getButton(exercise);
+            buttonContainer.addView(exerciseButton);
         }
 
         cancelButton.setOnClickListener(v -> dismiss());
     }
 
     @NonNull
-    private Button getButton(String workout) {
-        Button categoryButton = new Button(getContext());
-        categoryButton.setText(workout);
-        categoryButton.setTextSize(16);
-        categoryButton.setPadding(32, 24, 32, 24);
+    private Button getButton(Workout workout) {
+        Button exerciseButton = new Button(getContext());
+        exerciseButton.setText(workout.getExerciseName());
+        exerciseButton.setTextSize(16);
+        exerciseButton.setPadding(32, 24, 32, 24);
 
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
         );
         params.setMargins(0, 0, 0, 16);
-        categoryButton.setLayoutParams(params);
+        exerciseButton.setLayoutParams(params);
 
-        categoryButton.setOnClickListener(v -> {
+        exerciseButton.setOnClickListener(v -> {
             if (listener != null) {
-                listener.onCategorySelected(workout);
+                listener.onExerciseSelected(workout.getExerciseName());
+            }
+            if (workoutListener != null) {
+                workoutListener.onExerciseSelected(workout);
             }
             dismiss();
         });
-        return categoryButton;
+        return exerciseButton;
     }
 }

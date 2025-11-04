@@ -12,13 +12,15 @@ import com.example.herculean.GlobalData;
 import com.example.herculean.MainActivity;
 import com.example.herculean.R;
 
+import java.time.LocalDate;
+
 public class Upload extends AppCompatActivity {
     private EditText editTextWeight, editTextSets, editTextReps;
     private ListView workoutList;
     private Button buttonUploadWorkout, homeButton;
     private Button selectExerciseButton;
     private ArrayAdapter<Workout> adapter;
-    private String selectedExercise = "";
+    private Workout selectedExercise;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,17 +46,16 @@ public class Upload extends AppCompatActivity {
         workoutList.setAdapter(adapter);
 
         selectExerciseButton.setOnClickListener(v -> {
-            @SuppressLint("SetTextI18n") Exercises dialog = new Exercises(this, category -> {
-                selectedExercise = category;
-                Toast.makeText(this, "Selected: " + category, Toast.LENGTH_SHORT).show();
+            @SuppressLint("SetTextI18n")
+            Exercises dialog = new Exercises(this.peekAvailableContext(), (Exercises.OnWorkoutSelectedListener) exercise -> {
+                selectedExercise = exercise;
+                Toast.makeText(this, "Selected: " + exercise.getExerciseName(), Toast.LENGTH_SHORT).show();
 
-                // Update button text to show what's selected
-                selectExerciseButton.setText("Exercise: " + category);
+                selectExerciseButton.setText("Exercise: " + exercise.getExerciseName());
             });
 
             dialog.show();
         });
-
         workoutList.setOnItemLongClickListener((parent, view, position, id) -> {
             new AlertDialog.Builder(this)
                     .setTitle("Delete workout?")
@@ -75,7 +76,7 @@ public class Upload extends AppCompatActivity {
         String set = editTextSets.getText().toString();
         String rep = editTextReps.getText().toString();
 
-        if (selectedExercise.isEmpty()) {
+        if (selectedExercise == null) {
             Toast.makeText(this, "Please select an exercise", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -98,9 +99,11 @@ public class Upload extends AppCompatActivity {
             return;
         }
 
-        Workout newWorkout = new Workout(selectedExercise, selectedExercise, setValue, repValue, weightValue);
-
-        GlobalData.currentUser.workoutLog.addWorkout(newWorkout);
+        selectedExercise.setReps(repValue);
+        selectedExercise.setWeight(weightValue);
+        selectedExercise.setSets(setValue);
+        selectedExercise.setDate(LocalDate.now());
+        GlobalData.currentUser.workoutLog.addWorkout(selectedExercise);
         adapter.notifyDataSetChanged();
         GlobalData.saveAccounts(this);
 
@@ -109,7 +112,7 @@ public class Upload extends AppCompatActivity {
         editTextWeight.setText("");
         editTextSets.setText("");
         editTextReps.setText("");
-        selectedExercise = "";
+        selectedExercise = null;
         selectExerciseButton.setText("Select Exercise");
     }
 }

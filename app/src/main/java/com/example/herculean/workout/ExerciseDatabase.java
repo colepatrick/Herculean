@@ -75,9 +75,6 @@ public class ExerciseDatabase {
         exercises.add(new Workout("Overhead Tricep Extension", "Arms"));
         exercises.add(new Workout("Cable Curls", "Arms"));
         exercises.add(new Workout("Close Grip Bench Press", "Arms"));
-        exercises.add(new Workout("Forearm Curls", "Arms"));
-        exercises.add(new Workout("Forearm Extension", "Arms"));
-
 
         // Core
         exercises.add(new Workout("Crunches", "Core"));
@@ -109,5 +106,15 @@ public class ExerciseDatabase {
         exercises.add(new Workout("Hang Clean", "Olympic"));
         exercises.add(new Workout("Push Press", "Olympic"));
         exercises.add(new Workout("Clean Pull", "Olympic"));
+    }
+
+    // soon
+    public static void addCustomExercise(String exerciseName, String bodyPart) {
+        return;
+    }
+
+    // soon
+    public static List<Workout> getExercisesByBodyPart(String bodyPart) {
+        return exercises;
     }
 }
