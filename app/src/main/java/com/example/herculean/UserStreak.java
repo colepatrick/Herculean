@@ -25,7 +25,7 @@ public class UserStreak implements Serializable {
     /**
      * Calculates the user's current streak by counting consecutive successful weeks backward from today.
      * A week is successful if the number of unique days with workouts meets or exceeds the required amount.
-     * This method is stateless and recalculates the entire streak on each call.
+     * This method performs a full recalculation on every call to ensure correctness.
      *
      * @param workoutDates A list of all workout dates.
      * @param requiredDaysPerWeek The number of unique days with workouts needed to consider a week successful.
@@ -40,7 +40,7 @@ public class UserStreak implements Serializable {
             final LocalDate weekStart = weekToExamineStart;
             final LocalDate weekEnd = weekStart.plusDays(6);
 
-            // Count the number of unique days that have at least one workout
+            // Count the number of unique days that have at least one workout in the given week.
             long distinctWorkoutDaysInWeek = workoutDates.stream()
                     .filter(date -> !date.isBefore(weekStart) && !date.isAfter(weekEnd))
                     .distinct()
@@ -58,6 +58,7 @@ public class UserStreak implements Serializable {
         this.currentStreak = calculatedStreak;
     }
 
+    /** Returns the Monday of the week for the given date. */
     private LocalDate getStartOfWeek(LocalDate date) {
         return date.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
     }
