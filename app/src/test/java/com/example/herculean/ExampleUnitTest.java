@@ -55,6 +55,7 @@ public class ExampleUnitTest {
         assertEquals(best, testAccount.getBestWorkout());
     }
 
+    @Test
     public void getFavoriteTypeEmpty() {
         UserAccount testAccount = new UserAccount();
 
@@ -89,6 +90,7 @@ public class ExampleUnitTest {
         assertEquals("testWorkout2", testAccount.getFavoriteWorkoutType());
     }
 
+    @Test
     public void getFavoriteMuscleEmpty() {
         UserAccount testAccount = new UserAccount();
 

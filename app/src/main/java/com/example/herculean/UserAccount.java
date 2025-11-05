@@ -130,10 +130,8 @@ public class UserAccount implements Serializable {
 
             // Workout types are weighted by how much you did of them
             if(workoutTypes.containsKey(name)) {
-                System.out.println("increased " + name);
                 workoutTypes.put(name, workoutTypes.get(name) + (int) workout.getScore());
             } else {
-                System.out.println("new entry " + name);
                 workoutTypes.put(name, (int) workout.getScore());
             }
         }
