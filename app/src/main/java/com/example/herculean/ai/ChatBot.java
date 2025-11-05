@@ -126,7 +126,7 @@ public class ChatBot extends AppCompatActivity {
                 holder.textView.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
                 holder.textView.setBackgroundColor(ContextCompat.getColor(holder.itemView.getContext(), android.R.color.darker_gray));
             }
-            int pad = 18;
+            int pad = 30;
             holder.textView.setPadding(pad, pad, pad, pad);
         }
 

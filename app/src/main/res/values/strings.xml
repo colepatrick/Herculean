@@ -33,6 +33,9 @@
     <string name="don_t_have_an_account">Don\'t have an account? </string>
     <string name="register_here">Register here</string>
     <string name="back">Back</string>
+
+    <string name="gemini_api_key">AIzaSyAUPdeQYh8sbVyZ8KDfV3_yO5WczgD00ak</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

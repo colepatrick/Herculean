@@ -5,8 +5,10 @@ import static android.content.ContentValues.TAG;
 import android.content.Context;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
+import android.widget.Toast;
 
 
+import com.example.herculean.BuildConfig;
 import com.example.herculean.R;
 import com.google.ai.client.generativeai.GenerativeModel;
 import com.google.ai.client.generativeai.java.GenerativeModelFutures;
@@ -52,6 +54,16 @@ public class AdviceAI {
 
     private AdviceAI(Context context) {
         String apiKey = context.getString(R.string.gemini_api_key);
+        if (apiKey == null || apiKey.trim().isEmpty()) {
+            apiKey = context.getString(R.string.gemini_api_key);
+        }
+
+        boolean hasApiKey = apiKey != null && !apiKey.trim().isEmpty();
+        if (!hasApiKey) {
+            Toast.makeText(context, "Gemini API key is missing.", Toast.LENGTH_SHORT).show();
+            apiKey = "";
+        }
+
         model = GenerativeModelFutures.from(new GenerativeModel("gemini-2.0-flash", apiKey));
         // Initializing TTS language and speechrate
         tts = new TextToSpeech(context, new TextToSpeech.OnInitListener() {
