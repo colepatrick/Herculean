@@ -23,6 +23,30 @@ public class UserSchedule implements Serializable {
         this.sun = sun;
     }
 
+    public JSONObject toJSON() throws JSONException {
+        JSONObject json = new JSONObject();
+        json.put("mon", mon);
+        json.put("tue", tue);
+        json.put("wen", wen);
+        json.put("thur", thur);
+        json.put("fri", fri);
+        json.put("sat", sat);
+        json.put("sun", sun);
+        return json;
+    }
+
+    public static UserSchedule fromJSON(JSONObject json) throws JSONException {
+        return new UserSchedule(
+                json.getString("mon"),
+                json.getString("tue"),
+                json.getString("wen"),
+                json.getString("thur"),
+                json.getString("fri"),
+                json.getString("sat"),
+                json.getString("sun")
+        );
+    }
+
     // Change all days at once
     public void changeSchedule(String mon, String tue, String wen, String thur, String fri, String sat, String sun) {
         this.mon = mon;

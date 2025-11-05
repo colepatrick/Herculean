@@ -1,8 +1,14 @@
 package com.example.herculean.workout;
 
+import com.example.herculean.GlobalData;
+import com.example.herculean.UserAccount;
+import com.example.herculean.UserStreak;
+
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Manages a list of Workout objects — adding, viewing, or clearing them.
@@ -15,9 +21,24 @@ public class Logger implements Serializable {
         workouts = new ArrayList<>();
     }
 
-//Add a workout to the log.
+    //Add a workout to the log.
     public void addWorkout(Workout workout) {
         workouts.add(workout);
+        updateUserStreak();
+    }
+
+    private void updateUserStreak() {
+        UserAccount currentUser = GlobalData.currentUser;
+        if (currentUser != null) {
+            UserStreak userStreak = currentUser.getUserStreak();
+            if (userStreak != null) {
+                List<LocalDate> workoutDates = workouts.stream()
+                        .map(Workout::getDate)
+                        .collect(Collectors.toList());
+                int requiredWorkouts = currentUser.getUserGoal().getDaysPerWeek();
+                userStreak.updateStreak(workoutDates, requiredWorkouts);
+            }
+        }
     }
 
     /*
