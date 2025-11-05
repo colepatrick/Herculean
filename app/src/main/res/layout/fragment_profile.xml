@@ -16,9 +16,10 @@
             android:id="@+id/customize_button"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginEnd="4dp"
             android:text="@string/customize"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
@@ -64,6 +65,89 @@
             android:layout_height="1dp"
             android:background="?android:attr/listDivider" />
 
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8sp"
+            android:layout_marginTop="16sp"
+            android:layout_marginRight="8sp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/best_workout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/best_workout"
+                android:textAlignment="center"
+                android:textSize="28sp" />
+
+            <TextView
+                android:id="@+id/best_workout_details"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/no_workouts"
+                android:textAlignment="center"
+                android:textSize="20sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8sp"
+            android:layout_marginTop="16sp"
+            android:layout_marginRight="8sp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/favorite_workout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/favorite_workout"
+                android:textAlignment="center"
+                android:textSize="28sp" />
+
+            <TextView
+                android:id="@+id/favorite_workout_type"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/no_workouts"
+                android:textAlignment="center"
+                android:textSize="20sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="8sp"
+            android:layout_marginTop="16sp"
+            android:layout_marginRight="8sp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/favorite_muscle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/favorite_muscle"
+                android:textAlignment="center"
+                android:textSize="28sp" />
+
+            <TextView
+                android:id="@+id/favorite_muscle_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/no_workouts"
+                android:textAlignment="center"
+                android:textSize="20sp" />
+        </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>

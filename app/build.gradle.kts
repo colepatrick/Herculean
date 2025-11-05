@@ -46,6 +46,7 @@ dependencies {
     implementation(libs.navigation.ui)
     implementation("com.google.code.gson:gson:2.8.8")
     implementation(libs.coordinatorlayout)
+    implementation(libs.fragment)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)

@@ -15,6 +15,8 @@ import com.bumptech.glide.Glide;
 import com.example.herculean.GlobalData;
 import com.example.herculean.R;
 import com.example.herculean.databinding.FragmentProfileBinding;
+import com.example.herculean.ui.past_workouts.WorkoutInfoFragment;
+import com.example.herculean.workout.Workout;
 
 public class ProfileFragment extends Fragment {
 
@@ -40,6 +42,20 @@ public class ProfileFragment extends Fragment {
                 .error(R.drawable.avatar_filler)
                 .into(binding.profilePicture);
 
+        if(!GlobalData.currentUser.getWorkoutLog().getWorkouts().isEmpty()) {
+            Workout best = GlobalData.currentUser.getBestWorkout();
+            binding.bestWorkoutDetails.setText(best.toString());
+
+            String favoriteWorkout = GlobalData.currentUser.getFavoriteWorkoutType();
+            binding.favoriteWorkoutType.setText(favoriteWorkout);
+
+            String favoriteMuscle = GlobalData.currentUser.getFavoriteMuscleGroup();
+            binding.favoriteMuscleGroup.setText(favoriteMuscle);
+        } else {
+            binding.bestWorkoutDetails.setText(R.string.no_workouts);
+            binding.favoriteWorkoutType.setText(R.string.no_workouts);
+            binding.favoriteMuscleGroup.setText(R.string.no_workouts);
+        }
 
         return binding.getRoot();
     }

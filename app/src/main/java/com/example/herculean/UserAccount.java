@@ -3,8 +3,12 @@ package com.example.herculean;
 import android.util.Patterns;
 
 import com.example.herculean.workout.Logger;
+import com.example.herculean.workout.Workout;
 
 import java.io.Serializable;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 public class UserAccount implements Serializable {
     private String username, password, email;
@@ -107,5 +111,45 @@ public class UserAccount implements Serializable {
 
     public static boolean validEmail(String email) {
         return Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    }
+
+    public Workout getBestWorkout() {
+        Workout best = null;
+        for(Workout workout : workoutLog.getWorkouts()) {
+            if((best == null) || (workout.getScore() > best.getScore())) {
+                best = workout;
+            }
+        }
+        return best;
+    }
+
+    public String getFavoriteWorkoutType() {
+        Map<String, Integer> workoutTypes = new HashMap<>();
+        for(Workout workout : workoutLog.getWorkouts()) {
+            String name = workout.getExerciseName();
+
+            // Workout types are weighted by how much you did of them
+            if(workoutTypes.containsKey(name)) {
+                workoutTypes.put(name, workoutTypes.get(name) + (int) workout.getScore());
+            } else {
+                workoutTypes.put(name, (int) workout.getScore());
+            }
+        }
+        return Collections.max(workoutTypes.entrySet(), Map.Entry.comparingByValue()).getKey();
+    }
+
+    public String getFavoriteMuscleGroup() {
+        Map<String, Integer> muscleGroups = new HashMap<>();
+        for(Workout workout : workoutLog.getWorkouts()) {
+            String name = workout.getBodyPart();
+
+            // Muscle groups are weighted by how much you did of them
+            if(muscleGroups.containsKey(name)) {
+                muscleGroups.put(name, muscleGroups.get(name) + (int) workout.getScore());
+            } else {
+                muscleGroups.put(name, (int) workout.getScore());
+            }
+        }
+        return Collections.max(muscleGroups.entrySet(), Map.Entry.comparingByValue()).getKey();
     }
 }

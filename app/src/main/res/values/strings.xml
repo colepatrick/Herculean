@@ -43,4 +43,8 @@
     <string name="confirm_delete">Are you sure you want to delete?</string>
     <string name="logout_account">Logout</string>
     <string name="confirm_logout">Are you sure you want to logout?</string>
+    <string name="best_workout">Best Workout:</string>
+    <string name="no_workouts">None, gotta shred first</string>
+    <string name="favorite_workout">Favorite Workout Type:</string>
+    <string name="favorite_muscle">Favorite Muscle Group:</string>
 </resources>
