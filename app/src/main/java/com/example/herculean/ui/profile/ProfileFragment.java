@@ -15,7 +15,6 @@ import com.bumptech.glide.Glide;
 import com.example.herculean.GlobalData;
 import com.example.herculean.R;
 import com.example.herculean.databinding.FragmentProfileBinding;
-import com.example.herculean.ui.past_workouts.WorkoutInfoFragment;
 import com.example.herculean.workout.Workout;
 
 public class ProfileFragment extends Fragment {

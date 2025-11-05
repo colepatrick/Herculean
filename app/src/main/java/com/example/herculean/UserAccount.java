@@ -130,10 +130,16 @@ public class UserAccount implements Serializable {
 
             // Workout types are weighted by how much you did of them
             if(workoutTypes.containsKey(name)) {
+                System.out.println("increased " + name);
                 workoutTypes.put(name, workoutTypes.get(name) + (int) workout.getScore());
             } else {
+                System.out.println("new entry " + name);
                 workoutTypes.put(name, (int) workout.getScore());
             }
+        }
+
+        if(workoutTypes.isEmpty()) {
+            return "None";
         }
         return Collections.max(workoutTypes.entrySet(), Map.Entry.comparingByValue()).getKey();
     }
@@ -149,6 +155,9 @@ public class UserAccount implements Serializable {
             } else {
                 muscleGroups.put(name, (int) workout.getScore());
             }
+        }
+        if(muscleGroups.isEmpty()) {
+            return "None";
         }
         return Collections.max(muscleGroups.entrySet(), Map.Entry.comparingByValue()).getKey();
     }
