@@ -108,13 +108,23 @@ public class ExerciseDatabase {
         exercises.add(new Workout("Clean Pull", "Olympic"));
     }
 
-    // soon
     public static void addCustomExercise(String exerciseName, String bodyPart) {
-        return;
+        if (exercises == null) {
+            initializeExercises();
+        }
+        exercises.add(new Workout(exerciseName, bodyPart));
     }
 
-    // soon
     public static List<Workout> getExercisesByBodyPart(String bodyPart) {
-        return exercises;
+        if (exercises == null) {
+            initializeExercises();
+        }
+        List<Workout> filtered = new ArrayList<>();
+        for (Workout workout : exercises) {
+            if (workout.getBodyPart().equalsIgnoreCase(bodyPart)) {
+                filtered.add(workout);
+            }
+        }
+        return filtered;
     }
 }
