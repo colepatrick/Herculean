@@ -5,12 +5,15 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -35,6 +38,8 @@ public class ChatBot extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.chat_bot);
 
+        getWindow().setDecorFitsSystemWindows(false);
+
         buttonHome = findViewById(R.id.homeButton);
         sendButton = findViewById(R.id.sendButton);
         inputMessage = findViewById(R.id.inputMessage);
@@ -45,6 +50,27 @@ public class ChatBot extends AppCompatActivity {
         chatRecycler.setAdapter(chatAdapter);
 
         adviceAI = AdviceAI.getInstance(this);
+
+        inputMessage.requestFocus();
+        ViewCompat.setOnApplyWindowInsetsListener(getWindow().getDecorView(), (v, insets) -> {
+            // Get the height of the keyboard.
+            int keyboardHeight = insets.getInsets(WindowInsetsCompat.Type.ime()).bottom;
+
+            // Get the current layout parameters for the inputBar.
+            ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) inputMessage.getLayoutParams();
+            // Set the bottom margin of the inputBar to be the height of the keyboard.
+            params.bottomMargin = keyboardHeight;
+            // Apply the new layout parameters.
+            inputMessage.setLayoutParams(params);
+
+            // This part is for scrolling the chat, which you said you don't care about, but it's good to keep.
+            boolean isKeyboardVisible = insets.isVisible(WindowInsetsCompat.Type.ime());
+            if (isKeyboardVisible && chatAdapter.getItemCount() > 0) {
+                chatRecycler.scrollToPosition(chatAdapter.getItemCount() - 1);
+            }
+
+            return insets;
+        });
 
         buttonHome.setOnClickListener(v -> {
             Intent intent = new Intent(ChatBot.this, MainActivity.class);

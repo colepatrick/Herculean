@@ -30,12 +30,14 @@ public class AdviceAI {
     // Gemini
     private final Executor executor = Executors.newSingleThreadExecutor(); //Runnable::run
     private GenerativeModelFutures model;
+
     // TTS
     TextToSpeech tts;
     private boolean ttsReady = false;
     private boolean allowInterruption = false;
     private static final String gemini_api_key = GlobalData.gemini_api_key;
 
+    private String messageHistory = "";
 
     public interface onResultTextCallback {
         void onResultText(String text);
@@ -94,12 +96,13 @@ public class AdviceAI {
             context += workout.toString() + " ";
         }
 
+        messageHistory += "User: " + userPrompt;
         String formattedPrompt =
                 "You are a knowledgeable fitness and workout coach integrated into an Android app that gives short, practical exercise tips through voice feedback. " +
                         "Provide clear, motivational, and concise advice about workouts, training form, recovery, or fitness routines. " +
                         "Avoid long explanations or unnecessary details — keep responses under 3 sentences and easy to understand when spoken aloud. " +
                         "Use an encouraging and positive tone. Here is a list of workouts, given with date, workout description, muscle group, and amount:" +
-                        context + ". The user's prompt is: \"" + userPrompt + "\"";
+                        context + "Here is the full user message history, the last one is unanswered. Answer it." + messageHistory;
 
         Content content = new Content.Builder()
                 .addText(formattedPrompt)
@@ -111,6 +114,7 @@ public class AdviceAI {
             @Override
             public void onSuccess(GenerateContentResponse result) {
                 String responseText = (result != null) ? result.getText() : null;
+                messageHistory += "AI: " + responseText;
                 if (responseText == null || responseText.isEmpty()) {
                     // Errors
                     if (speakResponse && ttsReady) {
