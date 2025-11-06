@@ -23,6 +23,7 @@ import androidx.navigation.Navigation;
 
 import com.bumptech.glide.Glide;
 import com.example.herculean.GlobalData;
+import com.example.herculean.GoalAndScheduleActivity;
 import com.example.herculean.LoginActivity;
 import com.example.herculean.R;
 import com.example.herculean.UserAccount;
@@ -86,6 +87,11 @@ public class ProfileSettingsFragment extends Fragment {
             public void onCheckedChanged(@NonNull CompoundButton buttonView, boolean isChecked) {
                 GlobalData.currentUser.emailDisplayed(isChecked);
             }
+        });
+
+        binding.goalAndScheduleButton.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), GoalAndScheduleActivity.class);
+            startActivity(intent);
         });
 
         binding.changeUsernameButton.setOnClickListener(v -> {

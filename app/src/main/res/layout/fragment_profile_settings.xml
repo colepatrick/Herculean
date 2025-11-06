@@ -57,6 +57,12 @@
         </LinearLayout>
 
         <Button
+            android:id="@+id/goal_and_schedule_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Goal and Schedule" />
+
+        <Button
             android:id="@+id/change_username_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
