@@ -10,6 +10,13 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.herculean.workout.Logger;
+import com.example.herculean.workout.Workout;
+
+import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class LoginActivity extends AppCompatActivity {
 
     private EditText usernameInput, passwordInput;
@@ -87,6 +94,17 @@ public class LoginActivity extends AppCompatActivity {
 
         // Set current user in GlobalData
         GlobalData.currentUser = foundUser;
+
+        // Update user streak
+        UserStreak userStreak = foundUser.getUserStreak();
+        Logger logger = foundUser.getWorkoutLog();
+        if (userStreak != null && logger != null) {
+            List<LocalDate> workoutDates = logger.getWorkouts().stream()
+                    .map(Workout::getDate)
+                    .collect(Collectors.toList());
+            int requiredDays = foundUser.getUserGoal().getDaysPerWeek();
+            userStreak.updateStreak(workoutDates, requiredDays);
+        }
 
         // Save state before navigating
         GlobalData.saveAccounts(this);

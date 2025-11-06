@@ -19,16 +19,23 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/Theme.Herculean">
+
+        <!-- LoginActivity (launcher temporarily disabled) -->
         <activity
             android:name=".LoginActivity"
             android:exported="true"
             android:theme="@style/Theme.Herculean.NoActionBar">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
-        <activity android:name=".MainActivity"
+
+        <!-- Main app screens -->
+        <activity
+            android:name=".MainActivity"
             android:exported="false"
             android:theme="@style/Theme.Herculean.NoActionBar"/>
         <activity android:name=".RegisterAccount" android:exported="false"/>
@@ -37,6 +44,26 @@
             android:exported="false"
             android:windowSoftInputMode="adjustResize"
             />
+            android:theme="@style/Theme.Herculean.NoActionBar" />
+        <activity
+            android:name=".RegisterAccount"
+            android:exported="false" />
+        <activity
+            android:name=".workout.Upload"
+            android:exported="false" />
+
+        <!--  Temporary launcher for testing -->
+        <activity
+            android:name=".GoalAndScheduleActivity"
+            android:exported="true"
+            android:label="Goals &amp; Schedule">
+        <!--<intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+        -->
+        </activity>
+
     </application>
 
 </manifest>

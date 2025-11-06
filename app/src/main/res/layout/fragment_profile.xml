@@ -9,6 +9,15 @@
     tools:context=".ui.reflow.ReflowFragment">
 
     <TextView
+        android:id="@+id/streak_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="🔥 0 Week Streak"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <TextView
         android:id="@+id/text_profile"
         android:layout_width="326dp"
         android:layout_height="wrap_content"
@@ -18,5 +27,11 @@
         android:text="Profile in Development"
         android:textAlignment="center"
         android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/goal_and_schedule_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Goal and Schedule" />
 
 </LinearLayout>
