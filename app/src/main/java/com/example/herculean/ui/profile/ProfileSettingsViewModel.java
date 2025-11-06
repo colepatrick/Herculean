@@ -1,16 +1,16 @@
-package com.example.herculean.ui.reflow;
+package com.example.herculean.ui.profile;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class ReflowViewModel extends ViewModel {
+public class ProfileSettingsViewModel extends ViewModel {
 
     private final MutableLiveData<String> mText;
 
-    public ReflowViewModel() {
+    public ProfileSettingsViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is reflow fragment");
+        mText.setValue("This is the profile settings fragment");
     }
 
     public LiveData<String> getText() {
