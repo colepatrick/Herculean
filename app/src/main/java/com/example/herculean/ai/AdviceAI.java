@@ -7,10 +7,7 @@ import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.widget.Toast;
 
-
-import com.example.herculean.BuildConfig;
 import com.example.herculean.GlobalData;
-import com.example.herculean.R;
 import com.example.herculean.workout.Workout;
 import com.google.ai.client.generativeai.GenerativeModel;
 import com.google.ai.client.generativeai.java.GenerativeModelFutures;
@@ -37,6 +34,7 @@ public class AdviceAI {
     TextToSpeech tts;
     private boolean ttsReady = false;
     private boolean allowInterruption = false;
+    private static final String gemini_api_key = GlobalData.gemini_api_key;
 
 
     public interface onResultTextCallback {
@@ -56,9 +54,9 @@ public class AdviceAI {
     }
 
     private AdviceAI(Context context) {
-        String apiKey = "AIzaSyAUPdeQYh8sbVyZ8KDfV3_yO5WczgD00ak";
+        String apiKey = gemini_api_key;
         if (apiKey == null || apiKey.trim().isEmpty()) {
-            apiKey = "AIzaSyAUPdeQYh8sbVyZ8KDfV3_yO5WczgD00ak";
+            apiKey = gemini_api_key;
         }
 
         boolean hasApiKey = apiKey != null && !apiKey.trim().isEmpty();

@@ -16,6 +16,7 @@ import java.util.ArrayList;
 public class GlobalData {
     public static ArrayList<UserAccount> accounts = new ArrayList<>();
     public static UserAccount currentUser = null;
+    public static final String gemini_api_key = "AIzaSyAUPdeQYh8sbVyZ8KDfV3_yO5WczgD00ak";
 
     public static void saveAccounts(Context context) {
         try {
