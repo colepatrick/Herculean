@@ -1,8 +1,10 @@
 package com.example.herculean;
 
 import com.example.herculean.workout.Logger;
+import com.example.herculean.workout.Workout;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 
 public class UserAccount implements Serializable {
     private String username, password, email;
@@ -68,5 +70,15 @@ public class UserAccount implements Serializable {
 
     public void setWorkoutLog(Logger workoutLog) {
         this.workoutLog = workoutLog;
+    }
+
+    public Logger getRecentWorkouts(LocalDate start) {
+        Logger recentWorkouts = new Logger();
+        for(Workout workout : workoutLog.getWorkouts()) {
+            if(workout.getDate().isAfter(start)) {
+                recentWorkouts.addWorkout(workout);
+            }
+        }
+        return recentWorkouts;
     }
 }

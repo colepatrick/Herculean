@@ -9,7 +9,9 @@ import android.widget.Toast;
 
 
 import com.example.herculean.BuildConfig;
+import com.example.herculean.GlobalData;
 import com.example.herculean.R;
+import com.example.herculean.workout.Workout;
 import com.google.ai.client.generativeai.GenerativeModel;
 import com.google.ai.client.generativeai.java.GenerativeModelFutures;
 import com.google.ai.client.generativeai.type.Content;
@@ -18,6 +20,7 @@ import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 
+import java.time.LocalDate;
 import java.util.Locale;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -53,9 +56,9 @@ public class AdviceAI {
     }
 
     private AdviceAI(Context context) {
-        String apiKey = context.getString(R.string.gemini_api_key);
+        String apiKey = "AIzaSyAUPdeQYh8sbVyZ8KDfV3_yO5WczgD00ak";
         if (apiKey == null || apiKey.trim().isEmpty()) {
-            apiKey = context.getString(R.string.gemini_api_key);
+            apiKey = "AIzaSyAUPdeQYh8sbVyZ8KDfV3_yO5WczgD00ak";
         }
 
         boolean hasApiKey = apiKey != null && !apiKey.trim().isEmpty();
@@ -88,12 +91,17 @@ public class AdviceAI {
     }
 
     public void sendToGeminiText(String userPrompt, boolean speakResponse, onResultTextCallback callBack, Runnable onDone, Runnable onError) {
+        String context = "";
+        for(Workout workout : GlobalData.currentUser.getRecentWorkouts(LocalDate.now().minusDays(7)).getWorkouts()) {
+            context += workout.toString() + " ";
+        }
+
         String formattedPrompt =
                 "You are a knowledgeable fitness and workout coach integrated into an Android app that gives short, practical exercise tips through voice feedback. " +
                         "Provide clear, motivational, and concise advice about workouts, training form, recovery, or fitness routines. " +
                         "Avoid long explanations or unnecessary details — keep responses under 3 sentences and easy to understand when spoken aloud. " +
-                        "Use an encouraging and positive tone. " +
-                        userPrompt;
+                        "Use an encouraging and positive tone. Here is a list of workouts, given with date, workout description, muscle group, and amount:" +
+                        context + ". The user's prompt is: \"" + userPrompt + "\"";
 
         Content content = new Content.Builder()
                 .addText(formattedPrompt)
