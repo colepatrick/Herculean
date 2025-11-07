@@ -6,6 +6,7 @@ import com.example.herculean.workout.Logger;
 import com.example.herculean.workout.Workout;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -28,6 +29,8 @@ public class UserAccount implements Serializable {
     private UserSchedule userSchedule;
     private UserStreak userStreak;
 
+    public ArrayList<Workout> customExercises;
+
 
     // No-argument constructor (required for Gson deserialization)
     public UserAccount() {
@@ -41,7 +44,7 @@ public class UserAccount implements Serializable {
         this.userGoal = new UserGoal("General Fitness", 3);
         this.userSchedule = new UserSchedule("Rest", "Rest", "Rest", "Rest", "Rest", "Rest", "Rest");
         this.userStreak = new UserStreak();
-
+        this.customExercises = new ArrayList<>();
     }
 
     // Constructor with parameters
@@ -205,5 +208,15 @@ public class UserAccount implements Serializable {
 
     public void setUserStreak(UserStreak userStreak) {
         this.userStreak = userStreak;
+    }
+
+    public ArrayList<Workout> getCustomExercises() {
+        return customExercises;
+    }
+    public void setCustomExercises(ArrayList<Workout> exercises) {
+        customExercises = exercises;
+    }
+    public void addCustomExercise(Workout exercise) {
+        customExercises.add(exercise);
     }
 }

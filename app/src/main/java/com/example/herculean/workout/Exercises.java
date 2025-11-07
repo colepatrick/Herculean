@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.example.herculean.GlobalData;
 import com.example.herculean.R;
 
 public class Exercises extends Dialog {
@@ -204,6 +205,7 @@ public class Exercises extends Dialog {
 
             // adds new exercise to database
             ExerciseDatabase.addCustomExercise(newExerciseName, bodyPart);
+            GlobalData.currentUser.addCustomExercise(new Workout(exerciseName, bodyPart));
 
             allExercises = ExerciseDatabase.getAllExercises();
 

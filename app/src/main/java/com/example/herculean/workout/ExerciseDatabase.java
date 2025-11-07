@@ -1,5 +1,7 @@
 package com.example.herculean.workout;
 
+import com.example.herculean.GlobalData;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -106,6 +108,10 @@ public class ExerciseDatabase {
         exercises.add(new Workout("Hang Clean", "Olympic"));
         exercises.add(new Workout("Push Press", "Olympic"));
         exercises.add(new Workout("Clean Pull", "Olympic"));
+
+        for(Workout workout : GlobalData.currentUser.getCustomExercises()) {
+            exercises.add(workout);
+        }
     }
 
     public static void addCustomExercise(String exerciseName, String bodyPart) {
