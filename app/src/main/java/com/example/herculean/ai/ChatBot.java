@@ -82,8 +82,7 @@ public class ChatBot extends AppCompatActivity {
                 sendMessage()
         );
 
-        getSupportActionBar().hide();
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
     }
 
     private void sendMessage() {
