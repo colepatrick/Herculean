@@ -40,6 +40,7 @@ public class Upload extends AppCompatActivity {
         homeButton.setOnClickListener(v -> {
             Intent intent = new Intent(Upload.this, MainActivity.class);
             startActivity(intent);
+            finish();
         });
 
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, GlobalData.currentUser.workoutLog.getWorkouts());

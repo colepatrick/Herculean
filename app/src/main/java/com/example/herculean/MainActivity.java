@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.Menu;
 
+import com.example.herculean.ai.ChatBot;
 import com.example.herculean.workout.Upload;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.snackbar.Snackbar;
@@ -54,12 +55,22 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(binding.appBarMain.toolbar);
         if (binding.appBarMain.fab != null) {
             binding.appBarMain.fab.setOnClickListener(view -> {
-                Snackbar.make(view, "Opening new Workout", Snackbar.LENGTH_LONG)
+             Snackbar.make(view, "Opening new Workout", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).setAnchorView(R.id.fab).show();
             Intent intent = new Intent(MainActivity.this, Upload.class);
             startActivity(intent);
             });
         }
+
+        if (binding.appBarMain.chatFab != null) {
+            binding.appBarMain.chatFab.setOnClickListener(view -> {
+                Snackbar.make(view, "Opening Gemini Chat", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).setAnchorView(R.id.chatFab).show();
+                Intent intent = new Intent(MainActivity.this, ChatBot.class);
+                startActivity(intent);
+            });
+        }
+
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment_content_main);
         assert navHostFragment != null;
         NavController navController = navHostFragment.getNavController();
@@ -67,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
         NavigationView navigationView = binding.navView;
         if (navigationView != null) {
             mAppBarConfiguration = new AppBarConfiguration.Builder(
-                    R.id.nav_past_workouts, R.id.nav_reflow, R.id.nav_slideshow, R.id.nav_settings)
+                    R.id.nav_past_workouts, R.id.nav_profile, R.id.nav_slideshow, R.id.nav_settings)
                     .setOpenableLayout(binding.drawerLayout)
                     .build();
             NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
@@ -77,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView bottomNavigationView = binding.appBarMain.contentMain.bottomNavView;
         if (bottomNavigationView != null) {
             mAppBarConfiguration = new AppBarConfiguration.Builder(
-                    R.id.nav_past_workouts, R.id.nav_reflow, R.id.nav_slideshow)
+                    R.id.nav_past_workouts, R.id.nav_profile, R.id.nav_slideshow)
                     .build();
             NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
             NavigationUI.setupWithNavController(bottomNavigationView, navController);

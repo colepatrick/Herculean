@@ -65,6 +65,10 @@ public class Workout implements Serializable {
 
     public String getExerciseName() { return this.exerciseName; }
 
+    public String getBodyPart() { return this.bodyPart; }
+
+    public double getScore() { return sets*reps*weight; }
+
     // ---------- Setters ----------
     public void setExerciseName(String exerciseName) {
         this.exerciseName = exerciseName;

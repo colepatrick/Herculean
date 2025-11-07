@@ -2,6 +2,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.ACCESSIBILITY_SERVICE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -11,20 +19,51 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/Theme.Herculean">
+
+        <!-- LoginActivity (launcher temporarily disabled) -->
         <activity
             android:name=".LoginActivity"
             android:exported="true"
             android:theme="@style/Theme.Herculean.NoActionBar">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
-        <activity android:name=".MainActivity"
+
+        <!-- Main app screens -->
+        <activity
+            android:name=".MainActivity"
             android:exported="false"
             android:theme="@style/Theme.Herculean.NoActionBar"/>
         <activity android:name=".RegisterAccount" android:exported="false"/>
         <activity android:name=".workout.Upload" android:exported="false"/>
+        <activity android:name=".ai.ChatBot"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize"
+            />
+            android:theme="@style/Theme.Herculean.NoActionBar" />
+        <activity
+            android:name=".RegisterAccount"
+            android:exported="false" />
+        <activity
+            android:name=".workout.Upload"
+            android:exported="false" />
+
+        <!--  Temporary launcher for testing -->
+        <activity
+            android:name=".GoalAndScheduleActivity"
+            android:exported="true"
+            android:label="Goals &amp; Schedule">
+        <!--<intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+        -->
+        </activity>
+
     </application>
 
 </manifest>

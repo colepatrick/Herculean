@@ -40,7 +40,7 @@
     <string name="choose_exercise">Choose Exercise</string>
     <string name="search">Search</string>
     <string name="gemini_api_key">AIzaSyAUPdeQYh8sbVyZ8KDfV3_yO5WczgD00ak</string>
-
+    
     <string-array name="workouts_per_week">
         <item>1</item>
         <item>2</item>

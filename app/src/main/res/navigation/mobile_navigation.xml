@@ -19,10 +19,20 @@
 
 
     <fragment
-        android:id="@+id/nav_reflow"
-        android:name="com.example.herculean.ui.reflow.ReflowFragment"
+        android:id="@+id/nav_profile"
+        android:name="com.example.herculean.ui.profile.ProfileFragment"
         android:label="@string/menu_reflow"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_nav_profile_to_nav_profile_settings"
+            app:destination="@id/nav_profile_settings" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_profile_settings"
+        android:name="com.example.herculean.ui.profile.ProfileSettingsFragment"
+        android:label="@string/menu_reflow_settings"
+        tools:layout="@layout/fragment_profile_settings" />
 
     <fragment
         android:id="@+id/nav_slideshow"
@@ -52,8 +62,8 @@
         android:id="@+id/action_global_nav_past_workouts"
         app:destination="@id/nav_past_workouts" />
     <action
-        android:id="@+id/action_global_nav_reflow"
-        app:destination="@id/nav_reflow" />
+        android:id="@+id/action_global_nav_profile"
+        app:destination="@id/nav_profile" />
     <action
         android:id="@+id/action_global_nav_slideshow"
         app:destination="@id/nav_slideshow" />
