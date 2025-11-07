@@ -27,16 +27,12 @@ public class SettingsFragment extends Fragment {
         binding = FragmentSettingsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        // Observe ViewModel text
-
-
         // This is the button that leads to the theme selection menu
         binding.buttonThemeSettings.setOnClickListener(v -> {
             NavHostFragment.findNavController(this)
                     .navigate(R.id.action_nav_settings_to_themesSettingsFragment);
 
         });
-
 
         return root;
     }

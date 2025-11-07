@@ -15,7 +15,7 @@
         android:contentDescription="@string/nav_header_desc"
         android:paddingTop="8dp"
         android:src="@mipmap/ic_launcher"
-        android:tint="?attr/colorOnPrimaryContainer" />
+        app:tint="?attr/colorOnPrimary" />
 
     <TextView
         android:id="@+id/profile_name"

@@ -9,6 +9,7 @@
         android:id="@+id/nav_past_workouts"
         android:name="com.example.herculean.ui.past_workouts.PastWorkoutsFragment"
         android:label="Past Workouts"
+
         tools:layout="@layout/fragment_past_workouts">
 
         <action
