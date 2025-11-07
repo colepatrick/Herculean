@@ -3,22 +3,24 @@ package com.example.herculean.workout;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.*;
 
-// Import your model classes from the workout folder
 import com.example.herculean.GlobalData;
 import com.example.herculean.MainActivity;
 import com.example.herculean.R;
 
+import java.time.LocalDate;
 
 public class Upload extends AppCompatActivity {
     private EditText editTextWeight, editTextSets, editTextReps;
     private ListView workoutList;
     private Button buttonUploadWorkout, homeButton;
-    private Spinner spinner;
+    private Button selectExerciseButton;
     private ArrayAdapter<Workout> adapter;
+    private Workout selectedExercise;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,16 +31,11 @@ public class Upload extends AppCompatActivity {
         editTextSets = findViewById(R.id.editTextSets);
         editTextReps = findViewById(R.id.editTextReps);
         buttonUploadWorkout = findViewById(R.id.buttonUploadWorkout);
-        spinner = findViewById(R.id.spinner);
+        selectExerciseButton = findViewById(R.id.selectExerciseButton);
         homeButton = findViewById(R.id.homeButton);
         workoutList = findViewById(R.id.workoutList);
 
-//        buttonUploadWorkout.setClickable(true);
-//        buttonUploadWorkout.setEnabled(true);
-
-        buttonUploadWorkout.setOnClickListener(v -> {
-            uploadWorkout();
-        });
+        buttonUploadWorkout.setOnClickListener(v -> uploadWorkout());
 
         homeButton.setOnClickListener(v -> {
             Intent intent = new Intent(Upload.this, MainActivity.class);
@@ -46,13 +43,24 @@ public class Upload extends AppCompatActivity {
             finish();
         });
 
-
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, GlobalData.currentUser.workoutLog.getWorkouts());
         workoutList.setAdapter(adapter);
 
+        selectExerciseButton.setOnClickListener(v -> {
+            @SuppressLint("SetTextI18n")
+            Exercises dialog = new Exercises(this.peekAvailableContext(), (Exercises.OnWorkoutSelectedListener) exercise -> {
+                selectedExercise = exercise;
+                Toast.makeText(this, "Selected: " + exercise.getExerciseName(), Toast.LENGTH_SHORT).show();
+
+                selectExerciseButton.setText("Exercise: " + exercise.getExerciseName());
+            });
+
+            dialog.show();
+        });
         workoutList.setOnItemLongClickListener((parent, view, position, id) -> {
             new AlertDialog.Builder(this)
-                    .setTitle("Delete workout?").setMessage(GlobalData.currentUser.workoutLog.getWorkouts().get(position).toString())
+                    .setTitle("Delete workout?")
+                    .setMessage(GlobalData.currentUser.workoutLog.getWorkouts().get(position).toString())
                     .setPositiveButton("Delete", (d, w) -> {
                         GlobalData.currentUser.workoutLog.getWorkouts().remove(position);
                         GlobalData.saveAccounts(this);
@@ -68,7 +76,11 @@ public class Upload extends AppCompatActivity {
         String weight = editTextWeight.getText().toString();
         String set = editTextSets.getText().toString();
         String rep = editTextReps.getText().toString();
-        String exercise = spinner.getSelectedItem().toString();
+
+        if (selectedExercise == null) {
+            Toast.makeText(this, "Please select an exercise", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         if (weight.isEmpty() || set.isEmpty() || rep.isEmpty()) {
             Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
@@ -83,45 +95,25 @@ public class Upload extends AppCompatActivity {
             weightValue = Double.parseDouble(weight);
             setValue = Integer.parseInt(set);
             repValue = Integer.parseInt(rep);
-        }
-        catch (NumberFormatException e) {
+        } catch (NumberFormatException e) {
             Toast.makeText(this, "Please enter NUMBERS ONLY!!!", Toast.LENGTH_SHORT).show();
             return;
         }
 
-
-        Workout newWorkout;
-        switch (exercise) {
-            case "Bicep Curls": {
-                newWorkout = new Workout("Bicep Curls", "Biceps", setValue, repValue, weightValue);
-                break;
-            }
-            case "Tricep Pulldown": {
-                newWorkout = new Workout("Tricep Pulldown", "Triceps", setValue, repValue, weightValue);
-                break;
-            }
-            case "Squat": {
-                newWorkout = new Workout("Squat", "Legs", setValue, repValue, weightValue);
-                break;
-            }
-            case "Deadlift": {
-                newWorkout = new Workout("Deadlift", "Back", setValue, repValue, weightValue);
-                break;
-            }
-            default: {
-                Toast.makeText(this, "Unknown exercise: " + exercise, Toast.LENGTH_SHORT).show();
-                return;
-            }
-        }
-
-        GlobalData.currentUser.workoutLog.addWorkout(newWorkout);
+        selectedExercise.setReps(repValue);
+        selectedExercise.setWeight(weightValue);
+        selectedExercise.setSets(setValue);
+        selectedExercise.setDate(LocalDate.now());
+        GlobalData.currentUser.workoutLog.addWorkout(selectedExercise);
         adapter.notifyDataSetChanged();
         GlobalData.saveAccounts(this);
 
         Toast.makeText(this, "Workout uploaded successfully", Toast.LENGTH_SHORT).show();
+
         editTextWeight.setText("");
         editTextSets.setText("");
         editTextReps.setText("");
-        spinner.setSelection(0);
+        selectedExercise = null;
+        selectExerciseButton.setText("Select Exercise");
     }
 }

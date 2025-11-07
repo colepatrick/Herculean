@@ -9,15 +9,14 @@
 
     <string name="menu_transform">Workouts</string>
     <string name="menu_reflow">Profile</string>
-    <string name="menu_reflow_settings">Profile Settings</string>
     <string name="menu_slideshow">Leaderboard</string>
     <string name="menu_settings">Settings</string>
 
-    <string name="lorem_ipsum_title">Lorem Ipsum"</string>
+    <string name="lorem_ipsum_title">Lorem Ipsum</string>
     <string name="lorem_ipsum">Lorem Ipsum is simply placeholder text of the printing and
         typesetting industry. Lorem Ipsum has been the industry\'s standard placeholder text ever
         since the 1500s, when an unknown printer took a galley of type and scrambled it to make a
-        type specimen book"
+        type specimen book
     </string>
     <string name="fab_content_description">Represents a view to invoke an action</string>
     <string name="image_view_item_transform_content_description">Represents an image view in the
@@ -34,22 +33,14 @@
     <string name="don_t_have_an_account">Don\'t have an account? </string>
     <string name="register_here">Register here</string>
     <string name="back">Back</string>
-    <string name="customize">Customize</string>
-    <string name="change_password">Change Password</string>
-    <string name="change_username">Change Username</string>
-    <string name="delete_account">Delete Account</string>
-    <string name="ok">Ok</string>
+    <string name="select_exercise_category">Select Exercise Category</string>
     <string name="cancel">Cancel</string>
-    <string name="confirm_delete">Are you sure you want to delete?</string>
-    <string name="logout_account">Logout</string>
-    <string name="confirm_logout">Are you sure you want to logout?</string>
-    <string name="best_workout">Best Workout:</string>
-    <string name="no_workouts">None, gotta shred first</string>
-    <string name="favorite_workout">Favorite Workout Type:</string>
-    <string name="favorite_muscle">Favorite Muscle Group:</string>
-
+    <string name="select_exercise">Select Exercise</string>
+    <string name="pick_exercise">select_exercise</string>
+    <string name="choose_exercise">Choose Exercise</string>
+    <string name="search">Search</string>
     <string name="gemini_api_key">AIzaSyAUPdeQYh8sbVyZ8KDfV3_yO5WczgD00ak</string>
-
+    
     <string-array name="workouts_per_week">
         <item>1</item>
         <item>2</item>
@@ -59,5 +50,4 @@
         <item>6</item>
         <item>7</item>
     </string-array>
-
 </resources>

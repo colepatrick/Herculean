@@ -1,5 +1,6 @@
 package com.example.herculean.workout;
 
+import android.annotation.SuppressLint;
 import android.os.Build;
 
 import java.io.Serializable;
@@ -25,6 +26,14 @@ public class Workout implements Serializable {
         }
     }
 
+    public Workout(String exerciseName, String bodyPart) {
+        this.exerciseName = exerciseName;
+        this.bodyPart  = bodyPart;
+        this.sets = 0;
+        this.reps = 0;
+        this.weight = 0;
+    }
+
     public Workout(String exerciseName, String bodyPart, int sets, int reps, double weight) {
         this.exerciseName = exerciseName;
         this.bodyPart = bodyPart;
@@ -37,6 +46,7 @@ public class Workout implements Serializable {
     }
 
     // ---------- Getters ----------
+    public String getBodyPart(){ return bodyPart;}
     public int getSets() {
         return sets;
     }
@@ -81,6 +91,7 @@ public class Workout implements Serializable {
     }
 
     // ---------- Display ----------
+    @SuppressLint("DefaultLocale")
     @Override
     public String toString() {
         return String.format(

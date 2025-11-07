@@ -20,14 +20,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <Spinner
-            android:id="@+id/spinner"
+        <Button
+            android:id="@+id/selectExerciseButton"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:entries="@array/spinnerValue"
-            android:gravity="center"
-            android:padding="8dp" />
-
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/teal_700"
+            android:text="@string/select_exercise"
+            android:textColor="@android:color/white" />
 
         <ListView
             android:id="@+id/workoutList"
