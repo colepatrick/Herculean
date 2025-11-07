@@ -13,7 +13,6 @@ public class Workout implements Serializable {
     private double weight;
     private LocalDate date;
 
-
     //  constructor
     public Workout() {
         this.exerciseName = "";
@@ -22,7 +21,7 @@ public class Workout implements Serializable {
         this.reps = 0;
         this.weight = 0;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            this.date = LocalDate.now(); // Automatically assigns date
+            this.date = LocalDate.now();
         }
     }
 
@@ -41,54 +40,25 @@ public class Workout implements Serializable {
         this.reps = reps;
         this.weight = weight;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            this.date = LocalDate.now(); // Automatically assigns date
+            this.date = LocalDate.now();
         }
     }
 
     // ---------- Getters ----------
-    public String getBodyPart(){ return bodyPart;}
-    public int getSets() {
-        return sets;
-    }
-
-    public int getReps() {
-        return reps;
-    }
-
-    public double getWeight() {
-        return weight;
-    }
-
-    public LocalDate getDate() {
-        return date;
-    }
-
-    public String getExerciseName() { return this.exerciseName; }
-
     public String getBodyPart() { return this.bodyPart; }
-
-    public double getScore() { return sets*reps*weight; }
+    public int getSets() { return sets; }
+    public int getReps() { return reps; }
+    public double getWeight() { return weight; }
+    public LocalDate getDate() { return date; }
+    public String getExerciseName() { return this.exerciseName; }
+    public double getScore() { return sets * reps * weight; }
 
     // ---------- Setters ----------
-    public void setExerciseName(String exerciseName) {
-        this.exerciseName = exerciseName;
-    }
-
-    public void setSets(int sets) {
-        this.sets = sets;
-    }
-
-    public void setReps(int reps) {
-        this.reps = reps;
-    }
-
-    public void setWeight(double weight) {
-        this.weight = weight;
-    }
-
-    public void setDate(LocalDate date) {
-        this.date = date;
-    }
+    public void setExerciseName(String exerciseName) { this.exerciseName = exerciseName; }
+    public void setSets(int sets) { this.sets = sets; }
+    public void setReps(int reps) { this.reps = reps; }
+    public void setWeight(double weight) { this.weight = weight; }
+    public void setDate(LocalDate date) { this.date = date; }
 
     // ---------- Display ----------
     @SuppressLint("DefaultLocale")

@@ -24,8 +24,7 @@
         <activity
             android:name=".LoginActivity"
             android:exported="true"
-            android:theme="@style/Theme.Herculean.NoActionBar">
-
+            android:theme="@style/Theme.Herculean">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -37,14 +36,14 @@
         <activity
             android:name=".MainActivity"
             android:exported="false"
-            android:theme="@style/Theme.Herculean.NoActionBar"/>
+            android:theme="@style/Theme.Herculean"/>
         <activity android:name=".RegisterAccount" android:exported="false"/>
         <activity android:name=".workout.Upload" android:exported="false"/>
         <activity android:name=".ai.ChatBot"
             android:exported="false"
             android:windowSoftInputMode="adjustResize"
             />
-            android:theme="@style/Theme.Herculean.NoActionBar" />
+
         <activity
             android:name=".RegisterAccount"
             android:exported="false" />

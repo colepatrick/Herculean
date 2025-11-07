@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?attr/colorBackgroundFloating"
     tools:context=".workout.Upload">
 
 
@@ -40,7 +41,7 @@
             android:layout_gravity="end|top"
             android:layout_marginBottom="24dp"
             android:text="Upload Workout"
-            android:textColor="@android:color/black"
+            android:textColor="?attr/colorOnBackground"
             android:textSize="26sp"
             android:textStyle="bold" />
 
@@ -50,7 +51,10 @@
             android:layout_height="48dp"
             android:layout_marginBottom="16dp"
             android:hint="Weight (lbs)"
-            android:inputType="numberDecimal" />
+            android:inputType="numberDecimal"
+            android:textColor="?attr/colorOnBackground"
+            android:textColorHint="?attr/colorOnSurfaceVariant"
+            android:backgroundTint="?attr/colorPrimary" />
 
         <EditText
             android:id="@+id/editTextSets"
@@ -58,7 +62,10 @@
             android:layout_height="48dp"
             android:layout_marginBottom="16dp"
             android:hint="Sets"
-            android:inputType="number" />
+            android:inputType="number"
+            android:textColor="?attr/colorOnBackground"
+            android:textColorHint="?attr/colorOnSurfaceVariant"
+            android:backgroundTint="?attr/colorPrimary" />
 
         <EditText
             android:id="@+id/editTextReps"
@@ -66,20 +73,29 @@
             android:layout_height="48dp"
             android:layout_marginBottom="24dp"
             android:hint="Reps"
-            android:inputType="number" />
+            android:inputType="number"
+            android:textColor="?attr/colorOnBackground"
+            android:textColorHint="?attr/colorOnSurfaceVariant"
+            android:backgroundTint="?attr/colorPrimary" />
 
+        <!-- Upload Button -->
         <Button
             android:id="@+id/buttonUploadWorkout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/teal_700"
-            android:text="Upload Workout"
-            android:textColor="@android:color/white" />
+            android:layout_marginTop="20dp"
+            android:backgroundTint="?attr/colorPrimary"
+            android:textColor="?attr/colorOnPrimary"
+            android:text="Upload Workout" />
 
+        <!-- Home Button -->
         <Button
             android:id="@+id/homeButton"
             android:layout_width="140dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:backgroundTint="?attr/colorSecondary"
+            android:textColor="?attr/colorOnSecondary"
             android:text="Home" />
 
     </LinearLayout>

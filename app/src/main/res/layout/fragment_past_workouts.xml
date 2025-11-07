@@ -3,28 +3,33 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?attr/colorSurface"
     tools:context=".ui.past_workouts.PastWorkoutsFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:padding="24dp"
+        android:gravity="center_horizontal"
+        android:background="?attr/colorSurface">
 
-
-        <SearchView
+        <androidx.appcompat.widget.SearchView
             android:id="@+id/searchView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:queryHint="YYYY-MM-DD)" />
-
+            android:queryHint="YYYY-MM-DD"
+            android:iconifiedByDefault="false"
+            android:background="?attr/colorSurfaceVariant"
+            android:layout_marginBottom="16dp" />
 
         <LinearLayout
             android:id="@+id/layoutPastWorkouts"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="8dp"
-            android:orientation="vertical" />
-
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="16dp"
+            android:background="?attr/colorSurface" />
     </LinearLayout>
 </ScrollView>

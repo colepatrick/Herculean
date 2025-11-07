@@ -40,7 +40,25 @@
     <string name="choose_exercise">Choose Exercise</string>
     <string name="search">Search</string>
     <string name="gemini_api_key">AIzaSyAUPdeQYh8sbVyZ8KDfV3_yO5WczgD00ak</string>
-    
+
+    <string name="customize">Customize</string>
+    <string name="best_workout">Best Workout</string>
+    <string name="no_workouts">No workouts yet</string>
+    <string name="favorite_workout">Favorite Workout</string>
+    <string name="favorite_muscle">Favorite Muscle Group</string>
+    <string name="change_username">Change Username</string>
+    <string name="change_password">Change Password</string>
+    <string name="logout_account">Logout</string>
+    <string name="delete_account">Delete Account</string>
+    <string name="menu_reflow_settings">Profile Settings</string>
+
+    <string name="ok">OK</string>
+    <string name="confirm_logout">Are you sure you want to log out?</string>
+    <string name="confirm_delete">Are you sure you want to delete your account?</string>
+
+
+
+
     <string-array name="workouts_per_week">
         <item>1</item>
         <item>2</item>

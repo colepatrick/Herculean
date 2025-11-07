@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:padding="24dp"
     android:gravity="center"
-    android:background="@color/white">
+    android:background="?attr/colorBackgroundFloating">
 
     <!-- Title -->
     <TextView
@@ -15,7 +15,7 @@
         android:text="@string/login_hint"
         android:textSize="32sp"
         android:textStyle="bold"
-        android:textColor="@color/black"
+        android:textColor="?attr/colorOnBackground"
         android:layout_marginBottom="8dp" />
 
     <!-- Subtitle -->
@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:text="@string/sign_in_to_your_account"
         android:textSize="14sp"
-        android:textColor="@android:color/darker_gray"
+        android:textColor="?attr/colorOnSurface"
         android:layout_marginBottom="32dp" />
 
     <!-- Username Input -->
@@ -65,7 +65,10 @@
         android:text="Login"
         android:textSize="16sp"
         android:padding="12dp"
-        android:layout_marginBottom="16dp" />
+        android:layout_marginBottom="16dp"
+        android:backgroundTint="?attr/colorPrimary"
+        android:textColor="?attr/colorOnPrimary"/>
+
 
     <!-- Register Link -->
     <LinearLayout
@@ -79,7 +82,7 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
             android:text="@string/don_t_have_an_account"
-            android:textColor="@android:color/darker_gray"
+            android:textColor="?attr/colorOnSurface"
             android:textSize="14sp" />
 
         <TextView
@@ -88,7 +91,7 @@
             android:layout_height="wrap_content"
             android:text="@string/register_here"
             android:textSize="14sp"
-            android:textColor="@android:color/holo_blue_dark"
+            android:textColor="?attr/colorSecondary"
             android:textStyle="bold"
             android:clickable="true"
             android:focusable="true" />

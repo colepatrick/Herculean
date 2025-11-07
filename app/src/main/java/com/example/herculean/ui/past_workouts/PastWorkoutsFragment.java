@@ -1,14 +1,17 @@
 package com.example.herculean.ui.past_workouts;
 
+import android.content.res.ColorStateList;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.SearchView;
+import androidx.appcompat.widget.SearchView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
@@ -17,6 +20,7 @@ import com.example.herculean.GlobalData;
 import com.example.herculean.R;
 import com.example.herculean.databinding.FragmentPastWorkoutsBinding;
 import com.example.herculean.workout.Workout;
+import com.google.android.material.color.MaterialColors;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -85,14 +89,29 @@ public class PastWorkoutsFragment extends Fragment {
             // the button I.E the workout name and below it, date
             btn.setAllCaps(false);
 
-            // makes the buttons are same size
+            btn.setPadding(40, 20, 40, 20);
+
+            int bgColor = MaterialColors.getColor(btn, com.google.android.material.R.attr.colorPrimaryContainer);
+            int textColor = MaterialColors.getColor(btn, com.google.android.material.R.attr.colorOnPrimaryContainer);
+
+            btn.setBackgroundTintList(ColorStateList.valueOf(bgColor));
+            btn.setTextColor(textColor);
+
+            btn.setElevation(8f);
+
+
+            int buttonWidth = (int) (getResources().getDisplayMetrics().widthPixels * 0.8); // 80% of screen width
+
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    0,
-                    1f
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
             );
-            params.setMargins(0, 8, 0, 8);
+            params.setMargins(0, 16, 0, 16);
             btn.setLayoutParams(params);
+            btn.setGravity(Gravity.CENTER);
+
+
+
 
             btn.setOnClickListener(v -> { // this sets up what happens when the button is pressed
                 Bundle args = new Bundle();
