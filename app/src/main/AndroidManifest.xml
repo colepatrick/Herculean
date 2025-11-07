@@ -22,7 +22,7 @@
 
         <!-- LoginActivity (launcher temporarily disabled) -->
         <activity
-            android:name=".LoginActivity"
+            android:name=".login.LoginActivity"
             android:exported="true"
             android:theme="@style/Theme.Herculean">
             <intent-filter>
@@ -34,10 +34,10 @@
 
         <!-- Main app screens -->
         <activity
-            android:name=".MainActivity"
+            android:name=".datahandling.MainActivity"
             android:exported="false"
             android:theme="@style/Theme.Herculean"/>
-        <activity android:name=".RegisterAccount" android:exported="false"/>
+        <activity android:name=".login.RegisterAccount" android:exported="false"/>
         <activity android:name=".workout.Upload" android:exported="false"/>
         <activity android:name=".ai.ChatBot"
             android:exported="false"
@@ -45,15 +45,17 @@
             />
 
         <activity
-            android:name=".RegisterAccount"
-            android:exported="false" />
+            android:name=".login.RegisterAccount"
+            android:exported="false"
+            tools:ignore="DuplicateActivity" />
         <activity
             android:name=".workout.Upload"
-            android:exported="false" />
+            android:exported="false"
+            tools:ignore="DuplicateActivity" />
 
         <!--  Temporary launcher for testing -->
         <activity
-            android:name=".GoalAndScheduleActivity"
+            android:name=".goals.GoalAndScheduleActivity"
             android:exported="true"
             android:label="Goals &amp; Schedule">
         <!--<intent-filter>

@@ -1,7 +1,10 @@
-package com.example.herculean;
+package com.example.herculean.datahandling;
 
 import android.util.Patterns;
 
+import com.example.herculean.goals.UserGoal;
+import com.example.herculean.goals.UserSchedule;
+import com.example.herculean.goals.UserStreak;
 import com.example.herculean.workout.Logger;
 import com.example.herculean.workout.Workout;
 

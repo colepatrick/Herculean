@@ -1,4 +1,4 @@
-package com.example.herculean;
+package com.example.herculean.login;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -8,6 +8,10 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.herculean.datahandling.GlobalData;
+import com.example.herculean.R;
+import com.example.herculean.datahandling.UserAccount;
 
 public class RegisterAccount extends AppCompatActivity {
 

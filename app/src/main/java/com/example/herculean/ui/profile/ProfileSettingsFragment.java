@@ -19,16 +19,14 @@ import androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.Navigation;
 
 import com.bumptech.glide.Glide;
-import com.example.herculean.GlobalData;
-import com.example.herculean.GoalAndScheduleActivity;
-import com.example.herculean.LoginActivity;
+import com.example.herculean.datahandling.GlobalData;
+import com.example.herculean.goals.GoalAndScheduleActivity;
+import com.example.herculean.login.LoginActivity;
 import com.example.herculean.R;
-import com.example.herculean.UserAccount;
+import com.example.herculean.datahandling.UserAccount;
 import com.example.herculean.databinding.FragmentProfileSettingsBinding;
-import com.example.herculean.RegisterAccount;
 
 public class ProfileSettingsFragment extends Fragment {
 

@@ -1,6 +1,6 @@
 package com.example.herculean.workout;
 
-import com.example.herculean.GlobalData;
+import com.example.herculean.datahandling.GlobalData;
 
 import java.util.ArrayList;
 import java.util.List;

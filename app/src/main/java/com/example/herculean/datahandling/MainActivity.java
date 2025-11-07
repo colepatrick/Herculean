@@ -1,4 +1,4 @@
-package com.example.herculean;
+package com.example.herculean.datahandling;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,7 +6,9 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.Menu;
 
+import com.example.herculean.R;
 import com.example.herculean.ai.ChatBot;
+import com.example.herculean.login.LoginActivity;
 import com.example.herculean.workout.Upload;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.snackbar.Snackbar;

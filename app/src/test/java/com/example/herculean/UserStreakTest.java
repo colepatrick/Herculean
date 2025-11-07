@@ -10,6 +10,8 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
+import com.example.herculean.goals.UserStreak;
+
 /**
  * Unit tests for the UserStreak class, including optimization logic.
  */

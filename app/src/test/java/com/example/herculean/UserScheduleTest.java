@@ -5,6 +5,8 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+import com.example.herculean.goals.UserSchedule;
+
 public class UserScheduleTest {
 
     private UserSchedule schedule;

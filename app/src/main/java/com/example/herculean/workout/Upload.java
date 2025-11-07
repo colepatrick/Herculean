@@ -8,8 +8,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.*;
 
-import com.example.herculean.GlobalData;
-import com.example.herculean.MainActivity;
+import com.example.herculean.datahandling.GlobalData;
+import com.example.herculean.datahandling.MainActivity;
 import com.example.herculean.R;
 
 import java.time.LocalDate;
@@ -25,7 +25,7 @@ public class Upload extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.upload_workout);
+        setContentView(R.layout.activity_upload_workout);
 
         editTextWeight = findViewById(R.id.editTextWeight);
         editTextSets = findViewById(R.id.editTextSets);

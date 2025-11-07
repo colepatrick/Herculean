@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.herculean.GlobalData;
+import com.example.herculean.datahandling.GlobalData;
 import com.example.herculean.workout.Workout;
 
 import java.util.List;

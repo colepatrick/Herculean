@@ -1,4 +1,4 @@
-package com.example.herculean;
+package com.example.herculean.datahandling;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;

@@ -7,7 +7,7 @@ import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.example.herculean.GlobalData;
+import com.example.herculean.datahandling.GlobalData;
 import com.example.herculean.workout.Workout;
 import com.google.ai.client.generativeai.GenerativeModel;
 import com.google.ai.client.generativeai.java.GenerativeModelFutures;

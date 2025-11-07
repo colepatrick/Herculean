@@ -1,8 +1,8 @@
 package com.example.herculean.workout;
 
-import com.example.herculean.GlobalData;
-import com.example.herculean.UserAccount;
-import com.example.herculean.UserStreak;
+import com.example.herculean.datahandling.GlobalData;
+import com.example.herculean.datahandling.UserAccount;
+import com.example.herculean.goals.UserStreak;
 
 import java.io.Serializable;
 import java.time.LocalDate;

@@ -1,4 +1,4 @@
-package com.example.herculean;
+package com.example.herculean.login;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +10,11 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.herculean.datahandling.GlobalData;
+import com.example.herculean.datahandling.MainActivity;
+import com.example.herculean.R;
+import com.example.herculean.datahandling.UserAccount;
+import com.example.herculean.goals.UserStreak;
 import com.example.herculean.workout.Logger;
 import com.example.herculean.workout.Workout;
 

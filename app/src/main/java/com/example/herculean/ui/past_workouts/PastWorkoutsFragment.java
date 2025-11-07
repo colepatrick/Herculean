@@ -11,12 +11,11 @@ import android.widget.LinearLayout;
 import androidx.appcompat.widget.SearchView;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
-import com.example.herculean.GlobalData;
+import com.example.herculean.datahandling.GlobalData;
 import com.example.herculean.R;
 import com.example.herculean.databinding.FragmentPastWorkoutsBinding;
 import com.example.herculean.workout.Workout;

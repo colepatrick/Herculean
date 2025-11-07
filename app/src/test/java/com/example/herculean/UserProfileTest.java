@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
+import com.example.herculean.datahandling.UserAccount;
 import com.example.herculean.workout.Logger;
 import com.example.herculean.workout.Workout;
 

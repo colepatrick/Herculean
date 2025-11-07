@@ -1,10 +1,5 @@
-package com.example.herculean;
+package com.example.herculean.goals;
 import java.io.Serializable;
-
-import android.content.Context;
-import org.json.JSONException;
-import org.json.JSONObject;
-import java.io.*;
 
 public class UserGoal implements Serializable {
 

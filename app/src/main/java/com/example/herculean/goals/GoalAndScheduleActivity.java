@@ -1,4 +1,4 @@
-package com.example.herculean;
+package com.example.herculean.goals;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -7,6 +7,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import com.example.herculean.datahandling.GlobalData;
+import com.example.herculean.R;
 
 /**
  * Activity for setting user goals and weekly workout schedule.
@@ -27,7 +30,7 @@ public class GoalAndScheduleActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.schedule_and_goals);
+        setContentView(R.layout.activity_schedule_and_goals);
 
         // Initialize UI elements from the layout
         editTextGoal = findViewById(R.id.editTextGoal);

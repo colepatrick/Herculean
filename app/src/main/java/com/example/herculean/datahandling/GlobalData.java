@@ -1,4 +1,4 @@
-package com.example.herculean;
+package com.example.herculean.datahandling;
 
 import android.content.SharedPreferences;
 import android.content.Context;

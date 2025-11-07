@@ -1,4 +1,4 @@
-package com.example.herculean;
+package com.example.herculean.goals;
 
 import java.io.Serializable;
 import java.time.DayOfWeek;

@@ -1,8 +1,6 @@
 package com.example.herculean.ui.profile;
 
 import android.animation.ObjectAnimator;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,10 +13,9 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import com.bumptech.glide.Glide;
-import com.example.herculean.GlobalData;
-import com.example.herculean.GoalAndScheduleActivity;
+import com.example.herculean.datahandling.GlobalData;
 import com.example.herculean.R;
-import com.example.herculean.UserAccount;
+import com.example.herculean.datahandling.UserAccount;
 import com.example.herculean.databinding.FragmentProfileBinding;
 import com.example.herculean.workout.Workout;
 

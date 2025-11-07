@@ -18,7 +18,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
-import com.example.herculean.GlobalData;
+import com.example.herculean.datahandling.GlobalData;
 import com.example.herculean.R;
 
 public class Exercises extends Dialog {
