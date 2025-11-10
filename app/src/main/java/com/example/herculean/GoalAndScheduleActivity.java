@@ -122,7 +122,7 @@ public class GoalAndScheduleActivity extends Activity {
      */
     private void updateGoalDisplay() {
         if (GlobalData.currentUser != null && GlobalData.currentUser.getUserGoal() != null && GlobalData.currentUser.getUserSchedule() != null) {
-            String displayText = "Goal: " + GlobalData.currentUser.getUserGoal().toString() + 
+            String displayText = "Current Goal&Schedule:\n"+"\nGoal: " + GlobalData.currentUser.getUserGoal().toString() +
                                  "\nSchedule: " + GlobalData.currentUser.getUserSchedule().toString();
             goalScheduleTextView.setText(displayText);
         } else {

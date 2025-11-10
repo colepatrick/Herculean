@@ -95,6 +95,8 @@ public class AdviceAI {
         for(Workout workout : GlobalData.currentUser.getRecentWorkouts(LocalDate.now().minusDays(7)).getWorkouts()) {
             context += workout.toString() + " ";
         }
+        context += "Goal: " + GlobalData.currentUser.getUserGoal().toString() +
+                "\nSchedule: " + GlobalData.currentUser.getUserSchedule().toString();
 
         messageHistory += "User: " + userPrompt;
         String formattedPrompt =
