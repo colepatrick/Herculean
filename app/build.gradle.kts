@@ -89,4 +89,7 @@ dependencies {
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
     implementation("com.github.bumptech.glide:glide:4.16.0")
+
+    // Graphing Views
+    implementation("com.jjoe64:graphview:4.2.2")
 }
