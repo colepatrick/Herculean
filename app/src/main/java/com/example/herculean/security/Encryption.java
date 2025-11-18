@@ -8,7 +8,7 @@ import java.security.SecureRandom;
 import java.util.Base64;
 
 
-public class encryption {
+public class Encryption {
 
     // Generates a random 16 byte salt for hashing
     public static String generateSalt() {
@@ -28,12 +28,10 @@ public class encryption {
             md.update(Base64.getDecoder().decode(salt));
             byte[] hashedPassword = md.digest(password.getBytes());
             return Base64.getEncoder().encodeToString(hashedPassword);
-        }
-        catch (NoSuchAlgorithmException e) {
+        } catch (NoSuchAlgorithmException e) {
             Log.e("encryption", "SHA-256 algo not found", e);
             return null;
-        }
-        catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             Log.e("encryption", "Salt is not valid Base64", e);
             return null;
         }

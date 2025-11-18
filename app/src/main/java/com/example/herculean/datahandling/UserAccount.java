@@ -5,7 +5,7 @@ import android.util.Patterns;
 import com.example.herculean.goals.UserGoal;
 import com.example.herculean.goals.UserSchedule;
 import com.example.herculean.goals.UserStreak;
-import com.example.herculean.security.encryption;
+import com.example.herculean.security.Encryption;
 import com.example.herculean.workout.Logger;
 import com.example.herculean.workout.Workout;
 
@@ -55,8 +55,8 @@ public class UserAccount implements Serializable {
     // Constructor with parameters
     public UserAccount(String username, String password, String email) {
         this.username = username;
-        this.salt = encryption.generateSalt();
-        this.password = encryption.hashPassword(password, this.salt);
+        this.salt = Encryption.generateSalt();
+        this.password = Encryption.hashPassword(password, this.salt);
         this.email = email;
         this.level = 1;
         this.workoutLog = new Logger();
@@ -89,8 +89,8 @@ public class UserAccount implements Serializable {
     }
 
     public void setPassword(String password) {
-        this.salt = encryption.generateSalt();
-        this.password = encryption.hashPassword(password, this.salt);
+        this.salt = Encryption.generateSalt();
+        this.password = Encryption.hashPassword(password, this.salt);
     }
 
     // New checkPassword function that uses the salt
@@ -98,7 +98,7 @@ public class UserAccount implements Serializable {
         if (password == null || this.salt == null || this.salt.isEmpty()) {
             return false;
         }
-        String hash = encryption.hashPassword(password, this.salt);
+        String hash = Encryption.hashPassword(password, this.salt);
         return hash != null && hash.equals(this.password);
     }
 
