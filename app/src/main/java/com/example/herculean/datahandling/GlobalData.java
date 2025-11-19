@@ -48,6 +48,19 @@ public class GlobalData {
                 ArrayList<UserAccount> list = gson.fromJson(json, type);
                 if (list != null && !list.isEmpty()) {
                     GlobalData.accounts = list;
+
+                    boolean needsSave = false;
+                    for (UserAccount account : GlobalData.accounts) {
+                        if (account.getSalt() == null || account.getSalt().isEmpty()) {
+                            account.setPassword(account.getPassword());
+                            needsSave = true;
+                        }
+                    }
+
+                    if (needsSave) {
+                        saveAccounts(context);
+                    }
+
                     Log.d("LOAD", "✓ LOADED " + GlobalData.accounts.size() + " accounts from SharedPreferences");
                     for (UserAccount account : GlobalData.accounts) {
                         Log.d("LOAD", "  - " + account.getUsername() + " | " + account.getEmail());
