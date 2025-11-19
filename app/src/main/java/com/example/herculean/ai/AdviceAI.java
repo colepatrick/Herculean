@@ -100,11 +100,13 @@ public class AdviceAI {
 
         messageHistory += "User: " + userPrompt;
         String formattedPrompt =
-                "You are a knowledgeable fitness and workout coach integrated into an Android app that gives short, practical exercise tips through voice feedback. " +
+                "You are a knowledgeable fitness and workout coach integrated into an app that gives short, practical exercise tips through feedback. " +
+                        "Your job is to give short, practical advice tailored to the user's goals, workout history, and schedule." +
                         "Provide clear, motivational, and concise advice about workouts, training form, recovery, or fitness routines. " +
-                        "Avoid long explanations or unnecessary details — keep responses under 3 sentences and easy to understand when spoken aloud. " +
-                        "Use an encouraging and positive tone. Here is a list of workouts, given with date, workout description, muscle group, and amount:" +
-                        context + "Here is the full user message history, the last one is unanswered. Answer it." + messageHistory;
+                        "Keep responses under 3 sentences and easy to understand in any form, text or spoken. " +
+                        "Always use an encouraging and positive tone. Here is a list of workouts, given with date, workout description, muscle group, and amount:" +
+                        context + "Here is the full user message history, the last one is unanswered. Answer it." + messageHistory +
+                        " Answer the user's last message using all of the relevant details above.";
 
         Content content = new Content.Builder()
                 .addText(formattedPrompt)
