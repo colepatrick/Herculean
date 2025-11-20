@@ -39,10 +39,6 @@ public class ProfileFragment extends Fragment {
             Navigation.findNavController(v).navigate(R.id.action_nav_profile_to_nav_profile_settings);
         });
 
-        binding.moreGraphsButton.setOnClickListener(v -> {
-            Navigation.findNavController(v).navigate(R.id.action_nav_profile_to_nav_profile_graphs);
-        });
-
         binding.profileUsername.setText(GlobalData.currentUser.getUsername());
         binding.profileUserEmail.setText(GlobalData.currentUser.getEmail());
         Glide.with(this)
@@ -100,7 +96,7 @@ public class ProfileFragment extends Fragment {
         binding.workoutDaysGraph.getViewport().setMinX(0);
         binding.workoutDaysGraph.getViewport().setMaxX(days-1);
         binding.workoutDaysGraph.setTitleTextSize(50);
-        binding.workoutDaysGraph.getGridLabelRenderer().setNumHorizontalLabels(days);
+        binding.workoutDaysGraph.getGridLabelRenderer().setNumHorizontalLabels(days/2);
         binding.workoutDaysGraph.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter() {
             @Override
             public String formatLabel(double value, boolean isValueX) {
@@ -126,7 +122,7 @@ public class ProfileFragment extends Fragment {
         binding.workoutMonthGraph.getViewport().setMinX(0);
         binding.workoutMonthGraph.getViewport().setMaxX(months-1);
         binding.workoutMonthGraph.setTitleTextSize(50);
-        binding.workoutMonthGraph.getGridLabelRenderer().setNumHorizontalLabels(months);
+        binding.workoutMonthGraph.getGridLabelRenderer().setNumHorizontalLabels(months/2);
         binding.workoutMonthGraph.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter() {
             @Override
             public String formatLabel(double value, boolean isValueX) {

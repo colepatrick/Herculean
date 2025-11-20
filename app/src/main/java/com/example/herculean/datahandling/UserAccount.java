@@ -226,7 +226,7 @@ public class UserAccount implements Serializable {
     }
 
     public DataPoint[] getDayDataPoints(int days) {
-        List<Workout> recents = GlobalData.currentUser.getRecentWorkouts(LocalDate.now().minusDays(days)).getWorkouts();
+        List<Workout> recents = getRecentWorkouts(LocalDate.now().minusDays(days)).getWorkouts();
         DataPoint[] points = new DataPoint[days];
         int[] scores = new int[days];
         for(int i = 0; i < days; i++) {
@@ -242,7 +242,7 @@ public class UserAccount implements Serializable {
     }
 
     public DataPoint[] getMonthDataPoints(int months) {
-        List<Workout> recents = GlobalData.currentUser.getRecentWorkouts(LocalDate.now().minusMonths(months)).getWorkouts();
+        List<Workout> recents = getRecentWorkouts(LocalDate.now().minusMonths(months)).getWorkouts();
         DataPoint[] points = new DataPoint[months];
         int[] scores = new int[months];
         for(int i = 0; i < months; i++) {
