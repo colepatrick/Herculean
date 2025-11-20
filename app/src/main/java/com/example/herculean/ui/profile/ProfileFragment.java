@@ -33,13 +33,14 @@ public class ProfileFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        ProfileViewModel profileViewModel =
-                new ViewModelProvider(this).get(ProfileViewModel.class);
-
         binding = FragmentProfileBinding.inflate(inflater, container, false);
 
         binding.customizeButton.setOnClickListener(v -> {
             Navigation.findNavController(v).navigate(R.id.action_nav_profile_to_nav_profile_settings);
+        });
+
+        binding.moreGraphsButton.setOnClickListener(v -> {
+            Navigation.findNavController(v).navigate(R.id.action_nav_profile_to_nav_profile_graphs);
         });
 
         binding.profileUsername.setText(GlobalData.currentUser.getUsername());
@@ -89,19 +90,9 @@ public class ProfileFragment extends Fragment {
     }
 
     private void refreshPastDaysGraph(int days) {
-        List<Workout> recents = GlobalData.currentUser.getRecentWorkouts(LocalDate.now().minusDays(days)).getWorkouts();
-        DataPoint[] points = new DataPoint[days];
-        int[] scores = new int[days];
-        for(int i = 0; i < days; i++) {
-            scores[i] = 0;
-            for(Workout workout : recents) {
-                if(LocalDate.now().minusDays(days-i-1).isEqual(workout.getDate())) {
-                    scores[i] += workout.getScore();
-                }
-            }
-            points[i] = new DataPoint(i, scores[i]);
-        }
+        DataPoint[] points = GlobalData.currentUser.getDayDataPoints(days);
         LineGraphSeries<DataPoint> series = new LineGraphSeries<>(points);
+
         binding.workoutDaysGraph.setTitle("Last " + days + " days of workout scores");
         binding.workoutDaysGraph.addSeries(series);
 
@@ -114,7 +105,7 @@ public class ProfileFragment extends Fragment {
             @Override
             public String formatLabel(double value, boolean isValueX) {
                 if (isValueX) { // For x values
-                    // show inverted day numbers
+                    // show inverted day numbers, 0 days is today
                     return super.formatLabel(days-value-1, isValueX);
                 } else { // For y values
                     // show regular y numbers
@@ -125,19 +116,9 @@ public class ProfileFragment extends Fragment {
     }
 
     private void refreshPastMonthsGraph(int months) {
-        List<Workout> recents = GlobalData.currentUser.getRecentWorkouts(LocalDate.now().minusMonths(months)).getWorkouts();
-        DataPoint[] points = new DataPoint[months];
-        int[] scores = new int[months];
-        for(int i = 0; i < months; i++) {
-            scores[i] = 0;
-            for(Workout workout : recents) {
-                if(LocalDate.now().minusMonths(months-i-1).getMonth() == workout.getDate().getMonth()) {
-                    scores[i] += workout.getScore();
-                }
-            }
-            points[i] = new DataPoint(i, scores[i]);
-        }
+        DataPoint[] points = GlobalData.currentUser.getMonthDataPoints(months);
         LineGraphSeries<DataPoint> series = new LineGraphSeries<>(points);
+
         binding.workoutMonthGraph.setTitle("Last " + months + " months of workout scores");
         binding.workoutMonthGraph.addSeries(series);
 
@@ -150,7 +131,7 @@ public class ProfileFragment extends Fragment {
             @Override
             public String formatLabel(double value, boolean isValueX) {
                 if (isValueX) { // For x values
-                    // show inverted day numbers
+                    // show inverted month numbers 0 months is this month
                     return super.formatLabel(months-value-1, isValueX);
                 } else { // For y values
                     // show regular y numbers

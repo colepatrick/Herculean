@@ -27,6 +27,9 @@
         <action
             android:id="@+id/action_nav_profile_to_nav_profile_settings"
             app:destination="@id/nav_profile_settings" />
+        <action
+            android:id="@+id/action_nav_profile_to_nav_profile_graphs"
+            app:destination="@id/nav_profile_graphs" />
     </fragment>
 
     <fragment
@@ -34,6 +37,12 @@
         android:name="com.example.herculean.ui.profile.ProfileSettingsFragment"
         android:label="@string/menu_reflow_settings"
         tools:layout="@layout/fragment_profile_settings" />
+
+    <fragment
+        android:id="@+id/nav_profile_graphs"
+        android:name="com.example.herculean.ui.profile.ProfileGraphFragment"
+        android:label="@string/menu_reflow_graph"
+        tools:layout="@layout/fragment_profile_graphs" />
 
     <fragment
         android:id="@+id/nav_slideshow"
