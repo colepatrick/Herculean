@@ -76,14 +76,14 @@ public class RegisterAccount extends AppCompatActivity {
                 return;
             }
 
-            Log.d("REGISTER", "Before saving, accounts size: " + GlobalData.accounts.size());
+            Log.d("REGISTER", "Before saving, accounts size: " + GlobalData.jsonData.accounts.size());
 
             // Create a new user and save it globally
             UserAccount newUser = new UserAccount(username, password, email);
-            GlobalData.accounts.add(newUser);
+            GlobalData.jsonData.accounts.add(newUser);
             GlobalData.saveAccounts(this);
 
-            Log.d("REGISTER", "Account saved. Total accounts: " + GlobalData.accounts.size());
+            Log.d("REGISTER", "Account saved. Total accounts: " + GlobalData.jsonData.accounts.size());
 
             // Confirmation message
             Toast.makeText(this, "Account created successfully!", Toast.LENGTH_SHORT).show();
@@ -98,7 +98,7 @@ public class RegisterAccount extends AppCompatActivity {
     }
 
     private boolean usernameExists(String username) {
-        for (UserAccount account : GlobalData.accounts) {
+        for (UserAccount account : GlobalData.jsonData.accounts) {
             if (account.getUsername().equalsIgnoreCase(username)) {
                 return true;
             }
@@ -107,7 +107,7 @@ public class RegisterAccount extends AppCompatActivity {
     }
 
     private boolean emailExists(String email) {
-        for (UserAccount account : GlobalData.accounts) {
+        for (UserAccount account : GlobalData.jsonData.accounts) {
             if (account.getEmail().equalsIgnoreCase(email)) {
                 return true;
             }

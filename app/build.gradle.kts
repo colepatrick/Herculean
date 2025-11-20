@@ -13,6 +13,14 @@ if (localPropsFile.exists()) {
 
 val geminiApiKey = localProps.getProperty("GEMINI_API_KEY") ?: ""
 
+// Force the use of the correct testing library versions to resolve conflicts
+configurations.all {
+    resolutionStrategy {
+        force(libs.test.core)
+        force(libs.ext.junit)
+    }
+}
+
 android {
     namespace = "com.example.herculean"
     compileSdk = 36
@@ -63,9 +71,15 @@ tasks.withType<Test> {
 
 dependencies {
     // --- Unit testing dependencies ---
-    testImplementation("junit:junit:4.13.2")
-    testImplementation("androidx.test:core:1.5.0")
+    testImplementation(libs.junit)
     testImplementation("org.json:json:20231013")
+
+    // --- Android Instrumentation testing dependencies ---
+    androidTestImplementation(libs.test.core)
+    androidTestImplementation(libs.ext.junit)
+    androidTestImplementation(libs.test.runner)
+    androidTestImplementation(libs.test.rules)
+    androidTestImplementation(libs.espresso.core)
 
 
     implementation(libs.appcompat)
@@ -85,8 +99,6 @@ dependencies {
 
     implementation(libs.coordinatorlayout)
     implementation(libs.fragment)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.ext.junit)
-    androidTestImplementation(libs.espresso.core)
+
     implementation("com.github.bumptech.glide:glide:4.16.0")
 }

@@ -5,18 +5,19 @@ import android.content.Context;
 import android.util.Log;
 
 import com.google.gson.Gson;
-import java.lang.reflect.Type;
-
 import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class GlobalData {
-    public static ArrayList<UserAccount> accounts = new ArrayList<>();
+    public static JsonData jsonData = new JsonData();
     public static UserAccount currentUser = null;
     public static final String gemini_api_key = "AIzaSyAUPdeQYh8sbVyZ8KDfV3_yO5WczgD00ak";
+
+    // Centralized key for SharedPreferences
+    private static final String PREFS_KEY = "herculean_data";
 
     public static void saveAccounts(Context context) {
         try {
@@ -24,12 +25,12 @@ public class GlobalData {
             Gson gson = new GsonBuilder()
                     .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
                     .create();
-            String json = gson.toJson(GlobalData.accounts);
-            prefs.edit().putString("accounts", json).apply();
-            Log.d("SAVE", "✓ SAVED " + GlobalData.accounts.size() + " accounts to SharedPreferences");
+            String json = gson.toJson(GlobalData.jsonData);
+            prefs.edit().putString(PREFS_KEY, json).apply();
+            Log.d("SAVE", "✓ SAVED data to SharedPreferences");
             Log.d("SAVE", "JSON: " + json);
         } catch (Exception e) {
-            Log.e("SAVE", "ERROR saving accounts", e);
+            Log.e("SAVE", "ERROR saving data", e);
         }
     }
 
@@ -39,35 +40,43 @@ public class GlobalData {
             Gson gson = new GsonBuilder()
                     .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
                     .create();
-            String json = prefs.getString("accounts", null);
+            String json = prefs.getString(PREFS_KEY, null);
 
             Log.d("LOAD", "Retrieved JSON from SharedPreferences: " + json);
 
             if (json != null && !json.isEmpty()) {
-                Type type = new TypeToken<ArrayList<UserAccount>>(){}.getType();
-                ArrayList<UserAccount> list = gson.fromJson(json, type);
-                if (list != null && !list.isEmpty()) {
-                    GlobalData.accounts = list;
-                    Log.d("LOAD", "✓ LOADED " + GlobalData.accounts.size() + " accounts from SharedPreferences");
-                    for (UserAccount account : GlobalData.accounts) {
-                        Log.d("LOAD", "  - " + account.getUsername() + " | " + account.getEmail());
-                    }
-                } else {
-                    Log.d("LOAD", "JSON parsed but list is empty or null");
-                    GlobalData.accounts = new ArrayList<>();
+                GlobalData.jsonData = gson.fromJson(json, JsonData.class);
+                if (GlobalData.jsonData == null) {
+                    GlobalData.jsonData = new JsonData();
                 }
+                if (GlobalData.jsonData.accounts == null) {
+                    GlobalData.jsonData.accounts = new ArrayList<>();
+                }
+                Log.d("LOAD", "✓ LOADED " + GlobalData.jsonData.accounts.size() + " accounts from SharedPreferences");
             } else {
                 Log.d("LOAD", "No JSON found in SharedPreferences (first run or cleared)");
-                GlobalData.accounts = new ArrayList<>();
+                GlobalData.jsonData = new JsonData();
             }
         } catch (Exception e) {
             Log.e("LOAD", "ERROR loading accounts", e);
-            GlobalData.accounts = new ArrayList<>();
+            GlobalData.jsonData = new JsonData();
         }
     }
 
+    public static String getLastLoggedInUser() {
+        return jsonData.lastLoggedInUser;
+    }
+
+    public static void setLastLoggedInUser(String username) {
+        jsonData.lastLoggedInUser = username;
+    }
+
+    public static void clearLastLoggedInUser() {
+        jsonData.lastLoggedInUser = null;
+    }
+
     public static boolean usernameExists(String username) {
-        for (UserAccount account : accounts) {
+        for (UserAccount account : jsonData.accounts) {
             if (account.getUsername().equalsIgnoreCase(username)) {
                 return true;
             }
