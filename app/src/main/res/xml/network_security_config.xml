@@ -6,6 +6,6 @@
         </trust-anchors>
     </base-config>
     <domain-config cleartextTrafficPermitted="true">
-        <domain includeSubdomains="true">10.0.0.17</domain>
+        <domain includeSubdomains="true">herculean.onrender.com</domain>
     </domain-config>
 </network-security-config>

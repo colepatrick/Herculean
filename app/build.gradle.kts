@@ -32,7 +32,7 @@ android {
 
     buildTypes {
         debug {
-            buildConfigField("String", "BASE_URL", "\"http://10.0.2.2:5000/\"") // emulator -> host
+            buildConfigField("String", "BASE_URL", "\"https://herculean.onrender.com/\"") // database URL
         }
         release {
             isMinifyEnabled = false
@@ -40,7 +40,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            buildConfigField("String", "BASE_URL", "\"https://api.yourdomain.com/\"") // database URL
+            buildConfigField("String", "BASE_URL", "\"https://herculean.onrender.com/\"") // database URL
         }
     }
 

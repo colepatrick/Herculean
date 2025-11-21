@@ -21,10 +21,17 @@ public class GlobalData {
     public static UserAccount currentUser = null;
     public static final String gemini_api_key = "AIzaSyAUPdeQYh8sbVyZ8KDfV3_yO5WczgD00ak";
 
-    private static final String LOCAL_TEST_URL = "http://10.0.0.17:5000/";
+    // Local DB testing. Change LOCAL_TEST_URL and app/src/main/res/xml/network_security_config.xml to your device's IP
+    // Also change build.gradle.kts the debug branch to http://10.0.2.2:5000. Then run "docker compose -d --build"
+    // You can now login/create account in emulator and it will be stored in local DB
+    // You can manually check your account by going to your browser and typing http://localhost:5000/accounts/USERNAME
+    // Manually delete in terminal: "curl -X DELETE http://localhost:5000/accounts/USERNAME"
 
-    // public static String BASE_URL = BuildConfig.BASE_URL;
-    public static String BASE_URL = LOCAL_TEST_URL;
+    // private static final String LOCAL_TEST_URL = "http://10.0.0.17:5000/";
+    // public static String BASE_URL = LOCAL_TEST_URL;
+
+    public static String BASE_URL = BuildConfig.BASE_URL;
+
     public static AccountService svc = ApiClient.getClient(BASE_URL).create(AccountService.class);
 
     public static void saveAccounts(Context context) {
