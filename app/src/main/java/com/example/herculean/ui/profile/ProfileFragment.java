@@ -30,9 +30,17 @@ public class ProfileFragment extends Fragment {
 
         binding = FragmentProfileBinding.inflate(inflater, container, false);
 
-        binding.customizeButton.setOnClickListener(v -> {
-            Navigation.findNavController(v).navigate(R.id.action_nav_profile_to_nav_profile_settings);
-        });
+        binding.customizeButton.setOnClickListener(v ->
+                Navigation.findNavController(v)
+                        .navigate(R.id.action_nav_profile_to_nav_profile_settings)
+        );
+
+        // Friends button navigation
+        binding.friendsButton.setOnClickListener(v ->
+                Navigation.findNavController(v)
+                        .navigate(R.id.nav_friends)
+        );
+
 
         binding.profileUsername.setText(GlobalData.currentUser.getUsername());
         binding.profileUserEmail.setText(GlobalData.currentUser.getEmail());

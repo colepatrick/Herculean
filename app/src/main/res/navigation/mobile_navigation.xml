@@ -70,6 +70,13 @@
         android:name="com.example.herculean.ui.settings.theme.ThemesSettingsFragment"
         android:label="Theme Settings" />
 
+    <fragment
+        android:id="@+id/nav_friends"
+        android:name="com.example.herculean.ui.friends.FriendsFragment"
+        android:label="Friends"
+        tools:layout="@layout/fragment_friends" />
+
+
 
     <action
         android:id="@+id/action_global_nav_past_workouts"
