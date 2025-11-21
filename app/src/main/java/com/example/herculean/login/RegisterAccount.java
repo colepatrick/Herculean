@@ -68,59 +68,29 @@ public class RegisterAccount extends AppCompatActivity {
                 return;
             }
 
-            // Check if email already exists
-            if (emailExists(email)) {
-                Toast.makeText(this, "Email already registered", Toast.LENGTH_SHORT).show();
-                emailInput.requestFocus();
-                return;
-            }
-
-            // Use the centralized method from GlobalData
-            GlobalData.usernameExists(username, exists -> {
-                if (exists) {
+            // Use the method from GlobalData
+            Log.d("REGISTER", "Checking username on server...");
+            GlobalData.usernameExists(username, usernameExists -> {
+                if (usernameExists) {
+                    // Username is taken. Stop here.
                     runOnUiThread(() -> {
                         Toast.makeText(this, "Username already taken", Toast.LENGTH_SHORT).show();
                         usernameInput.requestFocus();
                     });
                 } else {
-                    // Username is available, create the account
-                    Log.d("REGISTER", "Username available. Creating account...");
-                    UserAccount newUser = new UserAccount(username, password, email);
+                    // Username is available
+                    Log.d("REGISTER", "Username available. Checking email on server...");
 
-                    GlobalData.svc.createAccount(newUser).enqueue(new Callback<Void>() {
-                        @Override
-                        public void onResponse(Call<Void> call, Response<Void> response) {
-                            if (response.isSuccessful()) {
-                                runOnUiThread(() -> {
-                                    GlobalData.accounts.add(newUser);
-                                    GlobalData.saveAccounts(RegisterAccount.this);
-                                    Toast.makeText(RegisterAccount.this, "Account created successfully!", Toast.LENGTH_SHORT).show();
-                                    finish();
-                                });
-                            } else {
-                                runOnUiThread(() -> Toast.makeText(RegisterAccount.this, "Server error on creation: " + response.code(), Toast.LENGTH_SHORT).show());
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(Call<Void> call, Throwable t) {
-                            runOnUiThread(() -> Toast.makeText(RegisterAccount.this, "Network failure: " + t.getMessage(), Toast.LENGTH_SHORT).show());
-                        }
-                    });
-                }
-            });
-
-            GlobalData.usernameExists(username, usernameExists -> {
-                if (usernameExists) {
-                    runOnUiThread(() -> Toast.makeText(this, "Username already taken", Toast.LENGTH_SHORT).show());
-                } else {
-                    // Username is free, now check the email
-                    Log.d("REGISTER", "Username available. Checking email...");
+                    // NOW check email
                     GlobalData.emailExists(email, emailExists -> {
                         if (emailExists) {
-                            runOnUiThread(() -> Toast.makeText(this, "Email already registered", Toast.LENGTH_SHORT).show());
+                            // Email is taken. Stop here.
+                            runOnUiThread(() -> {
+                                Toast.makeText(this, "Email already registered", Toast.LENGTH_SHORT).show();
+                                emailInput.requestFocus();
+                            });
                         } else {
-                            // Email is also free, now we can create the account
+                            // 3. Both username and email are available. Create the account.
                             Log.d("REGISTER", "Email available. Creating account...");
                             UserAccount newUser = new UserAccount(username, password, email);
                             GlobalData.svc.createAccount(newUser).enqueue(new Callback<Void>() {
@@ -152,14 +122,5 @@ public class RegisterAccount extends AppCompatActivity {
 
     private boolean isValidEmail(String email) {
         return Patterns.EMAIL_ADDRESS.matcher(email).matches();
-    }
-
-    private boolean emailExists(String email) {
-        for (UserAccount account : GlobalData.accounts) {
-            if (account.getEmail().equalsIgnoreCase(email)) {
-                return true;
-            }
-        }
-        return false;
     }
 }
