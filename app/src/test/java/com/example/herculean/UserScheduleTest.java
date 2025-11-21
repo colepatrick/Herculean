@@ -23,7 +23,7 @@ public class UserScheduleTest {
 
         assertEquals(schedule.getMon(), recreated.getMon());
         assertEquals(schedule.getTue(), recreated.getTue());
-        assertEquals(schedule.getWen(), recreated.getWen());
+        assertEquals(schedule.getWed(), recreated.getWed());
         assertEquals(schedule.getThur(), recreated.getThur());
         assertEquals(schedule.getFri(), recreated.getFri());
         assertEquals(schedule.getSat(), recreated.getSat());
