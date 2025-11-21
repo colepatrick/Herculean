@@ -75,27 +75,22 @@ public class RegisterAccount extends AppCompatActivity {
                 return;
             }
 
-            usernameExists(username, exists -> {
-                // This entire block of code is the "callback" you pass in.
-                // It will execute AFTER the network call finishes.
-
+            // Use the centralized method from GlobalData
+            GlobalData.usernameExists(username, exists -> {
                 if (exists) {
-                    // The server found the username. Show an error on the UI thread.
                     runOnUiThread(() -> {
                         Toast.makeText(this, "Username already taken", Toast.LENGTH_SHORT).show();
                         usernameInput.requestFocus();
                     });
                 } else {
-                    // The username is available. Now we can create the account.
+                    // Username is available, create the account
                     Log.d("REGISTER", "Username available. Creating account...");
                     UserAccount newUser = new UserAccount(username, password, email);
 
-                    // Use the global service to create the account on the server
                     GlobalData.svc.createAccount(newUser).enqueue(new Callback<Void>() {
                         @Override
                         public void onResponse(Call<Void> call, Response<Void> response) {
                             if (response.isSuccessful()) {
-                                // Server creation was successful. Update local data and finish.
                                 runOnUiThread(() -> {
                                     GlobalData.accounts.add(newUser);
                                     GlobalData.saveAccounts(RegisterAccount.this);
@@ -103,14 +98,12 @@ public class RegisterAccount extends AppCompatActivity {
                                     finish();
                                 });
                             } else {
-                                // The server returned an error during creation (e.g., 500)
                                 runOnUiThread(() -> Toast.makeText(RegisterAccount.this, "Server error on creation: " + response.code(), Toast.LENGTH_SHORT).show());
                             }
                         }
 
                         @Override
                         public void onFailure(Call<Void> call, Throwable t) {
-                            // The network failed during the creation attempt
                             runOnUiThread(() -> Toast.makeText(RegisterAccount.this, "Network failure: " + t.getMessage(), Toast.LENGTH_SHORT).show());
                         }
                     });
@@ -121,35 +114,6 @@ public class RegisterAccount extends AppCompatActivity {
 
     private boolean isValidEmail(String email) {
         return Patterns.EMAIL_ADDRESS.matcher(email).matches();
-    }
-
-    interface UsernameCheckCallback {
-        void onResult(boolean exists);
-    }
-    private void usernameExists(String username, UsernameCheckCallback callback) {
-        // Use the global service instance
-        GlobalData.svc.getAccount(username).enqueue(new Callback<UserAccount>() {
-            @Override
-            public void onResponse(Call<UserAccount> call, Response<UserAccount> response) {
-                if (response.isSuccessful()) {
-                    // 200 OK means the user was found.
-                    callback.onResult(true);
-                } else if (response.code() == 404) {
-                    // 404 Not Found means the username is available.
-                    callback.onResult(false);
-                } else {
-                    // Another error occurred (like 500 server error)
-                    runOnUiThread(() -> Toast.makeText(RegisterAccount.this, "Server error: " + response.code(), Toast.LENGTH_SHORT).show());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<UserAccount> call, Throwable t) {
-                // A network failure occurred (no internet, etc.)
-                Log.e("REGISTER", "Network error checking username: " + t.getMessage());
-                runOnUiThread(() -> Toast.makeText(RegisterAccount.this, "Network error. Check connection.", Toast.LENGTH_SHORT).show());
-            }
-        });
     }
 
     private boolean emailExists(String email) {

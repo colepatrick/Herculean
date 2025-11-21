@@ -16,6 +16,10 @@ import com.google.gson.reflect.TypeToken;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class GlobalData {
     public static ArrayList<UserAccount> accounts = new ArrayList<>();
     public static UserAccount currentUser = null;
@@ -82,12 +86,35 @@ public class GlobalData {
         }
     }
 
-    public static boolean usernameExists(String username) {
-        for (UserAccount account : accounts) {
-            if (account.getUsername().equalsIgnoreCase(username)) {
-                return true;
+    public interface ServerCallback<T> {
+        void onResult(T result);
+    }
+
+    public static void usernameExists(String username, ServerCallback<Boolean> callback) {
+        // Use the global service instance 'svc' to make the network call
+        svc.getAccount(username).enqueue(new Callback<UserAccount>() {
+            @Override
+            public void onResponse(Call<UserAccount> call, Response<UserAccount> response) {
+                if (response.isSuccessful()) {
+                    // HTTP 200 OK means the user was found.
+                    callback.onResult(true);
+                } else if (response.code() == 404) {
+                    // HTTP 404 Not Found means the username is available.
+                    callback.onResult(false);
+                } else {
+                    // Another server error occurred (e.g., 500). Treat as non-existent for safety.
+                    Log.e("GLOBAL_DATA", "Server error checking username: " + response.code());
+                    callback.onResult(false);
+                }
             }
-        }
-        return false;
+
+            @Override
+            public void onFailure(Call<UserAccount> call, Throwable t) {
+                // A network failure occurred (e.g., no internet).
+                Log.e("GLOBAL_DATA", "Network failure checking username: " + t.getMessage());
+                // Treat as non-existent, as we can't confirm existence.
+                callback.onResult(false);
+            }
+        });
     }
 }
