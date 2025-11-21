@@ -38,8 +38,6 @@ public class ProfileSettingsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Uses the system photo picker to select an image
-        // Must be initialized in onCreate before use
         pickMedia = registerForActivityResult(new PickVisualMedia(), uri -> {
             if (uri != null) {
                 Log.d("PROFILE", "Selected URI: " + uri);
@@ -193,14 +191,15 @@ public class ProfileSettingsFragment extends Fragment {
             builder.setTitle(R.string.logout_account);
 
             builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                // Confirmation Window
                 public void onClick(DialogInterface dialog, int id) {
                     AlertDialog.Builder builder2 = new AlertDialog.Builder(getActivity());
                     builder2.setTitle(R.string.confirm_logout);
 
-                    // Second Confirmation Window
                     builder2.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog2, int id) {
+                            GlobalData.currentUser = null;
+                            GlobalData.clearLastLoggedInUser();
+                            GlobalData.saveAccounts(getContext());
                             Toast.makeText(getContext(), "Account successfully logged out", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(getContext(), LoginActivity.class);
                             startActivity(intent);
@@ -235,15 +234,15 @@ public class ProfileSettingsFragment extends Fragment {
             builder.setTitle(R.string.delete_account);
 
             builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                // Confirmation Window
                 public void onClick(DialogInterface dialog, int id) {
                     AlertDialog.Builder builder2 = new AlertDialog.Builder(getActivity());
                     builder2.setTitle(R.string.confirm_delete);
 
-                    // Second Confirmation Window
                     builder2.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog2, int id) {
-                            GlobalData.accounts.remove(GlobalData.currentUser);
+                            GlobalData.jsonData.accounts.remove(GlobalData.currentUser);
+                            GlobalData.currentUser = null;
+                            GlobalData.clearLastLoggedInUser();
                             GlobalData.saveAccounts(getContext());
                             Toast.makeText(getContext(), "Account successfully deleted", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(getContext(), LoginActivity.class);

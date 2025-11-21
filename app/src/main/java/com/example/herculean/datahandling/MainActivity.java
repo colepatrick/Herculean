@@ -32,8 +32,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Log.d("MAIN", "Total accounts loaded: " + GlobalData.accounts.size());
-        for (UserAccount account : GlobalData.accounts) {
+        Log.d("MAIN", "Total accounts loaded: " + GlobalData.jsonData.accounts.size());
+        for (UserAccount account : GlobalData.jsonData.accounts) {
             Log.d("MAIN", "Account: " + account.getUsername() + " | " + account.getEmail());
         }
 
@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         Log.d("MAIN", "User logged in: " + GlobalData.currentUser.getUsername());
-        Log.d("MAIN", "Total accounts in system: " + GlobalData.accounts.size());
+        Log.d("MAIN", "Total accounts in system: " + GlobalData.jsonData.accounts.size());
 
         // User is logged in, set up main UI
         ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
