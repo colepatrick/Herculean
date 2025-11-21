@@ -36,7 +36,7 @@ public class UserScheduleTest {
 
         assertEquals("Push", schedule.getMon());
         assertEquals("Pull", schedule.getTue());
-        assertEquals("Legs", schedule.getWen());
+        assertEquals("Legs", schedule.getWed());
         assertEquals("Core", schedule.getThur());
         assertEquals("Cardio", schedule.getFri());
         assertEquals("Rest", schedule.getSat());
