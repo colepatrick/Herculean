@@ -72,102 +72,110 @@ public class LoginActivity extends AppCompatActivity {
         String username = usernameInput.getText().toString().trim();
         String password = passwordInput.getText().toString().trim();
 
-        // Validate inputs
         if (username.isEmpty() || password.isEmpty()) {
             Toast.makeText(this, "Please enter username and password", Toast.LENGTH_SHORT).show();
             return;
         }
-        // Attempt to fetch the single account from the server first
+
         AccountRepository repo = new AccountRepository(GlobalData.BASE_URL);
+
+        // Try to fetch the account from the server
         repo.getAccount(username, new AccountRepository.ResultCallback<UserAccount>() {
             @Override
-            public void onSuccess(UserAccount foundUser) {
+            public void onSuccess(UserAccount remoteUser) {
+                // User was found on the server, proceed with normal password check.
                 runOnUiThread(() -> {
-                    if (foundUser == null) {
-                        Toast.makeText(LoginActivity.this, "Username not found", Toast.LENGTH_SHORT).show();
-                        Log.d("LOGIN", "User not found (remote): " + username);
+                    if (!remoteUser.getPassword().equals(password)) {
+                        Toast.makeText(LoginActivity.this, "Incorrect password", Toast.LENGTH_SHORT).show();
                         return;
                     }
-
-        // Check password
-        if (!foundUser.getPassword().equals(password)) {
-            Toast.makeText(LoginActivity.this, "Incorrect password", Toast.LENGTH_SHORT).show();
-            Log.d("LOGIN", "Wrong password for user: " + username);
-            return;
-        }
-
-                    // Login successful
                     Log.d("LOGIN", "Login successful for user (remote): " + username);
-                    Toast.makeText(LoginActivity.this, "Welcome " + username + "!", Toast.LENGTH_SHORT).show();
-
-                    // Merge or set the account in local cache
-                    UserAccount local = findUser(username);
-                    if (local == null) {
-                        GlobalData.accounts.add(foundUser);
-                    } else {
-                        GlobalData.accounts.remove(local);
-                        GlobalData.accounts.add(foundUser);
-                    }
-
-        // Set current user in GlobalData
-        GlobalData.currentUser = foundUser;
-
-                    // Update user streak
-                    UserStreak userStreak = foundUser.getUserStreak();
-                    Logger logger = foundUser.getWorkoutLog();
-                    if (userStreak != null && logger != null) {
-                        List<LocalDate> workoutDates = logger.getWorkouts().stream()
-                                .map(Workout::getDate)
-                                .collect(Collectors.toList());
-                        int requiredDays = foundUser.getUserGoal().getDaysPerWeek();
-                        userStreak.updateStreak(workoutDates, requiredDays);
-                    }
-
-                    // Save state before navigating
-                    GlobalData.saveAccounts(LoginActivity.this);
-                    Log.d("LOGIN", "Current user set and saved: " + GlobalData.currentUser.getUsername());
-
-                    // Navigate to MainActivity
-                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                    startActivity(intent);
-                    finish();
+                    loginSuccess(remoteUser, true); // Login with the remote user data
                 });
             }
 
             @Override
             public void onError(Throwable t) {
-                // On network error, fallback to local look up
-                runOnUiThread(() -> {
+                // The server request failed. We need to figure out why.
+                if (t.getMessage() != null && t.getMessage().contains("HTTP 404")) {
+                    // Server said "Not Found". Check if we have this user locally.
+                    Log.d("LOGIN", "User not found on server. Checking local storage...");
+                    UserAccount localUser = findUser(username);
+
+                    if (localUser != null && localUser.getPassword().equals(password)) {
+                        // Found user locally and password is correct.
+                        // Let's upload them to the server.
+                        Log.d("LOGIN", "Found local user '" + username + "'. Uploading to server...");
+                        repo.createAccount(localUser, new AccountRepository.ResultCallback<Void>() {
+                            @Override
+                            public void onSuccess(Void result) {
+                                // User was successfully created on the server.
+                                runOnUiThread(() -> {
+                                    Log.d("LOGIN", "Local user successfully uploaded. Logging in.");
+                                    loginSuccess(localUser, false); // Login with local data
+                                });
+                            }
+
+                            @Override
+                            public void onError(Throwable uploadError) {
+                                // The upload failed (e.g., username already exists race condition)
+                                runOnUiThread(() -> {
+                                    Log.e("LOGIN", "Failed to upload local user: " + uploadError.getMessage());
+                                    Toast.makeText(LoginActivity.this, "Sync failed. Please try again.", Toast.LENGTH_SHORT).show();
+                                });
+                            }
+                        });
+                    } else {
+                        // User not found locally either, or password was wrong.
+                        runOnUiThread(() -> Toast.makeText(LoginActivity.this, "Username or password incorrect", Toast.LENGTH_SHORT).show());
+                    }
+                } else {
+                    // This was a different network error (e.g., no connection).
+                    // Fallback to offline-only login.
                     Log.d("LOGIN", "Remote fetch failed, falling back to local. Err: " + t.getMessage());
-                    UserAccount foundUser = findUser(username);
-                    if (foundUser == null) {
-                        Toast.makeText(LoginActivity.this, "Username not found (network and local)", Toast.LENGTH_SHORT).show();
-                        return;
+                    UserAccount localUser = findUser(username);
+                    if (localUser != null && localUser.getPassword().equals(password)) {
+                        runOnUiThread(() -> {
+                            Log.d("LOGIN", "Login successful (offline mode): " + username);
+                            loginSuccess(localUser, false); // Login with local data
+                        });
+                    } else {
+                        runOnUiThread(() -> Toast.makeText(LoginActivity.this, "Login failed. Check connection or credentials.", Toast.LENGTH_SHORT).show());
                     }
-
-                    if (!foundUser.getPassword().equals(password)) {
-                        Toast.makeText(LoginActivity.this, "Incorrect password", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-
-                    // Local login success (same flow)
-                    GlobalData.currentUser = foundUser;
-                    UserStreak userStreak = foundUser.getUserStreak();
-                    Logger logger = foundUser.getWorkoutLog();
-                    if (userStreak != null && logger != null) {
-                        List<LocalDate> workoutDates = logger.getWorkouts().stream()
-                                .map(Workout::getDate)
-                                .collect(Collectors.toList());
-                        int requiredDays = foundUser.getUserGoal().getDaysPerWeek();
-                        userStreak.updateStreak(workoutDates, requiredDays);
-                    }
-                    GlobalData.saveAccounts(LoginActivity.this);
-                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                    startActivity(intent);
-                    finish();
-                });
+                }
             }
         });
+    }
+
+    private void loginSuccess(UserAccount user, boolean isRemote) {
+        // Merge or update the local cache if the data came from the server
+        if (isRemote) {
+            UserAccount localCopy = findUser(user.getUsername());
+            if (localCopy != null) {
+                GlobalData.accounts.remove(localCopy);
+            }
+            GlobalData.accounts.add(user);
+        }
+
+        GlobalData.currentUser = user;
+        Log.d("LOGIN", "Current user set: " + GlobalData.currentUser.getUsername());
+
+        // Update user streak before navigating
+        UserStreak userStreak = user.getUserStreak();
+        Logger logger = user.getWorkoutLog();
+        if (userStreak != null && logger != null) {
+            List<LocalDate> workoutDates = logger.getWorkouts().stream()
+                    .map(Workout::getDate)
+                    .collect(Collectors.toList());
+            int requiredDays = user.getUserGoal().getDaysPerWeek();
+            userStreak.updateStreak(workoutDates, requiredDays);
+        }
+
+        GlobalData.saveAccounts(this);
+
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     private UserAccount findUser(String username) {
