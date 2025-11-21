@@ -4,6 +4,9 @@ import android.content.SharedPreferences;
 import android.content.Context;
 import android.util.Log;
 
+import com.example.herculean.BuildConfig;
+import com.example.herculean.database.AccountService;
+import com.example.herculean.database.ApiClient;
 import com.google.gson.Gson;
 import java.lang.reflect.Type;
 
@@ -17,6 +20,12 @@ public class GlobalData {
     public static ArrayList<UserAccount> accounts = new ArrayList<>();
     public static UserAccount currentUser = null;
     public static final String gemini_api_key = "AIzaSyAUPdeQYh8sbVyZ8KDfV3_yO5WczgD00ak";
+
+    private static final String LOCAL_TEST_URL = "http://10.0.0.17:5000/";
+
+    // public static String BASE_URL = BuildConfig.BASE_URL;
+    public static String BASE_URL = LOCAL_TEST_URL;
+    public static AccountService svc = ApiClient.getClient(BASE_URL).create(AccountService.class);
 
     public static void saveAccounts(Context context) {
         try {

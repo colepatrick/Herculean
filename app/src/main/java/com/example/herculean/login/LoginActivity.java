@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.herculean.database.AccountRepository;
 import com.example.herculean.datahandling.GlobalData;
 import com.example.herculean.datahandling.MainActivity;
 import com.example.herculean.R;
@@ -76,49 +77,97 @@ public class LoginActivity extends AppCompatActivity {
             Toast.makeText(this, "Please enter username and password", Toast.LENGTH_SHORT).show();
             return;
         }
-
-        // Find user in accounts
-        UserAccount foundUser = findUser(username);
-
-        if (foundUser == null) {
-            Toast.makeText(this, "Username not found", Toast.LENGTH_SHORT).show();
-            Log.d("LOGIN", "User not found: " + username);
-            return;
-        }
+        // Attempt to fetch the single account from the server first
+        AccountRepository repo = new AccountRepository(GlobalData.BASE_URL);
+        repo.getAccount(username, new AccountRepository.ResultCallback<UserAccount>() {
+            @Override
+            public void onSuccess(UserAccount foundUser) {
+                runOnUiThread(() -> {
+                    if (foundUser == null) {
+                        Toast.makeText(LoginActivity.this, "Username not found", Toast.LENGTH_SHORT).show();
+                        Log.d("LOGIN", "User not found (remote): " + username);
+                        return;
+                    }
 
         // Check password
         if (!foundUser.getPassword().equals(password)) {
-            Toast.makeText(this, "Incorrect password", Toast.LENGTH_SHORT).show();
+            Toast.makeText(LoginActivity.this, "Incorrect password", Toast.LENGTH_SHORT).show();
             Log.d("LOGIN", "Wrong password for user: " + username);
             return;
         }
 
-        // Login successful
-        Log.d("LOGIN", "Login successful for user: " + username);
-        Toast.makeText(this, "Welcome " + username + "!", Toast.LENGTH_SHORT).show();
+                    // Login successful
+                    Log.d("LOGIN", "Login successful for user (remote): " + username);
+                    Toast.makeText(LoginActivity.this, "Welcome " + username + "!", Toast.LENGTH_SHORT).show();
+
+                    // Merge or set the account in local cache
+                    UserAccount local = findUser(username);
+                    if (local == null) {
+                        GlobalData.accounts.add(foundUser);
+                    } else {
+                        GlobalData.accounts.remove(local);
+                        GlobalData.accounts.add(foundUser);
+                    }
 
         // Set current user in GlobalData
         GlobalData.currentUser = foundUser;
 
-        // Update user streak
-        UserStreak userStreak = foundUser.getUserStreak();
-        Logger logger = foundUser.getWorkoutLog();
-        if (userStreak != null && logger != null) {
-            List<LocalDate> workoutDates = logger.getWorkouts().stream()
-                    .map(Workout::getDate)
-                    .collect(Collectors.toList());
-            int requiredDays = foundUser.getUserGoal().getDaysPerWeek();
-            userStreak.updateStreak(workoutDates, requiredDays);
-        }
+                    // Update user streak
+                    UserStreak userStreak = foundUser.getUserStreak();
+                    Logger logger = foundUser.getWorkoutLog();
+                    if (userStreak != null && logger != null) {
+                        List<LocalDate> workoutDates = logger.getWorkouts().stream()
+                                .map(Workout::getDate)
+                                .collect(Collectors.toList());
+                        int requiredDays = foundUser.getUserGoal().getDaysPerWeek();
+                        userStreak.updateStreak(workoutDates, requiredDays);
+                    }
 
-        // Save state before navigating
-        GlobalData.saveAccounts(this);
-        Log.d("LOGIN", "Current user set and saved: " + GlobalData.currentUser.getUsername());
+                    // Save state before navigating
+                    GlobalData.saveAccounts(LoginActivity.this);
+                    Log.d("LOGIN", "Current user set and saved: " + GlobalData.currentUser.getUsername());
 
-        // Navigate to MainActivity
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-        finish();
+                    // Navigate to MainActivity
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                });
+            }
+
+            @Override
+            public void onError(Throwable t) {
+                // On network error, fallback to local look up
+                runOnUiThread(() -> {
+                    Log.d("LOGIN", "Remote fetch failed, falling back to local. Err: " + t.getMessage());
+                    UserAccount foundUser = findUser(username);
+                    if (foundUser == null) {
+                        Toast.makeText(LoginActivity.this, "Username not found (network and local)", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    if (!foundUser.getPassword().equals(password)) {
+                        Toast.makeText(LoginActivity.this, "Incorrect password", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    // Local login success (same flow)
+                    GlobalData.currentUser = foundUser;
+                    UserStreak userStreak = foundUser.getUserStreak();
+                    Logger logger = foundUser.getWorkoutLog();
+                    if (userStreak != null && logger != null) {
+                        List<LocalDate> workoutDates = logger.getWorkouts().stream()
+                                .map(Workout::getDate)
+                                .collect(Collectors.toList());
+                        int requiredDays = foundUser.getUserGoal().getDaysPerWeek();
+                        userStreak.updateStreak(workoutDates, requiredDays);
+                    }
+                    GlobalData.saveAccounts(LoginActivity.this);
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                });
+            }
+        });
     }
 
     private UserAccount findUser(String username) {
