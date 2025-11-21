@@ -12,6 +12,9 @@ public interface AccountService {
     @GET("accounts/{username}")
     Call<UserAccount> getAccount(@Path("username") String username);
 
+    @GET("accounts/email/{email}")
+    Call<Void> getAccountByEmail(@Path("email") String email);
+
     @POST("accounts")
     Call<Void> createAccount(@Body UserAccount account);
 

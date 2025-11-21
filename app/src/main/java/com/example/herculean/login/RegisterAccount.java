@@ -109,6 +109,44 @@ public class RegisterAccount extends AppCompatActivity {
                     });
                 }
             });
+
+            GlobalData.usernameExists(username, usernameExists -> {
+                if (usernameExists) {
+                    runOnUiThread(() -> Toast.makeText(this, "Username already taken", Toast.LENGTH_SHORT).show());
+                } else {
+                    // Username is free, now check the email
+                    Log.d("REGISTER", "Username available. Checking email...");
+                    GlobalData.emailExists(email, emailExists -> {
+                        if (emailExists) {
+                            runOnUiThread(() -> Toast.makeText(this, "Email already registered", Toast.LENGTH_SHORT).show());
+                        } else {
+                            // Email is also free, now we can create the account
+                            Log.d("REGISTER", "Email available. Creating account...");
+                            UserAccount newUser = new UserAccount(username, password, email);
+                            GlobalData.svc.createAccount(newUser).enqueue(new Callback<Void>() {
+                                @Override
+                                public void onResponse(Call<Void> call, Response<Void> response) {
+                                    if (response.isSuccessful()) {
+                                        runOnUiThread(() -> {
+                                            GlobalData.accounts.add(newUser);
+                                            GlobalData.saveAccounts(RegisterAccount.this);
+                                            Toast.makeText(RegisterAccount.this, "Account created successfully!", Toast.LENGTH_SHORT).show();
+                                            finish();
+                                        });
+                                    } else {
+                                        runOnUiThread(() -> Toast.makeText(RegisterAccount.this, "Server error on creation: " + response.code(), Toast.LENGTH_SHORT).show());
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<Void> call, Throwable t) {
+                                    runOnUiThread(() -> Toast.makeText(RegisterAccount.this, "Network failure: " + t.getMessage(), Toast.LENGTH_SHORT).show());
+                                }
+                            });
+                        }
+                    });
+                }
+            });
         });
     }
 

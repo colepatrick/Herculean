@@ -40,6 +40,25 @@ def get_account(username):
     except Exception:
         return jsonify({'error': 'stored data is not valid JSON'}), 500
 
+@app.route('/accounts/email/<email>', methods=['GET'])
+def get_account_by_email(email):
+    """Check if an account exists by email address."""
+    # This is not super efficient, but it works.
+    # It iterates through all accounts to find a match.
+    keys = r.keys('accounts:*')
+    for k in keys:
+        val = r.get(k)
+        if val:
+            try:
+                account_data = json.loads(val)
+                if account_data.get('email', '').lower() == email.lower():
+                    # Found a match, return 200 OK
+                    return jsonify({'exists': True}), 200
+            except Exception:
+                continue
+    # If the loop finishes without finding the email, return 404 Not Found
+    return jsonify({'error': 'not found'}), 404
+
 
 @app.route('/accounts', methods=['POST'])
 def create_account():

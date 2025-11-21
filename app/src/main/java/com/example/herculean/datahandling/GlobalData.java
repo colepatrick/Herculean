@@ -117,4 +117,30 @@ public class GlobalData {
             }
         });
     }
+
+    public static void emailExists(String email, ServerCallback<Boolean> callback) {
+        svc.getAccountByEmail(email).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    // HTTP 200 OK means the email was found.
+                    callback.onResult(true);
+                } else if (response.code() == 404) {
+                    // HTTP 404 Not Found means the email is available.
+                    callback.onResult(false);
+                } else {
+                    // Another server error occurred.
+                    Log.e("GLOBAL_DATA", "Server error checking email: " + response.code());
+                    callback.onResult(false); // Treat as non-existent for safety
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                // A network failure occurred.
+                Log.e("GLOBAL_DATA", "Network failure checking email: " + t.getMessage());
+                callback.onResult(false); // Treat as non-existent for safety
+            }
+        });
+    }
 }

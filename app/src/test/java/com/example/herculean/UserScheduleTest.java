@@ -23,7 +23,7 @@ public class UserScheduleTest {
 
         assertEquals(schedule.getMon(), recreated.getMon());
         assertEquals(schedule.getTue(), recreated.getTue());
-        assertEquals(schedule.getWen(), recreated.getWen());
+        assertEquals(schedule.getWed(), recreated.getWed());
         assertEquals(schedule.getThur(), recreated.getThur());
         assertEquals(schedule.getFri(), recreated.getFri());
         assertEquals(schedule.getSat(), recreated.getSat());
@@ -36,7 +36,7 @@ public class UserScheduleTest {
 
         assertEquals("Push", schedule.getMon());
         assertEquals("Pull", schedule.getTue());
-        assertEquals("Legs", schedule.getWen());
+        assertEquals("Legs", schedule.getWed());
         assertEquals("Core", schedule.getThur());
         assertEquals("Cardio", schedule.getFri());
         assertEquals("Rest", schedule.getSat());
