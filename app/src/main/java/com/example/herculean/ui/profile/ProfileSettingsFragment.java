@@ -146,7 +146,6 @@ public class ProfileSettingsFragment extends Fragment {
 
                     builder2.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog2, int id) {
-                            GlobalData.currentUser = null;
                             GlobalData.clearLastLoggedInUser();
                             GlobalData.saveAccounts(getContext());
                             Toast.makeText(getContext(), "Account successfully logged out", Toast.LENGTH_SHORT).show();
