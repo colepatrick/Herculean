@@ -222,4 +222,21 @@ public class UserAccount implements Serializable {
     public void addCustomExercise(Workout exercise) {
         customExercises.add(exercise);
     }
+
+    private ArrayList<String> following = new ArrayList<>();
+
+    public ArrayList<String> getFollowing() {
+        return following;
+    }
+
+    public void followUser(String username) {
+        // If already in list → move them to top
+        following.remove(username);
+        following.add(0, username);  // Insert at the beginning
+    }
+
+    public void unfollowUser(String username) {
+        following.remove(username);
+    }
+
 }

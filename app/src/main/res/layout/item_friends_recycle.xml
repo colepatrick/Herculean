@@ -16,10 +16,19 @@
 
     <TextView
         android:id="@+id/usernameText"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="username"
         android:textSize="18sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:layout_weight="1" />
+
+    <Button
+        android:id="@+id/followButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Follow"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"/>
 
 </LinearLayout>
