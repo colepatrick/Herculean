@@ -88,55 +88,6 @@ public class ProfileSettingsFragment extends Fragment {
             startActivity(intent);
         });
 
-        binding.changeUsernameButton.setOnClickListener(v -> {
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            builder.setTitle(R.string.change_username);
-
-            LinearLayout container2 = new LinearLayout(getActivity());
-            container2.setOrientation(LinearLayout.VERTICAL);
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT
-            );
-            lp.setMargins(48, 0, 48, 0);
-
-            final EditText input = new EditText(getActivity());
-            input.setLayoutParams(lp);
-            input.setInputType(android.text.InputType.TYPE_CLASS_TEXT);
-
-            container2.addView(input);
-            builder.setView(container2);
-
-            builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    String newUserName = input.getText().toString().trim();
-
-                    if(!UserAccount.validUsername(newUserName)) {
-                        Toast.makeText(getContext(), "Invalid length", Toast.LENGTH_SHORT).show();
-                    } else if(newUserName.equals(GlobalData.currentUser.getUsername())) {
-                        Toast.makeText(getContext(), "Username cannot be old username", Toast.LENGTH_SHORT).show();
-                    } else if(GlobalData.usernameExists(newUserName)) {
-                        Toast.makeText(getContext(), "Username already exists", Toast.LENGTH_SHORT).show();
-                    } else {
-                        GlobalData.currentUser.setUsername(newUserName);
-                        GlobalData.saveAccounts(getContext());
-
-                        Toast.makeText(getContext(), "Username successfully changed", Toast.LENGTH_SHORT).show();
-                        Log.d("PROFILE", "New username: " + newUserName);
-                        dialog.dismiss();
-                    }
-                }
-            });
-            builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    dialog.cancel();
-                }
-            });
-
-            AlertDialog dialog = builder.create();
-            dialog.show();
-        });
-
         binding.changePasswordButton.setOnClickListener(v -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder.setTitle(R.string.change_password);

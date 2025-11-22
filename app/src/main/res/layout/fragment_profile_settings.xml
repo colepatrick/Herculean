@@ -63,12 +63,6 @@
             android:text="Goal and Schedule" />
 
         <Button
-            android:id="@+id/change_username_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/change_username" />
-
-        <Button
             android:id="@+id/change_password_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -1,0 +1,15 @@
+services:
+  web:
+    build: ./db
+    ports:
+      - "5000:5000"
+    depends_on:
+      - redis
+
+  redis:
+    image: redis:alpine
+    volumes:
+      - redis-data:/data
+    
+volumes:
+  redis-data:

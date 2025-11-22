@@ -13,6 +13,10 @@ import com.example.herculean.datahandling.GlobalData;
 import com.example.herculean.R;
 import com.example.herculean.datahandling.UserAccount;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class RegisterAccount extends AppCompatActivity {
 
     private EditText usernameInput, passwordInput, emailInput;
@@ -62,56 +66,59 @@ public class RegisterAccount extends AppCompatActivity {
                 return;
             }
 
-            // Check if username already exists
-            if (usernameExists(username)) {
-                Toast.makeText(this, "Username already taken", Toast.LENGTH_SHORT).show();
-                usernameInput.requestFocus();
-                return;
-            }
+            // Use the method from GlobalData
+            Log.d("REGISTER", "Checking username on server...");
+            GlobalData.usernameExists(username, usernameExists -> {
+                if (usernameExists) {
+                    // Username is taken. Stop here.
+                    runOnUiThread(() -> {
+                        Toast.makeText(this, "Username already taken", Toast.LENGTH_SHORT).show();
+                        usernameInput.requestFocus();
+                    });
+                } else {
+                    // Username is available
+                    Log.d("REGISTER", "Username available. Checking email on server...");
 
-            // Check if email already exists
-            if (emailExists(email)) {
-                Toast.makeText(this, "Email already registered", Toast.LENGTH_SHORT).show();
-                emailInput.requestFocus();
-                return;
-            }
+                    // NOW check email
+                    GlobalData.emailExists(email, emailExists -> {
+                        if (emailExists) {
+                            // Email is taken. Stop here.
+                            runOnUiThread(() -> {
+                                Toast.makeText(this, "Email already registered", Toast.LENGTH_SHORT).show();
+                                emailInput.requestFocus();
+                            });
+                        } else {
+                            // 3. Both username and email are available. Create the account.
+                            Log.d("REGISTER", "Email available. Creating account...");
+                            UserAccount newUser = new UserAccount(username, password, email);
+                            GlobalData.svc.createAccount(newUser).enqueue(new Callback<Void>() {
+                                @Override
+                                public void onResponse(Call<Void> call, Response<Void> response) {
+                                    if (response.isSuccessful()) {
+                                        runOnUiThread(() -> {
+                                            GlobalData.accounts.add(newUser);
+                                            GlobalData.saveAccounts(RegisterAccount.this);
+                                            Toast.makeText(RegisterAccount.this, "Account created successfully!", Toast.LENGTH_SHORT).show();
+                                            finish();
+                                        });
+                                    } else {
+                                        runOnUiThread(() -> Toast.makeText(RegisterAccount.this, "Server error on creation: " + response.code(), Toast.LENGTH_SHORT).show());
+                                    }
+                                }
 
-            Log.d("REGISTER", "Before saving, accounts size: " + GlobalData.jsonData.accounts.size());
-
-            // Create a new user and save it globally
-            UserAccount newUser = new UserAccount(username, password, email);
-            GlobalData.jsonData.accounts.add(newUser);
-            GlobalData.saveAccounts(this);
-
-            Log.d("REGISTER", "Account saved. Total accounts: " + GlobalData.jsonData.accounts.size());
-
-            // Confirmation message
-            Toast.makeText(this, "Account created successfully!", Toast.LENGTH_SHORT).show();
-
-            // Close the registration activity
-            finish();
+                                @Override
+                                public void onFailure(Call<Void> call, Throwable t) {
+                                    runOnUiThread(() -> Toast.makeText(RegisterAccount.this, "Network failure: " + t.getMessage(), Toast.LENGTH_SHORT).show());
+                                }
+                            });
+                        }
+                    });
+                }
+            });
         });
     }
 
     private boolean isValidEmail(String email) {
         return Patterns.EMAIL_ADDRESS.matcher(email).matches();
-    }
-
-    private boolean usernameExists(String username) {
-        for (UserAccount account : GlobalData.jsonData.accounts) {
-            if (account.getUsername().equalsIgnoreCase(username)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private boolean emailExists(String email) {
-        for (UserAccount account : GlobalData.jsonData.accounts) {
-            if (account.getEmail().equalsIgnoreCase(email)) {
-                return true;
-            }
-        }
-        return false;
     }
 }

@@ -24,6 +24,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.herculean.databinding.ActivityMainBinding;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
@@ -126,7 +130,38 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        Log.d("STATE", "Saving data");
+        Log.d("SYNC", "MainActivity is stopping. Attempting to sync data...");
+
+        // Always save locally, as a reliable fallback
         GlobalData.saveAccounts(this);
+
+        // Check if there is a user to sync
+        if (GlobalData.currentUser == null) {
+            Log.d("SYNC", "No current user to sync. Skipping server upload.");
+            return;
+        }
+
+        // Use the global AccountService to upload the current user's data
+        String username = GlobalData.currentUser.getUsername();
+        Log.d("SYNC", "Uploading data for user: " + username);
+
+        GlobalData.svc.updateAccount(username, GlobalData.currentUser).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
+                // This callback runs when the server responds
+                if (response.isSuccessful()) {
+                    Log.d("SYNC", "Successfully synced user data to server for " + username);
+                } else {
+                    // This happens if the server returns an error (e.g., 400, 500)
+                    Log.e("SYNC", "Server returned an error during sync: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
+                // This callback runs if the network request itself fails (e.g., no internet)
+                Log.e("SYNC", "Network failure during sync: " + t.getMessage());
+            }
+        });
     }
 }
