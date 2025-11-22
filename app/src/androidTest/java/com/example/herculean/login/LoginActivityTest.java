@@ -1,5 +1,6 @@
 package com.example.herculean.login;
 
+import static androidx.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
@@ -14,6 +15,7 @@ import android.content.SharedPreferences;
 
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.core.app.ApplicationProvider;
+import androidx.test.espresso.assertion.ViewAssertions;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.example.herculean.R;
@@ -113,6 +115,9 @@ public class LoginActivityTest {
         });
     }
 
+
+
+
     @Test
     public void testSuccessfulLoginSetsCurrentUser() {
         onView(withId(R.id.login_username_input))
@@ -121,11 +126,22 @@ public class LoginActivityTest {
                 .perform(typeText("password"), closeSoftKeyboard());
         onView(withId(R.id.login_button)).perform(click());
 
-        scenario.onActivity(a -> {
-            assert GlobalData.currentUser != null;
-            assert GlobalData.currentUser.getUsername().equals("testuser");
-        });
+        // --- START OF FIX ---
+
+        // This line tells Espresso to wait until the LoginActivity's main view
+        // (like R.id.login_button) is GONE from the screen.
+        // This implicitly waits for the activity transition to complete.
+        onView(withId(R.id.login_button)).check(ViewAssertions.doesNotExist());
+
+        // Now that we've successfully waited, it's safe to check the global state.
+        // At this point, MainActivity is likely visible and the user is set.
+        assert GlobalData.currentUser != null;
+        assert "testuser".equals(GlobalData.currentUser.getUsername());
+
+        // --- END OF FIX ---
     }
+
+
 
     @Test
     public void testRememberMeStoresLastLoggedInUser() {
