@@ -101,4 +101,7 @@ dependencies {
     implementation(libs.fragment)
 
     implementation("com.github.bumptech.glide:glide:4.16.0")
+
+    // Graphing Views
+    implementation("com.jjoe64:graphview:4.2.2")
 }

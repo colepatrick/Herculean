@@ -59,8 +59,6 @@ public class ProfileSettingsFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        ProfileSettingsViewModel profileSettingsViewModel =
-                new ViewModelProvider(this).get(ProfileSettingsViewModel.class);
 
         binding = FragmentProfileSettingsBinding.inflate(inflater, container, false);
 

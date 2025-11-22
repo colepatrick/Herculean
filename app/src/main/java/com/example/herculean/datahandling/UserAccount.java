@@ -7,11 +7,13 @@ import com.example.herculean.goals.UserSchedule;
 import com.example.herculean.goals.UserStreak;
 import com.example.herculean.workout.Logger;
 import com.example.herculean.workout.Workout;
+import com.jjoe64.graphview.series.DataPoint;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.time.LocalDate;
 
@@ -209,5 +211,37 @@ public class UserAccount implements Serializable {
     }
     public void addCustomExercise(Workout exercise) {
         customExercises.add(exercise);
+    }
+
+    public DataPoint[] getDayDataPoints(int days) {
+        List<Workout> recents = getRecentWorkouts(LocalDate.now().minusDays(days)).getWorkouts();
+        DataPoint[] points = new DataPoint[days];
+        int[] scores = new int[days];
+        for(int i = 0; i < days; i++) {
+            scores[i] = 0;
+            for(Workout workout : recents) {
+                if(LocalDate.now().minusDays(days-i-1).isEqual(workout.getDate())) {
+                    scores[i] += workout.getScore();
+                }
+            }
+            points[i] = new DataPoint(i, scores[i]);
+        }
+        return points;
+    }
+
+    public DataPoint[] getMonthDataPoints(int months) {
+        List<Workout> recents = getRecentWorkouts(LocalDate.now().minusMonths(months)).getWorkouts();
+        DataPoint[] points = new DataPoint[months];
+        int[] scores = new int[months];
+        for(int i = 0; i < months; i++) {
+            scores[i] = 0;
+            for(Workout workout : recents) {
+                if(LocalDate.now().minusMonths(months-i-1).getMonth() == workout.getDate().getMonth()) {
+                    scores[i] += workout.getScore();
+                }
+            }
+            points[i] = new DataPoint(i, scores[i]);
+        }
+        return points;
     }
 }
