@@ -121,9 +121,10 @@ dependencies {
     // Espresso
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     androidTestImplementation("androidx.test.espresso:espresso-contrib:3.5.1")
+    androidTestImplementation("androidx.test.uiautomator:uiautomator:2.3.0")
 
     // FragmentScenario (must be debugImplementation)
-    debugImplementation("androidx.fragment:fragment-testing:1.6.2")
+    debugImplementation("androidx.fragment:fragment-testing:1.7.0")
 
     // Some test code expects classic JUnit
     androidTestImplementation("junit:junit:4.13.2")
