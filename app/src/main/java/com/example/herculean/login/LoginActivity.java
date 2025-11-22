@@ -161,7 +161,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void loginSuccess(UserAccount user, boolean isRemote) {
-        // Prefer local copy over remote copy if available
+        // Prefer remote copy over local copy if available
         if (isRemote) {
             UserAccount localCopy = findUser(user.getUsername());
             if (localCopy != null) {

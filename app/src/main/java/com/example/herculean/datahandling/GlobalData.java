@@ -20,7 +20,7 @@ import retrofit2.Response;
 public class GlobalData {
     public static JsonData jsonData = new JsonData();
     public static UserAccount currentUser = null;
-    public static final String gemini_api_key = "AIzaSyAUPdeQYh8sbVyZ8KDfV3_yO5WczgD00ak";
+    public static final String gemini_api_key = "AIzaSyDTE4RK9lr1bm6fmwRUFcNdpKHvETD3GEg";
 
     // Local DB testing. Change LOCAL_TEST_URL and app/src/main/res/xml/network_security_config.xml to your device's IP
     // Also change build.gradle.kts the debug branch to http://10.0.2.2:5000. Then run "docker compose -d --build"
