@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- ───────────────────────────────────────────────
+         Permissions
+         ─────────────────────────────────────────────── -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.VIBRATE" />
@@ -9,9 +13,12 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
 
     <application
         android:allowBackup="true"
+        android:testOnly="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
@@ -21,51 +28,49 @@
         android:theme="@style/Theme.Herculean"
         android:networkSecurityConfig="@xml/network_security_config">
 
-        <!-- LoginActivity (launcher temporarily disabled) -->
+        <!-- ───────────────────────────────────────────────
+             Login Activity (Launcher)
+             ─────────────────────────────────────────────── -->
         <activity
             android:name=".login.LoginActivity"
             android:exported="true"
             android:theme="@style/Theme.Herculean">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
-
         </activity>
 
-        <!-- Main app screens -->
+        <!-- ───────────────────────────────────────────────
+             Main App Activities
+             ─────────────────────────────────────────────── -->
         <activity
             android:name=".datahandling.MainActivity"
             android:exported="false"
-            android:theme="@style/Theme.Herculean"/>
-        <activity android:name=".login.RegisterAccount" android:exported="false"/>
-        <activity android:name=".workout.Upload" android:exported="false"/>
-        <activity android:name=".ai.ChatBot"
-            android:exported="false"
-            android:windowSoftInputMode="adjustResize"
-            />
+            android:theme="@style/Theme.Herculean" />
+
+        <activity android:name=".login.RegisterAccount" android:exported="false" />
+        <activity android:name=".workout.Upload" android:exported="false" />
 
         <activity
-            android:name=".login.RegisterAccount"
+            android:name=".ai.ChatBot"
             android:exported="false"
-            tools:ignore="DuplicateActivity" />
-        <activity
-            android:name=".workout.Upload"
-            android:exported="false"
-            tools:ignore="DuplicateActivity" />
+            android:windowSoftInputMode="adjustResize" />
 
-        <!--  Temporary launcher for testing -->
+        <!-- ───────────────────────────────────────────────
+             Notification Alarm Receiver
+             ─────────────────────────────────────────────── -->
+        <receiver android:name=".ui.profile.notification.NotificationReceiver"
+            android:enabled="true"
+            android:exported="false" />
+
+        <!-- ───────────────────────────────────────────────
+             Temporary Activity for Debug/Testing
+             ─────────────────────────────────────────────── -->
         <activity
             android:name=".goals.GoalAndScheduleActivity"
             android:exported="true"
-            android:label="Goals &amp; Schedule">
-        <!--<intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
-        -->
-        </activity>
-
+            android:label="Goals &amp; Schedule" />
     </application>
 
 </manifest>

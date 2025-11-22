@@ -10,12 +10,12 @@ import com.example.herculean.workout.Workout;
 import com.jjoe64.graphview.series.DataPoint;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.time.LocalDate;
 
 public class UserAccount implements Serializable {
     private String username, password, email;
@@ -25,7 +25,12 @@ public class UserAccount implements Serializable {
     public int[] customization; // [emailDisplayed]
     private String profileImageUri; // URI of the profile image
 
+    // Workout notifications
+    private boolean workoutNotifications;
+    private String notificationTime;
+
     public static int[] defaultSettings = {0}; // Default customization settings
+
     public enum CustomizationOptions {
         EMAIL_DISPLAYED
     }
@@ -35,7 +40,6 @@ public class UserAccount implements Serializable {
     private UserStreak userStreak;
 
     public ArrayList<Workout> customExercises;
-
 
     // No-argument constructor (required for Gson deserialization)
     public UserAccount() {
@@ -50,6 +54,8 @@ public class UserAccount implements Serializable {
         this.userSchedule = new UserSchedule("Rest", "Rest", "Rest", "Rest", "Rest", "Rest", "Rest");
         this.userStreak = new UserStreak();
         this.customExercises = new ArrayList<>();
+        this.workoutNotifications = false;
+        this.notificationTime = "";
     }
 
     // Constructor with parameters
@@ -103,12 +109,41 @@ public class UserAccount implements Serializable {
         this.workoutLog = workoutLog;
     }
 
-    public boolean isEmailDisplayed() { return this.customization[CustomizationOptions.EMAIL_DISPLAYED.ordinal()] == 1; }
-    public void emailDisplayed(boolean displayed) { this.customization[CustomizationOptions.EMAIL_DISPLAYED.ordinal()] = displayed ? 1 : 0; }
+    public boolean isEmailDisplayed() {
+        return this.customization[CustomizationOptions.EMAIL_DISPLAYED.ordinal()] == 1;
+    }
 
-    public String getProfileImageUri() { return profileImageUri; }
+    public void emailDisplayed(boolean displayed) {
+        this.customization[CustomizationOptions.EMAIL_DISPLAYED.ordinal()] = displayed ? 1 : 0;
+    }
 
-    public void setProfileImageUri(String profileImageUri) { this.profileImageUri = profileImageUri; }
+    public String getProfileImageUri() {
+        return profileImageUri;
+    }
+
+    public void setProfileImageUri(String profileImageUri) {
+        this.profileImageUri = profileImageUri;
+    }
+
+    // ──────────────────── Notifications ────────────────────
+
+    public boolean areWorkoutNotificationsEnabled() {
+        return workoutNotifications;
+    }
+
+    public void setWorkoutNotifications(boolean workoutNotifications) {
+        this.workoutNotifications = workoutNotifications;
+    }
+
+    public String getNotificationTime() {
+        return notificationTime;
+    }
+
+    public void setNotificationTime(String notificationTime) {
+        this.notificationTime = notificationTime;
+    }
+
+    // ──────────────────── Validation ────────────────────
 
     public static boolean validPassword(String password) {
         return password.length() >= 6;
@@ -122,10 +157,12 @@ public class UserAccount implements Serializable {
         return Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
+    // ──────────────────── Stats helpers ────────────────────
+
     public Workout getBestWorkout() {
         Workout best = null;
-        for(Workout workout : workoutLog.getWorkouts()) {
-            if((best == null) || (workout.getScore() > best.getScore())) {
+        for (Workout workout : workoutLog.getWorkouts()) {
+            if ((best == null) || (workout.getScore() > best.getScore())) {
                 best = workout;
             }
         }
@@ -134,18 +171,18 @@ public class UserAccount implements Serializable {
 
     public String getFavoriteWorkoutType() {
         Map<String, Integer> workoutTypes = new HashMap<>();
-        for(Workout workout : workoutLog.getWorkouts()) {
+        for (Workout workout : workoutLog.getWorkouts()) {
             String name = workout.getExerciseName();
 
             // Workout types are weighted by how much you did of them
-            if(workoutTypes.containsKey(name)) {
+            if (workoutTypes.containsKey(name)) {
                 workoutTypes.put(name, workoutTypes.get(name) + (int) workout.getScore());
             } else {
                 workoutTypes.put(name, (int) workout.getScore());
             }
         }
 
-        if(workoutTypes.isEmpty()) {
+        if (workoutTypes.isEmpty()) {
             return "None";
         }
         return Collections.max(workoutTypes.entrySet(), Map.Entry.comparingByValue()).getKey();
@@ -153,17 +190,17 @@ public class UserAccount implements Serializable {
 
     public String getFavoriteMuscleGroup() {
         Map<String, Integer> muscleGroups = new HashMap<>();
-        for(Workout workout : workoutLog.getWorkouts()) {
+        for (Workout workout : workoutLog.getWorkouts()) {
             String name = workout.getBodyPart();
 
             // Muscle groups are weighted by how much you did of them
-            if(muscleGroups.containsKey(name)) {
+            if (muscleGroups.containsKey(name)) {
                 muscleGroups.put(name, muscleGroups.get(name) + (int) workout.getScore());
             } else {
                 muscleGroups.put(name, (int) workout.getScore());
             }
         }
-        if(muscleGroups.isEmpty()) {
+        if (muscleGroups.isEmpty()) {
             return "None";
         }
         return Collections.max(muscleGroups.entrySet(), Map.Entry.comparingByValue()).getKey();
@@ -171,8 +208,8 @@ public class UserAccount implements Serializable {
 
     public Logger getRecentWorkouts(LocalDate start) {
         Logger recentWorkouts = new Logger();
-        for(Workout workout : workoutLog.getWorkouts()) {
-            if(workout.getDate().isAfter(start)) {
+        for (Workout workout : workoutLog.getWorkouts()) {
+            if (workout.getDate().isAfter(start)) {
                 recentWorkouts.addWorkout(workout);
             }
         }
@@ -206,21 +243,26 @@ public class UserAccount implements Serializable {
     public ArrayList<Workout> getCustomExercises() {
         return customExercises;
     }
+
     public void setCustomExercises(ArrayList<Workout> exercises) {
         customExercises = exercises;
     }
+
     public void addCustomExercise(Workout exercise) {
         customExercises.add(exercise);
     }
+
+    // ──────────────────── Graph Data (from master) ────────────────────
 
     public DataPoint[] getDayDataPoints(int days) {
         List<Workout> recents = getRecentWorkouts(LocalDate.now().minusDays(days)).getWorkouts();
         DataPoint[] points = new DataPoint[days];
         int[] scores = new int[days];
-        for(int i = 0; i < days; i++) {
+
+        for (int i = 0; i < days; i++) {
             scores[i] = 0;
-            for(Workout workout : recents) {
-                if(LocalDate.now().minusDays(days-i-1).isEqual(workout.getDate())) {
+            for (Workout workout : recents) {
+                if (LocalDate.now().minusDays(days - i - 1).isEqual(workout.getDate())) {
                     scores[i] += workout.getScore();
                 }
             }
@@ -233,10 +275,12 @@ public class UserAccount implements Serializable {
         List<Workout> recents = getRecentWorkouts(LocalDate.now().minusMonths(months)).getWorkouts();
         DataPoint[] points = new DataPoint[months];
         int[] scores = new int[months];
-        for(int i = 0; i < months; i++) {
+
+        for (int i = 0; i < months; i++) {
             scores[i] = 0;
-            for(Workout workout : recents) {
-                if(LocalDate.now().minusMonths(months-i-1).getMonth() == workout.getDate().getMonth()) {
+            for (Workout workout : recents) {
+                if (LocalDate.now().minusMonths(months - i - 1).getMonth() ==
+                        workout.getDate().getMonth()) {
                     scores[i] += workout.getScore();
                 }
             }
