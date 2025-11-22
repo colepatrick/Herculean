@@ -81,6 +81,13 @@
         android:name="com.example.herculean.ui.profile.ProfileFragment"
         android:label="Friend Profile" />
 
+    <fragment
+        android:id="@+id/nav_view_friend_profile"
+        android:name="com.example.herculean.ui.friends.FriendsProfileFragment"
+        android:label="Friend Profile"
+        tools:layout="@layout/fragment_profile" />
+
+
 
 
 
