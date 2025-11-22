@@ -52,22 +52,10 @@ public class UserAccount implements Serializable {
 
     // Constructor with parameters
     public UserAccount(String username, String password, String email) {
+        this(); // Call default constructor, fill in what we know
         this.username = username;
         this.password = password;
         this.email = email;
-        this.level = 1;
-        this.workoutLog = new Logger();
-        this.customization = defaultSettings.clone(); // Default customization settings
-        this.profileImageUri = null;
-    }
-
-    // Constructor with customization parameters
-    public UserAccount(String username, String password, String email, int[] customization) {
-        this(username, password, email); // Call the other constructor
-        this.customization = customization;
-        this.userGoal = new UserGoal("General Fitness", 3);
-        this.userSchedule = new UserSchedule("Rest", "Rest", "Rest", "Rest", "Rest", "Rest", "Rest");
-        this.userStreak = new UserStreak();
     }
 
     /**************************************************************************************
