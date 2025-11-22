@@ -20,6 +20,9 @@ import java.util.ArrayList;
 public class FriendsFragment extends Fragment {
 
     private ArrayList<UserAccount> visibleUsers = new ArrayList<>();
+    private FriendsRecycle adapter;
+
+
 
     @Nullable
     @Override
@@ -32,6 +35,9 @@ public class FriendsFragment extends Fragment {
         recycler.setLayoutManager(new LinearLayoutManager(getContext()));
 
         loadVisibleUsers();
+
+        adapter = new FriendsRecycle(visibleUsers);
+        recycler.setAdapter(adapter);
 
         return view;
     }
