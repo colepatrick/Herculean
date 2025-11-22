@@ -27,6 +27,7 @@ import java.util.stream.Collectors;
 public class LoginActivity extends AppCompatActivity {
 
     private EditText usernameInput, passwordInput;
+    private CheckBox rememberMeCheckbox;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -160,19 +161,20 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void loginSuccess(UserAccount user, boolean isRemote) {
-        // Merge or update the local cache if the data came from the server
+        // Prefer local copy over remote copy if available
         if (isRemote) {
             UserAccount localCopy = findUser(user.getUsername());
             if (localCopy != null) {
-                GlobalData.accounts.remove(localCopy);
+                GlobalData.jsonData.accounts.remove(localCopy);
             }
-            GlobalData.accounts.add(user);
+            GlobalData.jsonData.accounts.add(user);
         }
 
         if (rememberMeCheckbox.isChecked()) {
-            GlobalData.setLastLoggedInUser(username);
+            GlobalData.setLastLoggedInUser(user.getUsername());
         } else {
             GlobalData.clearLastLoggedInUser();
+        }
         GlobalData.currentUser = user;
         Log.d("LOGIN", "Current user set: " + GlobalData.currentUser.getUsername());
 
@@ -189,10 +191,8 @@ public class LoginActivity extends AppCompatActivity {
 
         navigateToMain();
     }
-
     private void navigateToMain() {
         GlobalData.saveAccounts(this);
-
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();

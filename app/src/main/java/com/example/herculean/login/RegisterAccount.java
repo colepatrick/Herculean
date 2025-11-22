@@ -96,7 +96,7 @@ public class RegisterAccount extends AppCompatActivity {
                                 public void onResponse(Call<Void> call, Response<Void> response) {
                                     if (response.isSuccessful()) {
                                         runOnUiThread(() -> {
-                                            GlobalData.accounts.add(newUser);
+                                            GlobalData.jsonData.accounts.add(newUser);
                                             GlobalData.saveAccounts(RegisterAccount.this);
                                             Toast.makeText(RegisterAccount.this, "Account created successfully!", Toast.LENGTH_SHORT).show();
                                             finish();
