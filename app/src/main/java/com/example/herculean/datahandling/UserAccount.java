@@ -23,6 +23,10 @@ public class UserAccount implements Serializable {
     public int[] customization; // [emailDisplayed]
     private String profileImageUri; // URI of the profile image
 
+    private boolean workoutNotifications;
+    private String notificationTime;
+
+
     public static int[] defaultSettings = {0}; // Default customization settings
     public enum CustomizationOptions {
         EMAIL_DISPLAYED
@@ -48,6 +52,8 @@ public class UserAccount implements Serializable {
         this.userSchedule = new UserSchedule("Rest", "Rest", "Rest", "Rest", "Rest", "Rest", "Rest");
         this.userStreak = new UserStreak();
         this.customExercises = new ArrayList<>();
+        this.workoutNotifications = false;
+        this.notificationTime = "";
     }
 
     // Constructor with parameters
@@ -119,6 +125,22 @@ public class UserAccount implements Serializable {
     public String getProfileImageUri() { return profileImageUri; }
 
     public void setProfileImageUri(String profileImageUri) { this.profileImageUri = profileImageUri; }
+
+    public boolean areWorkoutNotificationsEnabled() {
+        return workoutNotifications;
+    }
+
+    public void setWorkoutNotifications(boolean workoutNotifications) {
+        this.workoutNotifications = workoutNotifications;
+    }
+
+    public String getNotificationTime() {
+        return notificationTime;
+    }
+
+    public void setNotificationTime(String notificationTime) {
+        this.notificationTime = notificationTime;
+    }
 
     public static boolean validPassword(String password) {
         return password.length() >= 6;

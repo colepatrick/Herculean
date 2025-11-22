@@ -1,5 +1,6 @@
 package com.example.herculean.goals;
 import java.io.Serializable;
+import java.util.Calendar;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -82,6 +83,27 @@ public class UserSchedule implements Serializable {
 
     public String getSun() {
         return sun;
+    }
+
+    public String getWorkoutForDay(int day) {
+        switch (day) {
+            case Calendar.MONDAY:
+                return mon;
+            case Calendar.TUESDAY:
+                return tue;
+            case Calendar.WEDNESDAY:
+                return wed;
+            case Calendar.THURSDAY:
+                return thur;
+            case Calendar.FRIDAY:
+                return fri;
+            case Calendar.SATURDAY:
+                return sat;
+            case Calendar.SUNDAY:
+                return sun;
+            default:
+                return "Rest";
+        }
     }
 
     // Setters

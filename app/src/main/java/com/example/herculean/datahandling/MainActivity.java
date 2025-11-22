@@ -9,6 +9,7 @@ import android.view.Menu;
 import com.example.herculean.R;
 import com.example.herculean.ai.ChatBot;
 import com.example.herculean.login.LoginActivity;
+import com.example.herculean.ui.profile.notification.NotificationManager;
 import com.example.herculean.workout.Upload;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.snackbar.Snackbar;
@@ -31,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        NotificationManager.createNotificationChannel(this);
 
         Log.d("MAIN", "Total accounts loaded: " + GlobalData.jsonData.accounts.size());
         for (UserAccount account : GlobalData.jsonData.accounts) {

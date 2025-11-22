@@ -7,6 +7,8 @@ import static org.junit.Assert.*;
 
 import com.example.herculean.goals.UserSchedule;
 
+import java.util.Calendar;
+
 public class UserScheduleTest {
 
     private UserSchedule schedule;
@@ -14,6 +16,17 @@ public class UserScheduleTest {
     @Before
     public void setUp() {
         schedule = new UserSchedule("Legs", "Rest", "Arms", "Cardio", "Back", "Rest", "Yoga");
+    }
+
+    @Test
+    public void testGetWorkoutForDay() {
+        assertEquals("Legs", schedule.getWorkoutForDay(Calendar.MONDAY));
+        assertEquals("Rest", schedule.getWorkoutForDay(Calendar.TUESDAY));
+        assertEquals("Arms", schedule.getWorkoutForDay(Calendar.WEDNESDAY));
+        assertEquals("Cardio", schedule.getWorkoutForDay(Calendar.THURSDAY));
+        assertEquals("Back", schedule.getWorkoutForDay(Calendar.FRIDAY));
+        assertEquals("Rest", schedule.getWorkoutForDay(Calendar.SATURDAY));
+        assertEquals("Yoga", schedule.getWorkoutForDay(Calendar.SUNDAY));
     }
 
     @Test
