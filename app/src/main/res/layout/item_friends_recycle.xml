@@ -5,6 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+    <ImageView
+        android:id="@+id/profilePic"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@drawable/avatar_filler"
+        android:scaleType="centerCrop"
+        android:layout_marginEnd="12dp"
+        android:clipToOutline="true" />
+
     <TextView
         android:id="@+id/usernameText"
         android:layout_width="wrap_content"
