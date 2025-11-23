@@ -1,9 +1,12 @@
 package com.example.herculean.ui.friends;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,10 +22,11 @@ import java.util.ArrayList;
 
 public class FriendsFragment extends Fragment {
 
+    private ArrayList<UserAccount> allUsers = new ArrayList<>();
     private ArrayList<UserAccount> visibleUsers = new ArrayList<>();
+
     private FriendsRecycle adapter;
-
-
+    private EditText searchBar;
 
     @Nullable
     @Override
@@ -34,83 +38,67 @@ public class FriendsFragment extends Fragment {
         RecyclerView recycler = view.findViewById(R.id.allUsersRecycler);
         recycler.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        loadVisibleUsers();
+        searchBar = view.findViewById(R.id.searchBar);
 
-        adapter = new FriendsRecycle(visibleUsers, () -> {
-            loadVisibleUsers();
-            adapter.notifyDataSetChanged();
+        allUsers.addAll(GlobalData.accounts);
+
+        adapter = new FriendsRecycle(visibleUsers, this::reloadList);
+        recycler.setAdapter(adapter);
+
+        reloadList();
+
+        // ------------------------
+        // SEARCH LISTENER
+        // ------------------------
+        searchBar.addTextChangedListener(new TextWatcher() {
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override public void afterTextChanged(Editable s) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                reloadList();
+            }
         });
-
-
-        recycler.setAdapter(adapter);
-
-        recycler.setAdapter(adapter);
 
         return view;
     }
 
-    private void loadVisibleUsers() {
+    // ============================
+    // Reload list (sorting + search)
+    // ============================
+    private void reloadList() {
         visibleUsers.clear();
 
-        UserAccount currentUser = GlobalData.currentUser;
+        String currentUsername = GlobalData.currentUser.getUsername();
+        ArrayList<String> following = GlobalData.currentUser.getFollowing();
+        String query = searchBar.getText().toString().trim().toLowerCase();
 
-        ArrayList<UserAccount> followed = new ArrayList<>();
-        ArrayList<UserAccount> notFollowed = new ArrayList<>();
+        ArrayList<UserAccount> followedMatches = new ArrayList<>();
+        ArrayList<UserAccount> unfollowedMatches = new ArrayList<>();
 
-        for (UserAccount account : GlobalData.accounts) {
+        for (UserAccount user : allUsers) {
+            if (user.getUsername().equalsIgnoreCase(currentUsername)) continue;
 
-            // Skip your own account
-            if (account.getUsername().equalsIgnoreCase(currentUser.getUsername())) {
-                continue;
-            }
+            boolean matchesSearch = user.getUsername().toLowerCase().contains(query);
+            if (!query.isEmpty() && !matchesSearch) continue;
 
-            if (currentUser.getFollowing().contains(account.getUsername())) {
-                followed.add(account);
+            // FOLLOWED USERS FIRST
+            if (following.contains(user.getUsername())) {
+                followedMatches.add(user);
             } else {
-                notFollowed.add(account);
+                unfollowedMatches.add(user);
             }
-
-
         }
 
-        // Sort: followed users first, in the order user followed them
-        visibleUsers.sort((a, b) -> {
-            ArrayList<String> following = GlobalData.currentUser.getFollowing();
-
-            int indexA = following.indexOf(a.getUsername());
-            int indexB = following.indexOf(b.getUsername());
-
-            // If both are followed, the smaller index comes first
-            if (indexA != -1 && indexB != -1) {
-                return Integer.compare(indexA, indexB);
-            }
-
-            // Followed users come before non-followed users
-            if (indexA != -1) return -1;
-            if (indexB != -1) return 1;
-
-            // Neither followed → alphabetical order
-            return a.getUsername().compareToIgnoreCase(b.getUsername());
+        // Sort followed by the order in the "following" list (most recent first)
+        followedMatches.sort((a, b) -> {
+            int posA = following.indexOf(a.getUsername());
+            int posB = following.indexOf(b.getUsername());
+            return Integer.compare(posA, posB);
         });
 
-
-        // optional: alphabetize non-followed users
-        notFollowed.sort((a, b) ->
-                a.getUsername().compareToIgnoreCase(b.getUsername())
-        );
-
-        // Sort followed EXACTLY by the order in currentUser.following
-        followed.sort((a, b) -> {
-            int indexA = currentUser.getFollowing().indexOf(a.getUsername());
-            int indexB = currentUser.getFollowing().indexOf(b.getUsername());
-            return Integer.compare(indexA, indexB);
-        });
-
-        // OPTIONAL: sort non-followed alphabetically
-        notFollowed.sort((a, b) -> a.getUsername().compareToIgnoreCase(b.getUsername()));
-
-        visibleUsers.addAll(followed);
-        visibleUsers.addAll(notFollowed);
+        visibleUsers.addAll(followedMatches);
+        visibleUsers.addAll(unfollowedMatches);
+        adapter.notifyDataSetChanged();
     }
-
 }
