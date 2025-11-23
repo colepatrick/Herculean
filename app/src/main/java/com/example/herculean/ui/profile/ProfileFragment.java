@@ -35,14 +35,29 @@ public class ProfileFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentProfileBinding.inflate(inflater, container, false);
 
-        binding.customizeButton.setOnClickListener(v -> {
-            Navigation.findNavController(v).navigate(R.id.action_nav_profile_to_nav_profile_settings);
-        });
+        binding.customizeButton.setOnClickListener(v ->
+                Navigation.findNavController(v)
+                        .navigate(R.id.action_nav_profile_to_nav_profile_settings)
+        );
 
-        binding.profileUsername.setText(GlobalData.currentUser.getUsername());
-        binding.profileUserEmail.setText(GlobalData.currentUser.getEmail());
+        // Friends button navigation
+        binding.friendsButton.setOnClickListener(v ->
+                Navigation.findNavController(v)
+                        .navigate(R.id.nav_friends)
+        );
+
+
+        UserAccount displayUser = GlobalData.viewedUser != null
+                ? GlobalData.viewedUser
+                : GlobalData.currentUser;
+
+// Username + email
+        binding.profileUsername.setText(displayUser.getUsername());
+        binding.profileUserEmail.setText(displayUser.getEmail());
+
+// Profile picture
         Glide.with(this)
-                .load(GlobalData.currentUser.getProfileImageUri())
+                .load(displayUser.getProfileImageUri())
                 .centerCrop()
                 .placeholder(R.drawable.avatar_filler)
                 .error(R.drawable.avatar_filler)
@@ -146,6 +161,7 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        GlobalData.viewedUser = null;
         binding = null;
     }
 }

@@ -8,6 +8,8 @@ import com.example.herculean.BuildConfig;
 import com.example.herculean.database.AccountService;
 import com.example.herculean.database.ApiClient;
 import com.google.gson.Gson;
+import java.lang.reflect.Type;
+
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
@@ -21,7 +23,9 @@ import retrofit2.Response;
 
 public class GlobalData {
     public static JsonData jsonData = new JsonData();
+    public static ArrayList<UserAccount> accounts = new ArrayList<>();
     public static UserAccount currentUser = null;
+    public static UserAccount viewedUser = null;
     public static final String gemini_api_key = "AIzaSyDTE4RK9lr1bm6fmwRUFcNdpKHvETD3GEg";
 
     // Local DB testing. Change LOCAL_TEST_URL and app/src/main/res/xml/network_security_config.xml to your device's IP
@@ -54,6 +58,24 @@ public class GlobalData {
             Log.e("SAVE", "ERROR saving data", e);
         }
     }
+
+    public static void saveCurrentUserToServer() {
+        if (currentUser == null || svc == null) return;
+
+        svc.updateAccount(currentUser.getUsername(), currentUser)
+                .enqueue(new retrofit2.Callback<Void>() {
+                    @Override
+                    public void onResponse(retrofit2.Call<Void> call, retrofit2.Response<Void> response) {
+                        // saved OK
+                    }
+
+                    @Override
+                    public void onFailure(retrofit2.Call<Void> call, Throwable t) {
+                        // failed to save
+                    }
+                });
+    }
+
 
     public static void loadAccounts(Context context) {
         try {

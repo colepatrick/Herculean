@@ -42,12 +42,49 @@ public class UserAccount implements Serializable {
 
     public ArrayList<Workout> customExercises;
 
+    // ───────────────────────────────────────────────────────────────
+    // FOLLOWING SYSTEM (your required fix)
+    // ───────────────────────────────────────────────────────────────
+    private ArrayList<String> following = new ArrayList<>();
+
+    public void followUser(String username) {
+        following.remove(username);
+        following.add(0, username);
+    }
+
+    public void unfollowUser(String username) {
+        following.remove(username);
+    }
+
+
+    public ArrayList<String> getFollowing() {
+        if (following == null) following = new ArrayList<>();
+        return following;
+    }
+
+    public void setFollowing(ArrayList<String> following) {
+        this.following = (following == null) ? new ArrayList<>() : following;
+    }
+
+    // ───────────────────────────────────────────────────────────────
+
+
     // No-argument constructor (required for Gson deserialization)
     public UserAccount() {
-        this.username = "";
-        this.password = "";
-        this.email = "";
-        this.salt = "";
+        // DO NOT overwrite fields Gson will deserialize
+        this.customExercises = new ArrayList<>();
+
+        // Safe defaults
+        if (following == null) following = new ArrayList<>();
+    }
+
+    // Constructor with parameters
+    public UserAccount(String username, String password, String email) {
+        this(); // do not reset following
+        this.username = username;
+        this.salt = Encryption.generateSalt();
+        this.password = Encryption.hashPassword(password, this.salt);
+        this.email = email;
         this.level = 1;
         this.workoutLog = new Logger();
         this.customization = defaultSettings.clone();
@@ -55,18 +92,15 @@ public class UserAccount implements Serializable {
         this.userGoal = new UserGoal("General Fitness", 3);
         this.userSchedule = new UserSchedule("Rest", "Rest", "Rest", "Rest", "Rest", "Rest", "Rest");
         this.userStreak = new UserStreak();
-        this.customExercises = new ArrayList<>();
-        this.workoutNotifications = false;
-        this.notificationTime = "";
     }
 
-    // Constructor with parameters
-    public UserAccount(String username, String password, String email) {
-        this(); // Call default constructor, fill in what we know
-        this.username = username;
-        this.salt = Encryption.generateSalt();
-        this.password = Encryption.hashPassword(password, this.salt);
-        this.email = email;
+    // Constructor with customization parameters
+    public UserAccount(String username, String password, String email, int[] customization) {
+        this(username, password, email);
+        this.customization = customization;
+        this.userGoal = new UserGoal("General Fitness", 3);
+        this.userSchedule = new UserSchedule("Rest", "Rest", "Rest", "Rest", "Rest", "Rest", "Rest");
+        this.userStreak = new UserStreak();
     }
 
     /**************************************************************************************
@@ -191,7 +225,6 @@ public class UserAccount implements Serializable {
         for (Workout workout : workoutLog.getWorkouts()) {
             String name = workout.getExerciseName();
 
-            // Workout types are weighted by how much you did of them
             if (workoutTypes.containsKey(name)) {
                 workoutTypes.put(name, workoutTypes.get(name) + (int) workout.getScore());
             } else {
@@ -210,7 +243,6 @@ public class UserAccount implements Serializable {
         for (Workout workout : workoutLog.getWorkouts()) {
             String name = workout.getBodyPart();
 
-            // Muscle groups are weighted by how much you did of them
             if (muscleGroups.containsKey(name)) {
                 muscleGroups.put(name, muscleGroups.get(name) + (int) workout.getScore());
             } else {
@@ -269,7 +301,7 @@ public class UserAccount implements Serializable {
         customExercises.add(exercise);
     }
 
-    // ──────────────────── Graph Data (from master) ────────────────────
+    // ──────────────────── Graph Data ────────────────────
 
     public DataPoint[] getDayDataPoints(int days) {
         List<Workout> recents = getRecentWorkouts(LocalDate.now().minusDays(days)).getWorkouts();
