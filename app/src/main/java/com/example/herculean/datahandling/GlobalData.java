@@ -9,7 +9,9 @@ import com.example.herculean.database.AccountService;
 import com.example.herculean.database.ApiClient;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -64,43 +66,39 @@ public class GlobalData {
             Log.d("LOAD", "Retrieved JSON from SharedPreferences: " + json);
 
             if (json != null && !json.isEmpty()) {
-                GlobalData.jsonData = gson.fromJson(json, JsonData.class);
-                if (GlobalData.jsonData == null) {
-                    GlobalData.jsonData = new JsonData();
+                try {
+                    JsonData loadedData = gson.fromJson(json, JsonData.class);
+                    if (loadedData != null && loadedData.accounts != null) {
+                        GlobalData.jsonData = loadedData;
+                    } else {
+                        throw new com.google.gson.JsonSyntaxException("Not a valid JsonData object, might be old format.");
+                    }
+                } catch (com.google.gson.JsonSyntaxException e) {
+                    Type type = new TypeToken<ArrayList<UserAccount>>() {}.getType();
+                    ArrayList<UserAccount> oldAccountsList = gson.fromJson(json, type);
+                    if (oldAccountsList != null) {
+                        GlobalData.jsonData.accounts = oldAccountsList;
+                    }
                 }
-                if (GlobalData.jsonData.accounts == null) {
-                    GlobalData.jsonData.accounts = new ArrayList<>();
-//                Type type = new TypeToken<ArrayList<UserAccount>>(){}.getType();
-//                ArrayList<UserAccount> list = gson.fromJson(json, type);
-//                if (list != null && !list.isEmpty()) {
-//                    GlobalData.accounts = list;
-//
-//                    boolean needsSave = false;
-//                    for (UserAccount account : GlobalData.accounts) {
-//                        if (account.getSalt() == null || account.getSalt().isEmpty()) {
-//                            account.setPassword(account.getPassword());
-//                            needsSave = true;
-//                        }
-//                    }
-//
-//                    if (needsSave) {
-//                        saveAccounts(context);
-//                    }
-//
-//                    Log.d("LOAD", "✓ LOADED " + GlobalData.accounts.size() + " accounts from SharedPreferences");
-//                    for (UserAccount account : GlobalData.accounts) {
-//                        Log.d("LOAD", "  - " + account.getUsername() + " | " + account.getEmail());
-//                    }
-//                } else {
-//                    Log.d("LOAD", "JSON parsed but list is empty or null");
-//                    GlobalData.accounts = new ArrayList<>();
-//                }
-                }
-                Log.d("LOAD", "✓ LOADED " + GlobalData.jsonData.accounts.size() + " accounts from SharedPreferences");
-            } else {
-                Log.d("LOAD", "No JSON found in SharedPreferences (first run or cleared)");
-                GlobalData.jsonData = new JsonData();
             }
+
+            if (GlobalData.jsonData.accounts == null) {
+                GlobalData.jsonData.accounts = new ArrayList<>();
+            }
+
+            boolean needsSave = false;
+            for (UserAccount account : GlobalData.jsonData.accounts) {
+                if (account.getSalt() == null || account.getSalt().isEmpty()) {
+                    account.setPassword(account.getPassword()); // This generates salt and hashes
+                    needsSave = true;
+                }
+            }
+
+            if (needsSave) {
+                saveAccounts(context);
+            }
+
+            Log.d("LOAD", "✓ LOADED " + GlobalData.jsonData.accounts.size() + " accounts from SharedPreferences");
         } catch (Exception e) {
             Log.e("LOAD", "ERROR loading accounts", e);
             GlobalData.jsonData = new JsonData();
@@ -177,4 +175,3 @@ public class GlobalData {
         });
     }
 }
-

@@ -97,14 +97,13 @@ public class LoginActivity extends AppCompatActivity {
         repo.getAccount(username, new AccountRepository.ResultCallback<UserAccount>() {
             @Override
             public void onSuccess(UserAccount remoteUser) {
-                // User was found on the server, proceed with normal password check.
                 runOnUiThread(() -> {
-                    if (!remoteUser.getPassword().equals(password)) {
+                    if (remoteUser.checkPassword(password)) {
+                        Log.d("LOGIN", "Login successful for user (remote): " + username);
+                        loginSuccess(remoteUser, true); // Login with the remote user data
+                    } else {
                         Toast.makeText(LoginActivity.this, "Incorrect password", Toast.LENGTH_SHORT).show();
-                        return;
                     }
-                    Log.d("LOGIN", "Login successful for user (remote): " + username);
-                    loginSuccess(remoteUser, true); // Login with the remote user data
                 });
             }
 
@@ -115,20 +114,8 @@ public class LoginActivity extends AppCompatActivity {
                     // Server said "Not Found". Check if we have this user locally.
                     Log.d("LOGIN", "User not found on server. Checking local storage...");
                     UserAccount localUser = findUser(username);
-//        if (foundUser == null) {
-//            Toast.makeText(this, "Username not found", Toast.LENGTH_SHORT).show();
-//            Log.d("LOGIN", "User not found: " + username);
-//            return;
-//        }
-//
-//        // Check password
-//        if (!foundUser.checkPassword(password)) {
-//            Toast.makeText(this, "Incorrect password!!!", Toast.LENGTH_SHORT).show();
-//            Log.d("login", "Wrong password for user " + username);
-//            return;
-//        }
 
-                    if (localUser != null && localUser.getPassword().equals(password)) {
+                    if (localUser != null && localUser.checkPassword(password)) {
                         // Found user locally and password is correct.
                         // Let's upload them to the server.
                         Log.d("LOGIN", "Found local user '" + username + "'. Uploading to server...");
@@ -160,7 +147,7 @@ public class LoginActivity extends AppCompatActivity {
                     // Fallback to offline-only login.
                     Log.d("LOGIN", "Remote fetch failed, falling back to local. Err: " + t.getMessage());
                     UserAccount localUser = findUser(username);
-                    if (localUser != null && localUser.getPassword().equals(password)) {
+                    if (localUser != null && localUser.checkPassword(password)) {
                         runOnUiThread(() -> {
                             Log.d("LOGIN", "Login successful (offline mode): " + username);
                             loginSuccess(localUser, false); // Login with local data
