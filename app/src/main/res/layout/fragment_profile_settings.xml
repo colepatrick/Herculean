@@ -56,17 +56,37 @@
                 android:textSize="24sp" />
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp">
+
+            <Switch
+                android:id="@+id/notification_switch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Workout Notifications"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/notification_time_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text="Select Time"
+                android:textSize="20sp"
+                android:visibility="gone"
+                tools:visibility="visible"/>
+        </LinearLayout>
+
         <Button
             android:id="@+id/goal_and_schedule_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Goal and Schedule" />
-
-        <Button
-            android:id="@+id/change_username_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/change_username" />
 
         <Button
             android:id="@+id/change_password_button"

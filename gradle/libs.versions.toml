@@ -1,8 +1,14 @@
 [versions]
 agp = "8.13.1"
 junit = "4.13.2"
-junitVersion = "1.3.0"
-espressoCore = "3.7.0"
+
+# A complete and compatible set of AndroidX Testing libraries
+core = "1.5.0"
+extJunit = "1.1.5"
+runner = "1.5.2"
+rules = "1.5.0"
+espressoCore = "3.5.1"
+
 appcompat = "1.7.1"
 material = "1.13.0"
 recyclerview = "1.4.0"
@@ -16,8 +22,14 @@ fragment = "1.8.9"
 
 [libraries]
 junit = { group = "junit", name = "junit", version.ref = "junit" }
-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
+
+# Corrected testing libraries
+test-core = { group = "androidx.test", name = "core", version.ref = "core" }
+ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "extJunit" }
+test-runner = { group = "androidx.test", name = "runner", version.ref = "runner" }
+test-rules = { group = "androidx.test", name = "rules", version.ref = "rules" }
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+
 appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 recyclerview = { group = "androidx.recyclerview", name = "recyclerview", version.ref = "recyclerview" }

@@ -55,7 +55,8 @@
     <string name="ok">OK</string>
     <string name="confirm_logout">Are you sure you want to log out?</string>
     <string name="confirm_delete">Are you sure you want to delete your account?</string>
-
+    <string name="graphs_button">More Graphs</string>
+    <string name="menu_reflow_graph">Graphs</string>
 
 
 

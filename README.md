@@ -1,4 +1,5 @@
 # Herculean - A Pumped-Up Exercise Tracker
+![Java CI with Gradle](https://github.com/colepatrick/Herculean/actions/workflows/gradle.yml/badge.svg)
 ## Description
 Herculean is a comprehensive exercise tracking application designed to help users monitor their fitness routines and progress. 
 ### Current Features include:

@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.herculean.datahandling.GlobalData;
@@ -26,6 +27,7 @@ public class GoalAndScheduleActivity extends Activity {
     private EditText editTextSat;
     private EditText editTextSun;
     private Spinner spinnerWeekWorkouts;
+    private TextView goalScheduleTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +46,10 @@ public class GoalAndScheduleActivity extends Activity {
         editTextSun = findViewById(R.id.editTextSun);
         Button saveButton = findViewById(R.id.saveButton);
         Button homeButton = findViewById(R.id.homeButton);
+        goalScheduleTextView = findViewById(R.id.goalScheduleTextView);
+
+        // Set the initial text for the current goal and schedule
+        updateGoalDisplay();
 
         // Save button click listener
         saveButton.setOnClickListener(v -> {
@@ -85,10 +91,11 @@ public class GoalAndScheduleActivity extends Activity {
                 GlobalData.saveAccounts(getApplicationContext());
                 Toast.makeText(this, "Goal and schedule saved successfully!", Toast.LENGTH_SHORT).show();
                 resetFields();
+                // Refresh the display with the new goal and schedule
+                updateGoalDisplay();
             } else {
                 Toast.makeText(this, "Error: No current user found.", Toast.LENGTH_SHORT).show();
             }
-
         });
 
         // Home button click listener to return to the previous screen
@@ -111,8 +118,18 @@ public class GoalAndScheduleActivity extends Activity {
 
         // Reset Spinner
         spinnerWeekWorkouts.setSelection(0);
-
     }
 
-
+    /**
+     * Updates the TextView to display the user's current goal and schedule.
+     */
+    private void updateGoalDisplay() {
+        if (GlobalData.currentUser != null && GlobalData.currentUser.getUserGoal() != null && GlobalData.currentUser.getUserSchedule() != null) {
+            String displayText = "Current Goal&Schedule:\n"+"\nGoal: " + GlobalData.currentUser.getUserGoal().toString() +
+                                 "\nSchedule: " + GlobalData.currentUser.getUserSchedule().toString();
+            goalScheduleTextView.setText(displayText);
+        } else {
+            goalScheduleTextView.setText("No goal or schedule set.");
+        }
+    }
 }

@@ -36,6 +36,11 @@ public class UserGoal implements Serializable {
     public String getGoalType() { return goalType; }
     public int getDaysPerWeek() { return daysPerWeek; }
 
-
-
+    /**
+     * Returns a human-readable string representation of the user's goal.
+     */
+    @Override
+    public String toString() {
+        return String.format("%s (%d days/week)", goalType, daysPerWeek);
+    }
 }
