@@ -85,6 +85,7 @@ public class LoginActivity extends AppCompatActivity {
         String username = usernameInput.getText().toString().trim();
         String password = passwordInput.getText().toString().trim();
 
+        // Validate inputs
         if (username.isEmpty() || password.isEmpty()) {
             Toast.makeText(this, "Please enter username and password", Toast.LENGTH_SHORT).show();
             return;
@@ -114,6 +115,18 @@ public class LoginActivity extends AppCompatActivity {
                     // Server said "Not Found". Check if we have this user locally.
                     Log.d("LOGIN", "User not found on server. Checking local storage...");
                     UserAccount localUser = findUser(username);
+//        if (foundUser == null) {
+//            Toast.makeText(this, "Username not found", Toast.LENGTH_SHORT).show();
+//            Log.d("LOGIN", "User not found: " + username);
+//            return;
+//        }
+//
+//        // Check password
+//        if (!foundUser.checkPassword(password)) {
+//            Toast.makeText(this, "Incorrect password!!!", Toast.LENGTH_SHORT).show();
+//            Log.d("login", "Wrong password for user " + username);
+//            return;
+//        }
 
                     if (localUser != null && localUser.getPassword().equals(password)) {
                         // Found user locally and password is correct.

@@ -5,6 +5,7 @@ import android.util.Patterns;
 import com.example.herculean.goals.UserGoal;
 import com.example.herculean.goals.UserSchedule;
 import com.example.herculean.goals.UserStreak;
+import com.example.herculean.security.Encryption;
 import com.example.herculean.workout.Logger;
 import com.example.herculean.workout.Workout;
 import com.jjoe64.graphview.series.DataPoint;
@@ -18,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 public class UserAccount implements Serializable {
-    private String username, password, email;
+    private String username, password, email, salt;
     private int level;
     public Logger workoutLog;
 
@@ -46,6 +47,7 @@ public class UserAccount implements Serializable {
         this.username = "";
         this.password = "";
         this.email = "";
+        this.salt = "";
         this.level = 1;
         this.workoutLog = new Logger();
         this.customization = defaultSettings.clone();
@@ -62,7 +64,8 @@ public class UserAccount implements Serializable {
     public UserAccount(String username, String password, String email) {
         this(); // Call default constructor, fill in what we know
         this.username = username;
-        this.password = password;
+        this.salt = Encryption.generateSalt();
+        this.password = Encryption.hashPassword(password, this.salt);
         this.email = email;
     }
 
@@ -82,7 +85,17 @@ public class UserAccount implements Serializable {
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        this.salt = Encryption.generateSalt();
+        this.password = Encryption.hashPassword(password, this.salt);
+    }
+
+    // New checkPassword function that uses the salt
+    public boolean checkPassword(String password) {
+        if (password == null || this.salt == null || this.salt.isEmpty()) {
+            return false;
+        }
+        String hash = Encryption.hashPassword(password, this.salt);
+        return hash != null && hash.equals(this.password);
     }
 
     public String getEmail() {
@@ -95,6 +108,10 @@ public class UserAccount implements Serializable {
 
     public int getLevel() {
         return level;
+    }
+
+    public String getSalt() {
+        return salt;
     }
 
     public void setLevel(int level) {
