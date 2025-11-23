@@ -36,8 +36,6 @@ public class ChatBot extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_bot);
 
-        getWindow().setDecorFitsSystemWindows(false);
-
         buttonHome = findViewById(R.id.homeButton);
         sendButton = findViewById(R.id.sendButton);
         inputMessage = findViewById(R.id.inputMessage);

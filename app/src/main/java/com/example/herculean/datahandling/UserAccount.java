@@ -5,25 +5,33 @@ import android.util.Patterns;
 import com.example.herculean.goals.UserGoal;
 import com.example.herculean.goals.UserSchedule;
 import com.example.herculean.goals.UserStreak;
+import com.example.herculean.security.Encryption;
 import com.example.herculean.workout.Logger;
 import com.example.herculean.workout.Workout;
+import com.jjoe64.graphview.series.DataPoint;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.time.LocalDate;
 
 public class UserAccount implements Serializable {
-    private String username, password, email;
+    private String username, password, email, salt;
     private int level;
     public Logger workoutLog;
 
     public int[] customization; // [emailDisplayed]
     private String profileImageUri; // URI of the profile image
 
+    // Workout notifications
+    private boolean workoutNotifications;
+    private String notificationTime;
+
     public static int[] defaultSettings = {0}; // Default customization settings
+
     public enum CustomizationOptions {
         EMAIL_DISPLAYED
     }
@@ -34,12 +42,49 @@ public class UserAccount implements Serializable {
 
     public ArrayList<Workout> customExercises;
 
+    // ───────────────────────────────────────────────────────────────
+    // FOLLOWING SYSTEM (your required fix)
+    // ───────────────────────────────────────────────────────────────
+    private ArrayList<String> following = new ArrayList<>();
+
+    public void followUser(String username) {
+        following.remove(username);
+        following.add(0, username);
+    }
+
+    public void unfollowUser(String username) {
+        following.remove(username);
+    }
+
+
+    public ArrayList<String> getFollowing() {
+        if (following == null) following = new ArrayList<>();
+        return following;
+    }
+
+    public void setFollowing(ArrayList<String> following) {
+        this.following = (following == null) ? new ArrayList<>() : following;
+    }
+
+    // ───────────────────────────────────────────────────────────────
+
 
     // No-argument constructor (required for Gson deserialization)
     public UserAccount() {
-        this.username = "";
-        this.password = "";
-        this.email = "";
+        // DO NOT overwrite fields Gson will deserialize
+        this.customExercises = new ArrayList<>();
+
+        // Safe defaults
+        if (following == null) following = new ArrayList<>();
+    }
+
+    // Constructor with parameters
+    public UserAccount(String username, String password, String email) {
+        this(); // do not reset following
+        this.username = username;
+        this.salt = Encryption.generateSalt();
+        this.password = Encryption.hashPassword(password, this.salt);
+        this.email = email;
         this.level = 1;
         this.workoutLog = new Logger();
         this.customization = defaultSettings.clone();
@@ -47,23 +92,11 @@ public class UserAccount implements Serializable {
         this.userGoal = new UserGoal("General Fitness", 3);
         this.userSchedule = new UserSchedule("Rest", "Rest", "Rest", "Rest", "Rest", "Rest", "Rest");
         this.userStreak = new UserStreak();
-        this.customExercises = new ArrayList<>();
-    }
-
-    // Constructor with parameters
-    public UserAccount(String username, String password, String email) {
-        this.username = username;
-        this.password = password;
-        this.email = email;
-        this.level = 1;
-        this.workoutLog = new Logger();
-        this.customization = defaultSettings.clone(); // Default customization settings
-        this.profileImageUri = null;
     }
 
     // Constructor with customization parameters
     public UserAccount(String username, String password, String email, int[] customization) {
-        this(username, password, email); // Call the other constructor
+        this(username, password, email);
         this.customization = customization;
         this.userGoal = new UserGoal("General Fitness", 3);
         this.userSchedule = new UserSchedule("Rest", "Rest", "Rest", "Rest", "Rest", "Rest", "Rest");
@@ -86,7 +119,17 @@ public class UserAccount implements Serializable {
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        this.salt = Encryption.generateSalt();
+        this.password = Encryption.hashPassword(password, this.salt);
+    }
+
+    // New checkPassword function that uses the salt
+    public boolean checkPassword(String password) {
+        if (password == null || this.salt == null || this.salt.isEmpty()) {
+            return false;
+        }
+        String hash = Encryption.hashPassword(password, this.salt);
+        return hash != null && hash.equals(this.password);
     }
 
     public String getEmail() {
@@ -101,6 +144,10 @@ public class UserAccount implements Serializable {
         return level;
     }
 
+    public String getSalt() {
+        return salt;
+    }
+
     public void setLevel(int level) {
         this.level = level;
     }
@@ -113,12 +160,41 @@ public class UserAccount implements Serializable {
         this.workoutLog = workoutLog;
     }
 
-    public boolean isEmailDisplayed() { return this.customization[CustomizationOptions.EMAIL_DISPLAYED.ordinal()] == 1; }
-    public void emailDisplayed(boolean displayed) { this.customization[CustomizationOptions.EMAIL_DISPLAYED.ordinal()] = displayed ? 1 : 0; }
+    public boolean isEmailDisplayed() {
+        return this.customization[CustomizationOptions.EMAIL_DISPLAYED.ordinal()] == 1;
+    }
 
-    public String getProfileImageUri() { return profileImageUri; }
+    public void emailDisplayed(boolean displayed) {
+        this.customization[CustomizationOptions.EMAIL_DISPLAYED.ordinal()] = displayed ? 1 : 0;
+    }
 
-    public void setProfileImageUri(String profileImageUri) { this.profileImageUri = profileImageUri; }
+    public String getProfileImageUri() {
+        return profileImageUri;
+    }
+
+    public void setProfileImageUri(String profileImageUri) {
+        this.profileImageUri = profileImageUri;
+    }
+
+    // ──────────────────── Notifications ────────────────────
+
+    public boolean areWorkoutNotificationsEnabled() {
+        return workoutNotifications;
+    }
+
+    public void setWorkoutNotifications(boolean workoutNotifications) {
+        this.workoutNotifications = workoutNotifications;
+    }
+
+    public String getNotificationTime() {
+        return notificationTime;
+    }
+
+    public void setNotificationTime(String notificationTime) {
+        this.notificationTime = notificationTime;
+    }
+
+    // ──────────────────── Validation ────────────────────
 
     public static boolean validPassword(String password) {
         return password.length() >= 6;
@@ -132,10 +208,12 @@ public class UserAccount implements Serializable {
         return Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
+    // ──────────────────── Stats helpers ────────────────────
+
     public Workout getBestWorkout() {
         Workout best = null;
-        for(Workout workout : workoutLog.getWorkouts()) {
-            if((best == null) || (workout.getScore() > best.getScore())) {
+        for (Workout workout : workoutLog.getWorkouts()) {
+            if ((best == null) || (workout.getScore() > best.getScore())) {
                 best = workout;
             }
         }
@@ -144,18 +222,17 @@ public class UserAccount implements Serializable {
 
     public String getFavoriteWorkoutType() {
         Map<String, Integer> workoutTypes = new HashMap<>();
-        for(Workout workout : workoutLog.getWorkouts()) {
+        for (Workout workout : workoutLog.getWorkouts()) {
             String name = workout.getExerciseName();
 
-            // Workout types are weighted by how much you did of them
-            if(workoutTypes.containsKey(name)) {
+            if (workoutTypes.containsKey(name)) {
                 workoutTypes.put(name, workoutTypes.get(name) + (int) workout.getScore());
             } else {
                 workoutTypes.put(name, (int) workout.getScore());
             }
         }
 
-        if(workoutTypes.isEmpty()) {
+        if (workoutTypes.isEmpty()) {
             return "None";
         }
         return Collections.max(workoutTypes.entrySet(), Map.Entry.comparingByValue()).getKey();
@@ -163,17 +240,16 @@ public class UserAccount implements Serializable {
 
     public String getFavoriteMuscleGroup() {
         Map<String, Integer> muscleGroups = new HashMap<>();
-        for(Workout workout : workoutLog.getWorkouts()) {
+        for (Workout workout : workoutLog.getWorkouts()) {
             String name = workout.getBodyPart();
 
-            // Muscle groups are weighted by how much you did of them
-            if(muscleGroups.containsKey(name)) {
+            if (muscleGroups.containsKey(name)) {
                 muscleGroups.put(name, muscleGroups.get(name) + (int) workout.getScore());
             } else {
                 muscleGroups.put(name, (int) workout.getScore());
             }
         }
-        if(muscleGroups.isEmpty()) {
+        if (muscleGroups.isEmpty()) {
             return "None";
         }
         return Collections.max(muscleGroups.entrySet(), Map.Entry.comparingByValue()).getKey();
@@ -181,8 +257,8 @@ public class UserAccount implements Serializable {
 
     public Logger getRecentWorkouts(LocalDate start) {
         Logger recentWorkouts = new Logger();
-        for(Workout workout : workoutLog.getWorkouts()) {
-            if(workout.getDate().isAfter(start)) {
+        for (Workout workout : workoutLog.getWorkouts()) {
+            if (workout.getDate().isAfter(start)) {
                 recentWorkouts.addWorkout(workout);
             }
         }
@@ -216,10 +292,49 @@ public class UserAccount implements Serializable {
     public ArrayList<Workout> getCustomExercises() {
         return customExercises;
     }
+
     public void setCustomExercises(ArrayList<Workout> exercises) {
         customExercises = exercises;
     }
+
     public void addCustomExercise(Workout exercise) {
         customExercises.add(exercise);
+    }
+
+    // ──────────────────── Graph Data ────────────────────
+
+    public DataPoint[] getDayDataPoints(int days) {
+        List<Workout> recents = getRecentWorkouts(LocalDate.now().minusDays(days)).getWorkouts();
+        DataPoint[] points = new DataPoint[days];
+        int[] scores = new int[days];
+
+        for (int i = 0; i < days; i++) {
+            scores[i] = 0;
+            for (Workout workout : recents) {
+                if (LocalDate.now().minusDays(days - i - 1).isEqual(workout.getDate())) {
+                    scores[i] += workout.getScore();
+                }
+            }
+            points[i] = new DataPoint(i, scores[i]);
+        }
+        return points;
+    }
+
+    public DataPoint[] getMonthDataPoints(int months) {
+        List<Workout> recents = getRecentWorkouts(LocalDate.now().minusMonths(months)).getWorkouts();
+        DataPoint[] points = new DataPoint[months];
+        int[] scores = new int[months];
+
+        for (int i = 0; i < months; i++) {
+            scores[i] = 0;
+            for (Workout workout : recents) {
+                if (LocalDate.now().minusMonths(months - i - 1).getMonth() ==
+                        workout.getDate().getMonth()) {
+                    scores[i] += workout.getScore();
+                }
+            }
+            points[i] = new DataPoint(i, scores[i]);
+        }
+        return points;
     }
 }

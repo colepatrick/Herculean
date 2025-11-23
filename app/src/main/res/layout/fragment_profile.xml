@@ -4,167 +4,112 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="right"
     android:orientation="vertical"
     tools:context=".ui.profile.ProfileFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <Button
-            android:id="@+id/customize_button"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_marginEnd="4dp"
-            android:text="@string/customize"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
     <LinearLayout
-        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:orientation="vertical">
+        android:orientation="horizontal">
 
-        <ImageView
-            android:id="@+id/profile_picture"
+        <Button
+            android:id="@+id/friendsButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:scaleType="fitCenter"
-            app:srcCompat="@drawable/avatar_filler"
-            tools:srcCompat="@drawable/avatar_filler" />
+            android:text="Friends" />
 
-        <TextView
-            android:id="@+id/profile_username"
-            android:layout_width="326dp"
+        <Button
+            android:id="@+id/customizeButton"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="8dp"
-            android:text="@string/nav_header_title"
-            android:textAlignment="center"
-            android:textSize="20sp" />
-
-        <TextView
-            android:id="@+id/profile_user_email"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="8dp"
-            android:text="@string/nav_header_subtitle"
-            android:textAlignment="center"
-            android:textSize="20sp" />
-
-        <View
-            android:id="@+id/divider"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="?android:attr/listDivider" />
-
+            android:text="@string/customize" />
     </LinearLayout>
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/streak_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:text="🔥 0 Week Streak"
-            android:textAlignment="center"
-            android:textSize="24sp"
-            android:textStyle="bold" />
-
-        <View
-            android:id="@+id/divider2"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="?android:attr/listDivider" />
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8sp"
-            android:layout_marginTop="16sp"
-            android:layout_marginRight="8sp"
+            android:padding="16dp"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/best_workout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/best_workout"
-                android:textAlignment="center"
-                android:textSize="28sp" />
+            <ImageView
+                android:id="@+id/profilePicture"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/avatar_filler"
+                android:background="@drawable/profile_pic_border" />
 
             <TextView
-                android:id="@+id/best_workout_details"
-                android:layout_width="match_parent"
+                android:id="@+id/profileUsername"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/no_workouts"
-                android:textAlignment="center"
-                android:textSize="20sp" />
+                android:layout_marginTop="12dp"
+                android:text="Username"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_gravity="center_horizontal" />
+
+            <TextView
+                android:id="@+id/profileUserEmail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Email"
+                android:layout_marginTop="4dp"
+                android:layout_gravity="center_horizontal" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginVertical="16dp"
+                android:background="@android:color/darker_gray" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Stats"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/streakText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Streak: 0"
+                android:layout_marginTop="8dp" />
+
+            <TextView
+                android:id="@+id/bestWorkoutDetails"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Best workout" />
+
+            <TextView
+                android:id="@+id/favoriteWorkoutType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Favorite workout type" />
+
+            <TextView
+                android:id="@+id/favoriteMuscleGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Favorite muscle group" />
+
+            <com.jjoe64.graphview.GraphView
+                android:id="@+id/workoutDaysGraph"
+                android:layout_width="match_parent"
+                android:layout_height="200dp" />
+
+            <com.jjoe64.graphview.GraphView
+                android:id="@+id/workoutMonthGraph"
+                android:layout_width="match_parent"
+                android:layout_height="200dp" />
 
         </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8sp"
-            android:layout_marginTop="16sp"
-            android:layout_marginRight="8sp"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/favorite_workout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/favorite_workout"
-                android:textAlignment="center"
-                android:textSize="28sp" />
-
-            <TextView
-                android:id="@+id/favorite_workout_type"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/no_workouts"
-                android:textAlignment="center"
-                android:textSize="20sp" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="8sp"
-            android:layout_marginTop="16sp"
-            android:layout_marginRight="8sp"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/favorite_muscle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/favorite_muscle"
-                android:textAlignment="center"
-                android:textSize="28sp" />
-
-            <TextView
-                android:id="@+id/favorite_muscle_group"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/no_workouts"
-                android:textAlignment="center"
-                android:textSize="20sp" />
-        </LinearLayout>
-
-    </LinearLayout>
-
+    </ScrollView>
 </LinearLayout>

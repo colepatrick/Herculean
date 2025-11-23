@@ -1,20 +1,20 @@
 package com.example.herculean.goals;
 import java.io.Serializable;
+import java.util.Calendar;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-
 public class UserSchedule implements Serializable {
 
     // Fields
-    private String mon, tue, wen, thur, fri, sat, sun;
+    private String mon, tue, wed, thur, fri, sat, sun;
 
     // Constructor
-    public UserSchedule(String mon, String tue, String wen, String thur, String fri, String sat, String sun) {
+    public UserSchedule(String mon, String tue, String wed, String thur, String fri, String sat, String sun) {
         this.mon = mon;
         this.tue = tue;
-        this.wen = wen;
+        this.wed = wed;
         this.thur = thur;
         this.fri = fri;
         this.sat = sat;
@@ -25,7 +25,7 @@ public class UserSchedule implements Serializable {
         JSONObject json = new JSONObject();
         json.put("mon", mon);
         json.put("tue", tue);
-        json.put("wen", wen);
+        json.put("wed", wed);
         json.put("thur", thur);
         json.put("fri", fri);
         json.put("sat", sat);
@@ -37,7 +37,7 @@ public class UserSchedule implements Serializable {
         return new UserSchedule(
                 json.getString("mon"),
                 json.getString("tue"),
-                json.getString("wen"),
+                json.getString("wed"),
                 json.getString("thur"),
                 json.getString("fri"),
                 json.getString("sat"),
@@ -46,10 +46,10 @@ public class UserSchedule implements Serializable {
     }
 
     // Change all days at once
-    public void changeSchedule(String mon, String tue, String wen, String thur, String fri, String sat, String sun) {
+    public void changeSchedule(String mon, String tue, String wed, String thur, String fri, String sat, String sun) {
         this.mon = mon;
         this.tue = tue;
-        this.wen = wen;
+        this.wed = wed;
         this.thur = thur;
         this.fri = fri;
         this.sat = sat;
@@ -65,8 +65,8 @@ public class UserSchedule implements Serializable {
         return tue;
     }
 
-    public String getWen() {
-        return wen;
+    public String getWed() {
+        return wed;
     }
 
     public String getThur() {
@@ -85,6 +85,27 @@ public class UserSchedule implements Serializable {
         return sun;
     }
 
+    public String getWorkoutForDay(int day) {
+        switch (day) {
+            case Calendar.MONDAY:
+                return mon;
+            case Calendar.TUESDAY:
+                return tue;
+            case Calendar.WEDNESDAY:
+                return wed;
+            case Calendar.THURSDAY:
+                return thur;
+            case Calendar.FRIDAY:
+                return fri;
+            case Calendar.SATURDAY:
+                return sat;
+            case Calendar.SUNDAY:
+                return sun;
+            default:
+                return "Rest";
+        }
+    }
+
     // Setters
     public void setMon(String mon) {
         this.mon = mon;
@@ -94,8 +115,8 @@ public class UserSchedule implements Serializable {
         this.tue = tue;
     }
 
-    public void setWen(String wen) {
-        this.wen = wen;
+    public void setWed(String wed) {
+        this.wed = wed;
     }
 
     public void setThur(String thur) {
@@ -114,4 +135,14 @@ public class UserSchedule implements Serializable {
         this.sun = sun;
     }
 
+    /**
+     * Returns a human-readable string representation of the weekly schedule.
+     */
+    @Override
+    public String toString() {
+        return String.format(
+            "Mon: %s, Tue: %s, Wed: %s, Thu: %s, Fri: %s, Sat: %s, Sun: %s",
+            mon, tue, wed, thur, fri, sat, sun
+        );
+    }
 }

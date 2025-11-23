@@ -70,6 +70,29 @@
         android:name="com.example.herculean.ui.settings.theme.ThemesSettingsFragment"
         android:label="Theme Settings" />
 
+    <fragment
+        android:id="@+id/nav_friends"
+        android:name="com.example.herculean.ui.friends.FriendsFragment"
+        android:label="Friends"
+        tools:layout="@layout/fragment_friends">
+
+        <action
+            android:id="@+id/action_nav_friends_to_nav_view_friend_profile"
+            app:destination="@id/nav_view_friend_profile" />
+
+    </fragment>
+
+
+
+    <fragment
+        android:id="@+id/nav_view_friend_profile"
+        android:name="com.example.herculean.ui.friends.FriendsProfileFragment"
+        android:label="Friend Profile"
+        tools:layout="@layout/fragment_profile" />
+
+
+
+
 
     <action
         android:id="@+id/action_global_nav_past_workouts"
