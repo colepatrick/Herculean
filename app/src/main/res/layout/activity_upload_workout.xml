@@ -45,38 +45,106 @@
             android:textSize="26sp"
             android:textStyle="bold" />
 
-        <EditText
-            android:id="@+id/editTextWeight"
+        <LinearLayout
+            android:id="@+id/strengthLayout"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginBottom="16dp"
-            android:hint="Weight (lbs)"
-            android:inputType="numberDecimal"
-            android:textColor="?attr/colorOnBackground"
-            android:textColorHint="?attr/colorOnSurfaceVariant"
-            android:backgroundTint="?attr/colorPrimary" />
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
 
-        <EditText
-            android:id="@+id/editTextSets"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginBottom="16dp"
-            android:hint="Sets"
-            android:inputType="number"
-            android:textColor="?attr/colorOnBackground"
-            android:textColorHint="?attr/colorOnSurfaceVariant"
-            android:backgroundTint="?attr/colorPrimary" />
+            <EditText
+                android:id="@+id/editTextWeight"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginBottom="16dp"
+                android:hint="Weight (lbs)"
+                android:inputType="numberDecimal"
+                android:textColor="?attr/colorOnBackground"
+                android:textColorHint="?attr/colorOnSurfaceVariant"
+                android:backgroundTint="?attr/colorPrimary" />
 
-        <EditText
-            android:id="@+id/editTextReps"
+            <EditText
+                android:id="@+id/editTextSets"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginBottom="16dp"
+                android:hint="Sets"
+                android:inputType="number"
+                android:textColor="?attr/colorOnBackground"
+                android:textColorHint="?attr/colorOnSurfaceVariant"
+                android:backgroundTint="?attr/colorPrimary" />
+
+            <EditText
+                android:id="@+id/editTextReps"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginBottom="24dp"
+                android:hint="Reps"
+                android:inputType="number"
+                android:textColor="?attr/colorOnBackground"
+                android:textColorHint="?attr/colorOnSurfaceVariant"
+                android:backgroundTint="?attr/colorPrimary" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/bodyweightLayout"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginBottom="24dp"
-            android:hint="Reps"
-            android:inputType="number"
-            android:textColor="?attr/colorOnBackground"
-            android:textColorHint="?attr/colorOnSurfaceVariant"
-            android:backgroundTint="?attr/colorPrimary" />
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <EditText
+                android:id="@+id/editTextBodyweightSets"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginBottom="16dp"
+                android:hint="Sets"
+                android:inputType="number"
+                android:textColor="?attr/colorOnBackground"
+                android:textColorHint="?attr/colorOnSurfaceVariant"
+                android:backgroundTint="?attr/colorPrimary" />
+
+            <EditText
+                android:id="@+id/editTextBodyweightReps"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginBottom="24dp"
+                android:hint="Reps"
+                android:inputType="number"
+                android:textColor="?attr/colorOnBackground"
+                android:textColorHint="?attr/colorOnSurfaceVariant"
+                android:backgroundTint="?attr/colorPrimary" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/cardioLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <EditText
+                android:id="@+id/editTextDuration"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginBottom="16dp"
+                android:hint="Duration (minutes)"
+                android:inputType="numberDecimal"
+                android:textColor="?attr/colorOnBackground"
+                android:textColorHint="?attr/colorOnSurfaceVariant"
+                android:backgroundTint="?attr/colorPrimary" />
+
+            <EditText
+                android:id="@+id/editTextDistance"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginBottom="24dp"
+                android:hint="Distance (miles)"
+                android:inputType="numberDecimal"
+                android:textColor="?attr/colorOnBackground"
+                android:textColorHint="?attr/colorOnSurfaceVariant"
+                android:backgroundTint="?attr/colorPrimary" />
+        </LinearLayout>
 
         <!-- Upload Button -->
         <Button

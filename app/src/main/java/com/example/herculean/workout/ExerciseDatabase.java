@@ -20,105 +20,107 @@ public class ExerciseDatabase {
         exercises = new ArrayList<>();
 
         // Chest
-        exercises.add(new Workout("Bench Press", "Chest"));
-        exercises.add(new Workout("Incline Bench Press", "Chest"));
-        exercises.add(new Workout("Decline Bench Press", "Chest"));
-        exercises.add(new Workout("Dumbbell Flyes", "Chest"));
-        exercises.add(new Workout("Push-ups", "Chest"));
-        exercises.add(new Workout("Cable Crossover", "Chest"));
-        exercises.add(new Workout("Chest Press Machine", "Chest"));
-        exercises.add(new Workout("Dips", "Chest"));
-        exercises.add(new Workout("Pec Deck", "Chest"));
+        exercises.add(new Strength("Bench Press", "Chest", 0, 0, 0));
+        exercises.add(new Strength("Incline Bench Press", "Chest", 0, 0, 0));
+        exercises.add(new Strength("Decline Bench Press", "Chest", 0, 0, 0));
+        exercises.add(new Strength("Dumbbell Flyes", "Chest", 0, 0, 0));
+        exercises.add(new Bodyweight("Push-ups", "Chest", 0, 0));
+        exercises.add(new Strength("Cable Crossover", "Chest", 0, 0, 0));
+        exercises.add(new Strength("Chest Press Machine", "Chest", 0, 0, 0));
+        exercises.add(new Bodyweight("Dips", "Chest", 0, 0));
+        exercises.add(new Strength("Pec Deck", "Chest", 0, 0, 0));
 
         // Back
-        exercises.add(new Workout("Deadlift", "Back"));
-        exercises.add(new Workout("Pull-ups", "Back"));
-        exercises.add(new Workout("Lat Pulldown", "Back"));
-        exercises.add(new Workout("Bent Over Row", "Back"));
-        exercises.add(new Workout("T-Bar Row", "Back"));
-        exercises.add(new Workout("Seated Cable Row", "Back"));
-        exercises.add(new Workout("Face Pulls", "Back"));
-        exercises.add(new Workout("Hyperextensions", "Back"));
-        exercises.add(new Workout("Single Arm Dumbbell Row", "Back"));
-        exercises.add(new Workout("Shrugs", "Back"));
+        exercises.add(new Strength("Deadlift", "Back", 0, 0, 0));
+        exercises.add(new Bodyweight("Pull-ups", "Back", 0, 0));
+        exercises.add(new Strength("Lat Pulldown", "Back", 0, 0, 0));
+        exercises.add(new Strength("Bent Over Row", "Back", 0, 0, 0));
+        exercises.add(new Strength("T-Bar Row", "Back", 0, 0, 0));
+        exercises.add(new Strength("Seated Cable Row", "Back", 0, 0, 0));
+        exercises.add(new Strength("Face Pulls", "Back", 0, 0, 0));
+        exercises.add(new Bodyweight("Hyperextensions", "Back", 0, 0));
+        exercises.add(new Strength("Single Arm Dumbbell Row", "Back", 0, 0, 0));
+        exercises.add(new Strength("Shrugs", "Back", 0, 0, 0));
 
         // Leg
-        exercises.add(new Workout("Squat", "Legs"));
-        exercises.add(new Workout("Front Squat", "Legs"));
-        exercises.add(new Workout("Leg Press", "Legs"));
-        exercises.add(new Workout("Leg Extension", "Legs"));
-        exercises.add(new Workout("Leg Curl", "Legs"));
-        exercises.add(new Workout("Lunges", "Legs"));
-        exercises.add(new Workout("Bulgarian Split Squat", "Legs"));
-        exercises.add(new Workout("Calf Raises", "Legs"));
-        exercises.add(new Workout("Romanian Deadlift", "Legs"));
-        exercises.add(new Workout("Hack Squat", "Legs"));
-        exercises.add(new Workout("Box Jumps", "Legs"));
-        exercises.add(new Workout("Step-ups", "Legs"));
+        exercises.add(new Strength("Squat", "Legs", 0, 0, 0));
+        exercises.add(new Strength("Front Squat", "Legs", 0, 0, 0));
+        exercises.add(new Strength("Leg Press", "Legs", 0, 0, 0));
+        exercises.add(new Strength("Leg Extension", "Legs", 0, 0, 0));
+        exercises.add(new Strength("Leg Curl", "Legs", 0, 0, 0));
+        exercises.add(new Bodyweight("Lunges", "Legs", 0, 0));
+        exercises.add(new Strength("Bulgarian Split Squat", "Legs", 0, 0, 0));
+        exercises.add(new Bodyweight("Calf Raises", "Legs", 0, 0));
+        exercises.add(new Strength("Romanian Deadlift", "Legs", 0, 0, 0));
+        exercises.add(new Strength("Hack Squat", "Legs", 0, 0, 0));
+        exercises.add(new Bodyweight("Box Jumps", "Legs", 0, 0));
+        exercises.add(new Bodyweight("Step-ups", "Legs", 0, 0));
 
         // Shoulder
-        exercises.add(new Workout("Overhead Press", "Shoulders"));
-        exercises.add(new Workout("Dumbbell Shoulder Press", "Shoulders"));
-        exercises.add(new Workout("Lateral Raises", "Shoulders"));
-        exercises.add(new Workout("Front Raises", "Shoulders"));
-        exercises.add(new Workout("Rear Delt Flyes", "Shoulders"));
-        exercises.add(new Workout("Arnold Press", "Shoulders"));
-        exercises.add(new Workout("Upright Row", "Shoulders"));
-        exercises.add(new Workout("Cable Lateral Raises", "Shoulders"));
+        exercises.add(new Strength("Overhead Press", "Shoulders", 0, 0, 0));
+        exercises.add(new Strength("Dumbbell Shoulder Press", "Shoulders", 0, 0, 0));
+        exercises.add(new Strength("Lateral Raises", "Shoulders", 0, 0, 0));
+        exercises.add(new Strength("Front Raises", "Shoulders", 0, 0, 0));
+        exercises.add(new Strength("Rear Delt Flyes", "Shoulders", 0, 0, 0));
+        exercises.add(new Strength("Arnold Press", "Shoulders", 0, 0, 0));
+        exercises.add(new Strength("Upright Row", "Shoulders", 0, 0, 0));
+        exercises.add(new Strength("Cable Lateral Raises", "Shoulders", 0, 0, 0));
 
         // Arm
-        exercises.add(new Workout("Bicep Curls", "Arms"));
-        exercises.add(new Workout("Hammer Curls", "Arms"));
-        exercises.add(new Workout("Preacher Curls", "Arms"));
-        exercises.add(new Workout("Concentration Curls", "Arms"));
-        exercises.add(new Workout("Tricep Pushdown", "Arms"));
-        exercises.add(new Workout("Skull Crushers", "Arms"));
-        exercises.add(new Workout("Tricep Dips", "Arms"));
-        exercises.add(new Workout("Overhead Tricep Extension", "Arms"));
-        exercises.add(new Workout("Cable Curls", "Arms"));
-        exercises.add(new Workout("Close Grip Bench Press", "Arms"));
+        exercises.add(new Strength("Bicep Curls", "Arms", 0, 0, 0));
+        exercises.add(new Strength("Hammer Curls", "Arms", 0, 0, 0));
+        exercises.add(new Strength("Preacher Curls", "Arms", 0, 0, 0));
+        exercises.add(new Strength("Concentration Curls", "Arms", 0, 0, 0));
+        exercises.add(new Strength("Tricep Pushdown", "Arms", 0, 0, 0));
+        exercises.add(new Strength("Skull Crushers", "Arms", 0, 0, 0));
+        exercises.add(new Bodyweight("Tricep Dips", "Arms", 0, 0));
+        exercises.add(new Strength("Overhead Tricep Extension", "Arms", 0, 0, 0));
+        exercises.add(new Strength("Cable Curls", "Arms", 0, 0, 0));
+        exercises.add(new Strength("Close Grip Bench Press", "Arms", 0, 0, 0));
 
         // Core
-        exercises.add(new Workout("Crunches", "Core"));
-        exercises.add(new Workout("Planks", "Core"));
-        exercises.add(new Workout("Russian Twists", "Core"));
-        exercises.add(new Workout("Leg Raises", "Core"));
-        exercises.add(new Workout("Ab Wheel", "Core"));
-        exercises.add(new Workout("Mountain Climbers", "Core"));
-        exercises.add(new Workout("Bicycle Crunches", "Core"));
-        exercises.add(new Workout("Dead Bug", "Core"));
-        exercises.add(new Workout("Side Planks", "Core"));
-        exercises.add(new Workout("Hanging Leg Raises", "Core"));
+        exercises.add(new Bodyweight("Crunches", "Core", 0, 0));
+        exercises.add(new Bodyweight("Planks", "Core", 0, 0));
+        exercises.add(new Bodyweight("Russian Twists", "Core", 0, 0));
+        exercises.add(new Bodyweight("Leg Raises", "Core", 0, 0));
+        exercises.add(new Strength("Ab Wheel", "Core", 0, 0, 0));
+        exercises.add(new Bodyweight("Mountain Climbers", "Core", 0, 0));
+        exercises.add(new Bodyweight("Bicycle Crunches", "Core", 0, 0));
+        exercises.add(new Bodyweight("Dead Bug", "Core", 0, 0));
+        exercises.add(new Bodyweight("Side Planks", "Core", 0, 0));
+        exercises.add(new Bodyweight("Hanging Leg Raises", "Core", 0, 0));
 
         // Cardio
-        exercises.add(new Workout("Running", "Cardio"));
-        exercises.add(new Workout("Cycling", "Cardio"));
-        exercises.add(new Workout("Rowing", "Cardio"));
-        exercises.add(new Workout("Jump Rope", "Cardio"));
-        exercises.add(new Workout("Stair Climber", "Cardio"));
-        exercises.add(new Workout("Elliptical", "Cardio"));
-        exercises.add(new Workout("Swimming", "Cardio"));
-        exercises.add(new Workout("Burpees", "Cardio"));
-        exercises.add(new Workout("Sprints", "Cardio"));
+        exercises.add(new Cardio("Running", "Cardio", 0, 0));
+        exercises.add(new Cardio("Cycling", "Cardio", 0, 0));
+        exercises.add(new Cardio("Rowing", "Cardio", 0, 0));
+        exercises.add(new Cardio("Jump Rope", "Cardio", 0, 0));
+        exercises.add(new Cardio("Stair Climber", "Cardio", 0, 0));
+        exercises.add(new Cardio("Elliptical", "Cardio", 0, 0));
+        exercises.add(new Cardio("Swimming", "Cardio", 0, 0));
+        exercises.add(new Bodyweight("Burpees", "Cardio", 0, 0));
+        exercises.add(new Cardio("Sprints", "Cardio", 0, 0));
 
         // Olympic
-        exercises.add(new Workout("Clean and Jerk", "Olympic"));
-        exercises.add(new Workout("Snatch", "Olympic"));
-        exercises.add(new Workout("Power Clean", "Olympic"));
-        exercises.add(new Workout("Hang Clean", "Olympic"));
-        exercises.add(new Workout("Push Press", "Olympic"));
-        exercises.add(new Workout("Clean Pull", "Olympic"));
+        exercises.add(new Strength("Clean and Jerk", "Olympic", 0, 0, 0));
+        exercises.add(new Strength("Snatch", "Olympic", 0, 0, 0));
+        exercises.add(new Strength("Power Clean", "Olympic", 0, 0, 0));
+        exercises.add(new Strength("Hang Clean", "Olympic", 0, 0, 0));
+        exercises.add(new Strength("Push Press", "Olympic", 0, 0, 0));
+        exercises.add(new Strength("Clean Pull", "Olympic", 0, 0, 0));
 
-        for(Workout workout : GlobalData.currentUser.getCustomExercises()) {
-            exercises.add(workout);
+        if (GlobalData.currentUser != null && GlobalData.currentUser.getCustomExercises() != null) {
+            for(Workout workout : GlobalData.currentUser.getCustomExercises()) {
+                exercises.add(workout);
+            }
         }
     }
 
-    public static void addCustomExercise(String exerciseName, String bodyPart) {
+    public static void addCustomExercise(Workout workout) {
         if (exercises == null) {
             initializeExercises();
         }
-        exercises.add(new Workout(exerciseName, bodyPart));
+        exercises.add(workout);
     }
 
     public static List<Workout> getExercisesByBodyPart(String bodyPart) {
