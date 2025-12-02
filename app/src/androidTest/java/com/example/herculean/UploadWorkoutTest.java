@@ -1,7 +1,6 @@
 package com.example.herculean;
 
 import androidx.test.espresso.DataInteraction;
-import androidx.test.espresso.Espresso;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
@@ -9,15 +8,17 @@ import com.example.herculean.datahandling.GlobalData;
 import com.example.herculean.datahandling.UserAccount;
 import com.example.herculean.workout.Upload;
 
-import org.junit.Before;
+import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExternalResource;
 import org.junit.runner.RunWith;
 
 import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
+import static androidx.test.espresso.action.ViewActions.scrollTo;
 import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -28,21 +29,24 @@ import static org.hamcrest.Matchers.anything;
 @RunWith(AndroidJUnit4.class)
 public class UploadWorkoutTest {
 
+    @ClassRule
+    public static ExternalResource resource = new ExternalResource() {
+        @Override
+        protected void before() throws Throwable {
+            // Create a temporary user for the tests before any activity is launched
+            UserAccount testUser = new UserAccount("testUser", "password", "test@email.com");
+            GlobalData.currentUser = testUser;
+        }
+    };
+
     @Rule
     public ActivityScenarioRule<Upload> activityRule = new ActivityScenarioRule<>(Upload.class);
-
-    @Before
-    public void setUp() {
-        // Create a temporary user for the tests
-        UserAccount testUser = new UserAccount("testUser", "password", "test@email.com");
-        GlobalData.currentUser = testUser;
-    }
 
     @Test
     public void testUploadStrengthWorkout() {
         // 1. Select a Strength exercise
         onView(withId(R.id.selectExerciseButton)).perform(click());
-        onView(withText("Bench Press")).perform(click());
+        onView(withText("Bench Press")).perform(scrollTo(), click());
 
         // 2. Verify Strength layout is visible and enter details
         onView(withId(R.id.strengthLayout)).check(matches(isDisplayed()));
@@ -62,7 +66,7 @@ public class UploadWorkoutTest {
     public void testUploadBodyweightWorkout() {
         // 1. Select a Bodyweight exercise
         onView(withId(R.id.selectExerciseButton)).perform(click());
-        onView(withText("Push-ups")).perform(click());
+        onView(withText("Push-ups")).perform(scrollTo(), click());
 
         // 2. Verify Bodyweight layout is visible and enter details
         onView(withId(R.id.bodyweightLayout)).check(matches(isDisplayed()));
@@ -81,7 +85,7 @@ public class UploadWorkoutTest {
     public void testUploadCardioWorkout() {
         // 1. Select a Cardio exercise
         onView(withId(R.id.selectExerciseButton)).perform(click());
-        onView(withText("Running")).perform(click());
+        onView(withText("Running")).perform(scrollTo(), click());
 
         // 2. Verify Cardio layout is visible and enter details
         onView(withId(R.id.cardioLayout)).check(matches(isDisplayed()));
@@ -100,7 +104,7 @@ public class UploadWorkoutTest {
     public void testEmptyFieldsError() {
         // 1. Select an exercise but leave fields empty
         onView(withId(R.id.selectExerciseButton)).perform(click());
-        onView(withText("Bench Press")).perform(click());
+        onView(withText("Bench Press")).perform(scrollTo(), click());
 
         // 2. Attempt to upload
         onView(withId(R.id.buttonUploadWorkout)).perform(click());
