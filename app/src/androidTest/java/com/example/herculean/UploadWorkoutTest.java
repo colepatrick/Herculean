@@ -82,7 +82,7 @@ public class UploadWorkoutTest {
     }
 
     @Test
-    public void testUploadCardioWorkout() {
+    public void testUploadCardioWorkoutWithDistance() {
         // 1. Select a Cardio exercise
         onView(withId(R.id.selectExerciseButton)).perform(click());
         onView(withText("Running")).perform(scrollTo(), click());
@@ -99,6 +99,25 @@ public class UploadWorkoutTest {
         DataInteraction workoutItem = onData(anything()).inAdapterView(withId(R.id.workoutList)).atPosition(0);
         workoutItem.check(matches(isDisplayed()));
     }
+
+    @Test
+    public void testUploadCardioWorkoutWithoutDistance() {
+        // 1. Select a Cardio exercise
+        onView(withId(R.id.selectExerciseButton)).perform(click());
+        onView(withText("Jump Rope")).perform(scrollTo(), click());
+
+        // 2. Verify Cardio layout is visible and enter details
+        onView(withId(R.id.cardioLayout)).check(matches(isDisplayed()));
+        onView(withId(R.id.editTextDuration)).perform(typeText("15"), closeSoftKeyboard());
+
+        // 3. Upload the workout
+        onView(withId(R.id.buttonUploadWorkout)).perform(click());
+
+        // 4. Verify the workout is added to the list
+        DataInteraction workoutItem = onData(anything()).inAdapterView(withId(R.id.workoutList)).atPosition(0);
+        workoutItem.check(matches(isDisplayed()));
+    }
+
 
     @Test
     public void testEmptyFieldsError() {

@@ -74,6 +74,11 @@ public class Upload extends AppCompatActivity {
                     strengthLayout.setVisibility(View.GONE);
                     bodyweightLayout.setVisibility(View.GONE);
                     cardioLayout.setVisibility(View.VISIBLE);
+                    if (((Cardio) exercise).isDistanceBased()) {
+                        findViewById(R.id.editTextDistance).setVisibility(View.VISIBLE);
+                    } else {
+                        findViewById(R.id.editTextDistance).setVisibility(View.GONE);
+                    }
                 }
             });
 
@@ -187,23 +192,35 @@ public class Upload extends AppCompatActivity {
         String duration = editTextDuration.getText().toString();
         String distance = editTextDistance.getText().toString();
 
-        if (duration.isEmpty() || distance.isEmpty()) {
+        if (duration.isEmpty()) {
             Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
             return;
         }
 
         double durationValue;
-        double distanceValue;
+        double distanceValue = 0;
 
         try {
             durationValue = Double.parseDouble(duration);
-            distanceValue = Double.parseDouble(distance);
+            if (((Cardio) selectedExercise).isDistanceBased()) {
+                if (distance.isEmpty()) {
+                    Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                distanceValue = Double.parseDouble(distance);
+            }
         } catch (NumberFormatException e) {
             Toast.makeText(this, "Please enter NUMBERS ONLY!!!", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        Cardio newCardio = new Cardio(selectedExercise.getExerciseName(), selectedExercise.getBodyPart(), durationValue, distanceValue);
+        Cardio newCardio;
+        if (((Cardio) selectedExercise).isDistanceBased()) {
+            newCardio = new Cardio(selectedExercise.getExerciseName(), selectedExercise.getBodyPart(), durationValue, distanceValue);
+        } else {
+            newCardio = new Cardio(selectedExercise.getExerciseName(), selectedExercise.getBodyPart(), durationValue);
+        }
+
         newCardio.setDate(LocalDate.now());
         GlobalData.currentUser.workoutLog.addWorkout(newCardio);
         adapter.notifyDataSetChanged();

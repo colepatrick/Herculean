@@ -91,15 +91,15 @@ public class ExerciseDatabase {
         exercises.add(new Bodyweight("Hanging Leg Raises", "Core", 0, 0));
 
         // Cardio
-        exercises.add(new Cardio("Running", "Cardio", 0, 0));
-        exercises.add(new Cardio("Cycling", "Cardio", 0, 0));
-        exercises.add(new Cardio("Rowing", "Cardio", 0, 0));
-        exercises.add(new Cardio("Jump Rope", "Cardio", 0, 0));
-        exercises.add(new Cardio("Stair Climber", "Cardio", 0, 0));
-        exercises.add(new Cardio("Elliptical", "Cardio", 0, 0));
-        exercises.add(new Cardio("Swimming", "Cardio", 0, 0));
+        exercises.add(new Cardio("Running", "Cardio", true));
+        exercises.add(new Cardio("Cycling", "Cardio", true));
+        exercises.add(new Cardio("Rowing", "Cardio", true));
+        exercises.add(new Cardio("Jump Rope", "Cardio", false));
+        exercises.add(new Cardio("Stair Climber", "Cardio", false));
+        exercises.add(new Cardio("Elliptical", "Cardio", false));
+        exercises.add(new Cardio("Swimming", "Cardio", true));
         exercises.add(new Bodyweight("Burpees", "Cardio", 0, 0));
-        exercises.add(new Cardio("Sprints", "Cardio", 0, 0));
+        exercises.add(new Cardio("Sprints", "Cardio", true));
 
         // Olympic
         exercises.add(new Strength("Clean and Jerk", "Olympic", 0, 0, 0));

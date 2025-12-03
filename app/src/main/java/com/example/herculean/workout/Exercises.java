@@ -7,9 +7,12 @@ import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.View;
 import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -189,6 +192,27 @@ public class Exercises extends Dialog {
         workoutTypeSpinner.setAdapter(adapter);
         layout.addView(workoutTypeSpinner);
 
+        CheckBox distanceCheckBox = new CheckBox(getContext());
+        distanceCheckBox.setText("Track Distance");
+        distanceCheckBox.setVisibility(View.GONE);
+        layout.addView(distanceCheckBox);
+
+        workoutTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (parent.getItemAtPosition(position).toString().equals("Cardio")) {
+                    distanceCheckBox.setVisibility(View.VISIBLE);
+                } else {
+                    distanceCheckBox.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                distanceCheckBox.setVisibility(View.GONE);
+            }
+        });
+
         builder.setView(layout);
 
         builder.setPositiveButton("Create", (dialog, which) -> {
@@ -210,7 +234,7 @@ public class Exercises extends Dialog {
                     newWorkout = new Bodyweight(newExerciseName, bodyPart, 0, 0);
                     break;
                 case "Cardio":
-                    newWorkout = new Cardio(newExerciseName, bodyPart, 0, 0);
+                    newWorkout = new Cardio(newExerciseName, bodyPart, distanceCheckBox.isChecked());
                     break;
                 default:
                     return;
