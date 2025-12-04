@@ -23,23 +23,23 @@ public class UserApproximationTest {
 
     @Test
     public void testBmiCalculation_validData() {
-        // Height: 68.9 in (1.75m), Weight: 154.3 lbs (70kg)
+        // Height: 68.9 in, Weight: 154.3 lbs
         UserAccount user = createUser(68.9, 154.3, 30, "Male");
-        assertEquals(22.857, user.calculateBmi(), DELTA);
+        assertEquals(22.851, user.calculateBmi(), DELTA);
     }
 
     @Test
     public void testBmrCalculation_validMale() {
-        // Height: 68.9 in (1.75m), Weight: 154.3 lbs (70kg)
+        // Height: 68.9 in, Weight: 154.3 lbs, Age: 30
         UserAccount user = createUser(68.9, 154.3, 30, "Male");
-        assertEquals(1685.247, user.calculateBmr(), DELTA);
+        assertEquals(1695.538, user.calculateBmr(), DELTA);
     }
 
     @Test
     public void testBmrCalculation_validFemale() {
-        // Height: 63.0 in (1.60m), Weight: 121.3 lbs (55kg)
+        // Height: 63.0 in, Weight: 121.3 lbs, Age: 25
         UserAccount user = createUser(63.0, 121.3, 25, "Female");
-        assertEquals(1253.943, user.calculateBmr(), DELTA);
+        assertEquals(1343.835, user.calculateBmr(), DELTA);
     }
 
     @Test
@@ -51,7 +51,7 @@ public class UserApproximationTest {
 
     @Test
     public void testCalculations_incompleteData() {
-        // Height: 68.9 in (1.75m), Weight: 154.3 lbs (70kg)
+        // Height: 68.9 in, Weight: 154.3 lbs
         UserAccount user = createUser(68.9, 154.3, 0, "Male"); // Age is zero
         assertEquals(0, user.calculateBmr(), DELTA);
 
