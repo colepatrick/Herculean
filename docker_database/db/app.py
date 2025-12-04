@@ -5,8 +5,9 @@ import redis
 
 app = Flask(__name__)
 
-# Default to the compose redis service if REDIS_URL not provided
-r = redis.Redis.from_url(os.environ.get("REDIS_URL"))
+# Use env var if present; otherwise default to local Redis
+redis_url = os.environ.get("REDIS_URL", "redis://localhost:6379")
+r = redis.Redis.from_url(redis_url)
 
 # Account storage helpers
 def account_key(username: str) -> str:
