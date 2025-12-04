@@ -78,11 +78,36 @@ public class ProfileFragment extends Fragment {
             binding.favoriteMuscleGroup.setText(R.string.no_workouts);
         }
 
+        // Calculate and display BMI and BMR
+        double bmi = calculateBmi(displayUser);
+        double bmr = calculateBmr(displayUser);
+        binding.bmi.setText(String.format("BMI: %.2f", bmi));
+        binding.bmr.setText(String.format("BMR: %.2f", bmr));
+
         refreshPastDaysGraph(14); // 14 day history
         refreshPastMonthsGraph(12); // 12 month history
 
         updateStreakDisplay();
         return binding.getRoot();
+    }
+
+    private double calculateBmi(UserAccount user) {
+        if (user.getHeight() > 0) {
+            return user.getWeight() / (user.getHeight() * user.getHeight());
+        } else {
+            return 0;
+        }
+    }
+
+    private double calculateBmr(UserAccount user) {
+        if (user.getGender() != null && user.getAge() > 0 && user.getWeight() > 0 && user.getHeight() > 0) {
+            if (user.getGender().equalsIgnoreCase("male")) {
+                return 88.362 + (13.397 * user.getWeight()) + (4.799 * user.getHeight() * 100) - (5.677 * user.getAge());
+            } else if (user.getGender().equalsIgnoreCase("female")) {
+                return 447.593 + (9.247 * user.getWeight()) + (3.098 * user.getHeight() * 100) - (4.330 * user.getAge());
+            }
+        }
+        return 0;
     }
 
     private void updateStreakDisplay() {

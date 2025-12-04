@@ -98,6 +98,22 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/bmi"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="BMI: "
+                    android:textAlignment="center"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/bmr"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="BMR: "
+                    android:textAlignment="center"
+                    android:textSize="20sp" />
+
+                <TextView
                     android:id="@+id/bestWorkoutHeader"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

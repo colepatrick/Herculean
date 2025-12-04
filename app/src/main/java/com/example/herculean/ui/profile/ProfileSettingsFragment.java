@@ -11,9 +11,11 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -34,6 +36,7 @@ import com.example.herculean.goals.GoalAndScheduleActivity;
 import com.example.herculean.login.LoginActivity;
 import com.example.herculean.ui.profile.notification.NotificationReceiver;
 
+import java.text.DecimalFormat;
 import java.util.Calendar;
 
 public class ProfileSettingsFragment extends Fragment {
@@ -43,6 +46,9 @@ public class ProfileSettingsFragment extends Fragment {
 
     private ActivityResultLauncher<PickVisualMediaRequest> pickMedia;
     private ActivityResultLauncher<String> requestPermissionLauncher;
+
+    private static final double LBS_TO_KG = 0.453592;
+    private static final double IN_TO_M = 0.0254;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -91,8 +97,35 @@ public class ProfileSettingsFragment extends Fragment {
         setupProfileImage();
         setupSwitches();
         setupButtons();
+        setupInputFields();
 
         return binding.getRoot();
+    }
+
+    private void setupInputFields() {
+        // Gender spinner
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
+                R.array.gender_array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        binding.genderSpinner.setAdapter(adapter);
+
+        DecimalFormat df = new DecimalFormat("#.##");
+
+        // Load existing data
+        UserAccount currentUser = GlobalData.currentUser;
+        if (currentUser.getHeight() > 0) {
+            binding.heightInput.setText(df.format(currentUser.getHeight() / IN_TO_M));
+        }
+        if (currentUser.getWeight() > 0) {
+            binding.weightInput.setText(df.format(currentUser.getWeight() / LBS_TO_KG));
+        }
+        if (currentUser.getAge() > 0) {
+            binding.ageInput.setText(String.valueOf(currentUser.getAge()));
+        }
+        if (currentUser.getGender() != null) {
+            int spinnerPosition = adapter.getPosition(currentUser.getGender());
+            binding.genderSpinner.setSelection(spinnerPosition);
+        }
     }
 
     // ──────────────────── Switches ────────────────────
@@ -280,6 +313,35 @@ public class ProfileSettingsFragment extends Fragment {
         binding.goalAndScheduleButton.setOnClickListener(
                 v -> startActivity(new Intent(getActivity(), GoalAndScheduleActivity.class))
         );
+
+        binding.saveButton.setOnClickListener(v -> {
+            try {
+                UserAccount currentUser = GlobalData.currentUser;
+                String heightText = binding.heightInput.getText().toString();
+                if (!TextUtils.isEmpty(heightText)) {
+                    currentUser.setHeight(Double.parseDouble(heightText) * IN_TO_M);
+                }
+
+                String weightText = binding.weightInput.getText().toString();
+                if (!TextUtils.isEmpty(weightText)) {
+                    currentUser.setWeight(Double.parseDouble(weightText) * LBS_TO_KG);
+                }
+
+                String ageText = binding.ageInput.getText().toString();
+                if (!TextUtils.isEmpty(ageText)) {
+                    currentUser.setAge(Integer.parseInt(ageText));
+                }
+
+                if (binding.genderSpinner.getSelectedItem() != null) {
+                    currentUser.setGender(binding.genderSpinner.getSelectedItem().toString());
+                }
+
+                GlobalData.saveAccounts(getContext());
+                Toast.makeText(getContext(), "Saved", Toast.LENGTH_SHORT).show();
+            } catch (NumberFormatException e) {
+                Toast.makeText(getContext(), "Please enter valid numbers", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         binding.changePasswordButton.setOnClickListener(v -> showChangePasswordDialog());
         binding.logoutAccountButton.setOnClickListener(v -> showLogoutDialog());

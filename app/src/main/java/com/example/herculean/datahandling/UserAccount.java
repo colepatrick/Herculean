@@ -21,6 +21,9 @@ import java.util.Map;
 public class UserAccount implements Serializable {
     private String username, password, email, salt;
     private int level;
+    private double height, weight;
+    private int age;
+    private String gender;
     public Logger workoutLog;
 
     public int[] customization; // [emailDisplayed]
@@ -150,6 +153,38 @@ public class UserAccount implements Serializable {
 
     public void setLevel(int level) {
         this.level = level;
+    }
+
+    public double getHeight() {
+        return height;
+    }
+
+    public void setHeight(double height) {
+        this.height = height;
+    }
+
+    public double getWeight() {
+        return weight;
+    }
+
+    public void setWeight(double weight) {
+        this.weight = weight;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 
     public Logger getWorkoutLog() {
