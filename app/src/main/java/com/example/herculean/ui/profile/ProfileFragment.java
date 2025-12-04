@@ -78,11 +78,18 @@ public class ProfileFragment extends Fragment {
             binding.favoriteMuscleGroup.setText(R.string.no_workouts);
         }
 
-        // Calculate and display BMI and BMR
-        double bmi = calculateBmi(displayUser);
-        double bmr = calculateBmr(displayUser);
-        binding.bmi.setText(String.format("BMI: %.2f", bmi));
-        binding.bmr.setText(String.format("BMR: %.2f", bmr));
+        if (displayUser == GlobalData.currentUser) {
+            binding.bmi.setVisibility(View.VISIBLE);
+            binding.bmr.setVisibility(View.VISIBLE);
+            // Calculate and display BMI and BMR
+            double bmi = calculateBmi(displayUser);
+            double bmr = calculateBmr(displayUser);
+            binding.bmi.setText(String.format("BMI: %.2f kg/m^2", bmi));
+            binding.bmr.setText(String.format("BMR: %.2f calories/day", bmr));
+        } else {
+            binding.bmi.setVisibility(View.GONE);
+            binding.bmr.setVisibility(View.GONE);
+        }
 
         refreshPastDaysGraph(14); // 14 day history
         refreshPastMonthsGraph(12); // 12 month history
@@ -92,7 +99,7 @@ public class ProfileFragment extends Fragment {
     }
 
     private double calculateBmi(UserAccount user) {
-        if (user.getHeight() > 0) {
+        if (user.getHeight() > 0 && user.getWeight() > 0) {
             return user.getWeight() / (user.getHeight() * user.getHeight());
         } else {
             return 0;

@@ -59,9 +59,9 @@
     <string name="menu_reflow_graph">Graphs</string>
 
     <string-array name="gender_array">
+        <item>Select Gender</item>
         <item>Male</item>
         <item>Female</item>
-        <item>Other</item>
     </string-array>
 
 

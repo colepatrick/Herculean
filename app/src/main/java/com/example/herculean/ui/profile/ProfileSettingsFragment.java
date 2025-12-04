@@ -31,6 +31,7 @@ import com.bumptech.glide.Glide;
 import com.example.herculean.R;
 import com.example.herculean.datahandling.GlobalData;
 import com.example.herculean.datahandling.UserAccount;
+import com.example.herculean.database.AccountRepository;
 import com.example.herculean.databinding.FragmentProfileSettingsBinding;
 import com.example.herculean.goals.GoalAndScheduleActivity;
 import com.example.herculean.login.LoginActivity;
@@ -49,10 +50,13 @@ public class ProfileSettingsFragment extends Fragment {
 
     private static final double LBS_TO_KG = 0.453592;
     private static final double IN_TO_M = 0.0254;
+    private AccountRepository repo;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        repo = new AccountRepository(GlobalData.BASE_URL);
 
         // Image picker
         pickMedia = registerForActivityResult(
@@ -123,8 +127,14 @@ public class ProfileSettingsFragment extends Fragment {
             binding.ageInput.setText(String.valueOf(currentUser.getAge()));
         }
         if (currentUser.getGender() != null) {
-            int spinnerPosition = adapter.getPosition(currentUser.getGender());
-            binding.genderSpinner.setSelection(spinnerPosition);
+            for (int i = 0; i < adapter.getCount(); i++) {
+                if (currentUser.getGender().equalsIgnoreCase(adapter.getItem(i).toString())) {
+                    binding.genderSpinner.setSelection(i);
+                    break;
+                }
+            }
+        } else {
+            binding.genderSpinner.setSelection(0); // Default to "Select Gender"
         }
     }
 
@@ -317,27 +327,45 @@ public class ProfileSettingsFragment extends Fragment {
         binding.saveButton.setOnClickListener(v -> {
             try {
                 UserAccount currentUser = GlobalData.currentUser;
-                String heightText = binding.heightInput.getText().toString();
-                if (!TextUtils.isEmpty(heightText)) {
-                    currentUser.setHeight(Double.parseDouble(heightText) * IN_TO_M);
-                }
 
-                String weightText = binding.weightInput.getText().toString();
-                if (!TextUtils.isEmpty(weightText)) {
-                    currentUser.setWeight(Double.parseDouble(weightText) * LBS_TO_KG);
-                }
+                if (binding.genderSpinner.getSelectedItemPosition() > 0) {
+                    String heightText = binding.heightInput.getText().toString();
+                    if (!TextUtils.isEmpty(heightText)) {
+                        currentUser.setHeight(Double.parseDouble(heightText) * IN_TO_M);
+                    }
 
-                String ageText = binding.ageInput.getText().toString();
-                if (!TextUtils.isEmpty(ageText)) {
-                    currentUser.setAge(Integer.parseInt(ageText));
-                }
+                    String weightText = binding.weightInput.getText().toString();
+                    if (!TextUtils.isEmpty(weightText)) {
+                        currentUser.setWeight(Double.parseDouble(weightText) * LBS_TO_KG);
+                    }
 
-                if (binding.genderSpinner.getSelectedItem() != null) {
+                    String ageText = binding.ageInput.getText().toString();
+                    if (!TextUtils.isEmpty(ageText)) {
+                        currentUser.setAge(Integer.parseInt(ageText));
+                    }
+
                     currentUser.setGender(binding.genderSpinner.getSelectedItem().toString());
+                } else {
+                    // If "Select Gender" is chosen, reset stats
+                    currentUser.setHeight(0);
+                    currentUser.setWeight(0);
+                    currentUser.setAge(0);
+                    currentUser.setGender(null);
                 }
 
-                GlobalData.saveAccounts(getContext());
-                Toast.makeText(getContext(), "Saved", Toast.LENGTH_SHORT).show();
+                repo.updateAccount(currentUser.getUsername(), currentUser, new AccountRepository.ResultCallback<Void>() {
+                    @Override
+                    public void onSuccess(Void result) {
+                        GlobalData.saveAccounts(getContext());
+                        Toast.makeText(getContext(), "Saved", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        Toast.makeText(getContext(), "Error saving to backend", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
             } catch (NumberFormatException e) {
                 Toast.makeText(getContext(), "Please enter valid numbers", Toast.LENGTH_SHORT).show();
             }
