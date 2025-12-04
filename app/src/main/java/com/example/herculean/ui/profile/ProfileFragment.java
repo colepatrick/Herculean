@@ -82,8 +82,8 @@ public class ProfileFragment extends Fragment {
             binding.bmi.setVisibility(View.VISIBLE);
             binding.bmr.setVisibility(View.VISIBLE);
             // Calculate and display BMI and BMR
-            double bmi = calculateBmi(displayUser);
-            double bmr = calculateBmr(displayUser);
+            double bmi = displayUser.calculateBmi();
+            double bmr = displayUser.calculateBmr();
             binding.bmi.setText(String.format("BMI: %.2f kg/m^2", bmi));
             binding.bmr.setText(String.format("BMR: %.2f calories/day", bmr));
         } else {
@@ -96,25 +96,6 @@ public class ProfileFragment extends Fragment {
 
         updateStreakDisplay();
         return binding.getRoot();
-    }
-
-    private double calculateBmi(UserAccount user) {
-        if (user.getHeight() > 0 && user.getWeight() > 0) {
-            return user.getWeight() / (user.getHeight() * user.getHeight());
-        } else {
-            return 0;
-        }
-    }
-
-    private double calculateBmr(UserAccount user) {
-        if (user.getGender() != null && user.getAge() > 0 && user.getWeight() > 0 && user.getHeight() > 0) {
-            if (user.getGender().equalsIgnoreCase("male")) {
-                return 88.362 + (13.397 * user.getWeight()) + (4.799 * user.getHeight() * 100) - (5.677 * user.getAge());
-            } else if (user.getGender().equalsIgnoreCase("female")) {
-                return 447.593 + (9.247 * user.getWeight()) + (3.098 * user.getHeight() * 100) - (4.330 * user.getAge());
-            }
-        }
-        return 0;
     }
 
     private void updateStreakDisplay() {

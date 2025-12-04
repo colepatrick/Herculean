@@ -51,11 +51,13 @@ public class UserAccount implements Serializable {
     private ArrayList<String> following = new ArrayList<>();
 
     public void followUser(String username) {
+        if (following == null) following = new ArrayList<>();
         following.remove(username);
         following.add(0, username);
     }
 
     public void unfollowUser(String username) {
+        if (following == null) following = new ArrayList<>();
         following.remove(username);
     }
 
@@ -76,6 +78,7 @@ public class UserAccount implements Serializable {
     public UserAccount() {
         // DO NOT overwrite fields Gson will deserialize
         this.customExercises = new ArrayList<>();
+        this.workoutLog = new Logger(); // Initialize to prevent null pointers
 
         // Safe defaults
         if (following == null) following = new ArrayList<>();
@@ -104,6 +107,25 @@ public class UserAccount implements Serializable {
         this.userGoal = new UserGoal("General Fitness", 3);
         this.userSchedule = new UserSchedule("Rest", "Rest", "Rest", "Rest", "Rest", "Rest", "Rest");
         this.userStreak = new UserStreak();
+    }
+
+    public double calculateBmi() {
+        if (height > 0 && weight > 0) {
+            return weight / (height * height);
+        }
+        return 0;
+    }
+
+    public double calculateBmr() {
+        if (gender != null && age > 0 && weight > 0 && height > 0) {
+            double heightInCm = height * 100;
+            if (gender.equalsIgnoreCase("male")) {
+                return 88.362 + (13.397 * weight) + (4.799 * heightInCm) - (5.677 * age);
+            } else if (gender.equalsIgnoreCase("female")) {
+                return 447.593 + (9.247 * weight) + (3.098 * heightInCm) - (4.330 * age);
+            }
+        }
+        return 0;
     }
 
     /**************************************************************************************
@@ -188,6 +210,7 @@ public class UserAccount implements Serializable {
     }
 
     public Logger getWorkoutLog() {
+        if (workoutLog == null) workoutLog = new Logger();
         return workoutLog;
     }
 
@@ -246,8 +269,9 @@ public class UserAccount implements Serializable {
     // ──────────────────── Stats helpers ────────────────────
 
     public Workout getBestWorkout() {
+        if (getWorkoutLog().getWorkouts().isEmpty()) return null;
         Workout best = null;
-        for (Workout workout : workoutLog.getWorkouts()) {
+        for (Workout workout : getWorkoutLog().getWorkouts()) {
             if ((best == null) || (workout.getScore() > best.getScore())) {
                 best = workout;
             }
@@ -256,8 +280,9 @@ public class UserAccount implements Serializable {
     }
 
     public String getFavoriteWorkoutType() {
+        if (getWorkoutLog().getWorkouts().isEmpty()) return "None";
         Map<String, Integer> workoutTypes = new HashMap<>();
-        for (Workout workout : workoutLog.getWorkouts()) {
+        for (Workout workout : getWorkoutLog().getWorkouts()) {
             String name = workout.getExerciseName();
 
             if (workoutTypes.containsKey(name)) {
@@ -274,8 +299,9 @@ public class UserAccount implements Serializable {
     }
 
     public String getFavoriteMuscleGroup() {
+        if (getWorkoutLog().getWorkouts().isEmpty()) return "None";
         Map<String, Integer> muscleGroups = new HashMap<>();
-        for (Workout workout : workoutLog.getWorkouts()) {
+        for (Workout workout : getWorkoutLog().getWorkouts()) {
             String name = workout.getBodyPart();
 
             if (muscleGroups.containsKey(name)) {
@@ -292,7 +318,8 @@ public class UserAccount implements Serializable {
 
     public Logger getRecentWorkouts(LocalDate start) {
         Logger recentWorkouts = new Logger();
-        for (Workout workout : workoutLog.getWorkouts()) {
+        if (getWorkoutLog().getWorkouts().isEmpty()) return recentWorkouts;
+        for (Workout workout : getWorkoutLog().getWorkouts()) {
             if (workout.getDate().isAfter(start)) {
                 recentWorkouts.addWorkout(workout);
             }
@@ -317,6 +344,7 @@ public class UserAccount implements Serializable {
     }
 
     public UserStreak getUserStreak() {
+        if (userStreak == null) userStreak = new UserStreak();
         return userStreak;
     }
 
@@ -325,6 +353,7 @@ public class UserAccount implements Serializable {
     }
 
     public ArrayList<Workout> getCustomExercises() {
+        if (customExercises == null) customExercises = new ArrayList<>();
         return customExercises;
     }
 
@@ -333,6 +362,7 @@ public class UserAccount implements Serializable {
     }
 
     public void addCustomExercise(Workout exercise) {
+        if (customExercises == null) customExercises = new ArrayList<>();
         customExercises.add(exercise);
     }
 
