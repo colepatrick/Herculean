@@ -1,8 +1,11 @@
 services:
   web:
     build: ./db
+    image: colepatrick/herculean-db:latest
     ports:
       - "5000:5000"
+    environment:
+      REDIS_URL: redis://redis:6379
     depends_on:
       - redis
 

@@ -78,6 +78,19 @@ public class ProfileFragment extends Fragment {
             binding.favoriteMuscleGroup.setText(R.string.no_workouts);
         }
 
+        if (displayUser == GlobalData.currentUser) {
+            binding.bmi.setVisibility(View.VISIBLE);
+            binding.bmr.setVisibility(View.VISIBLE);
+            // Calculate and display BMI and BMR
+            double bmi = displayUser.calculateBmi();
+            double bmr = displayUser.calculateBmr();
+            binding.bmi.setText(String.format("BMI: %.2f kg/m^2", bmi));
+            binding.bmr.setText(String.format("BMR: %.2f calories/day", bmr));
+        } else {
+            binding.bmi.setVisibility(View.GONE);
+            binding.bmr.setVisibility(View.GONE);
+        }
+
         refreshPastDaysGraph(14); // 14 day history
         refreshPastMonthsGraph(12); // 12 month history
 

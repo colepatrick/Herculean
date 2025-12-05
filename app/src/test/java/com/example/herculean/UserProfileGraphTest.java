@@ -1,8 +1,11 @@
 package com.example.herculean;
 
 import com.example.herculean.datahandling.UserAccount;
+import com.example.herculean.workout.Bodyweight;
+import com.example.herculean.workout.Cardio;
 import com.example.herculean.workout.Logger;
 import com.example.herculean.workout.Workout;
+import com.example.herculean.workout.Strength;
 import com.jjoe64.graphview.series.DataPoint;
 
 import static org.junit.Assert.*;
@@ -11,14 +14,22 @@ import org.junit.Test;
 import java.time.LocalDate;
 
 public class UserProfileGraphTest {
-    // Helper function
-    private Workout createWorkout(LocalDate date, int score) {
-        Workout workout = new Workout("Test Exercise", "Test Muscle");
+    // Helper functions
+    private Workout createStrengthWorkout(LocalDate date, int score) {
+        Strength workout = new Strength("Test Strength", "Test Muscle", 1, 1, score);
         workout.setDate(date);
-        workout.setSets(1);
-        workout.setReps(score);
-        workout.setWeight(1.0);
+        return workout;
+    }
 
+    private Workout createBodyweightWorkout(LocalDate date, int sets, int reps) {
+        Bodyweight workout = new Bodyweight("Test Bodyweight", "Test Muscle", sets, reps);
+        workout.setDate(date);
+        return workout;
+    }
+
+    private Workout createCardioWorkout(LocalDate date, double duration, double distance) {
+        Cardio workout = new Cardio("Test Cardio", "Test Muscle", duration, distance);
+        workout.setDate(date);
         return workout;
     }
 
@@ -44,7 +55,7 @@ public class UserProfileGraphTest {
         // Setup inside the test
         UserAccount userAccount = new UserAccount();
         Logger workoutLog = new Logger();
-        workoutLog.addWorkout(createWorkout(LocalDate.now(), 100)); // Workout today
+        workoutLog.addWorkout(createStrengthWorkout(LocalDate.now(), 100));
         userAccount.setWorkoutLog(workoutLog);
         int days = 7;
 
@@ -62,8 +73,8 @@ public class UserProfileGraphTest {
         UserAccount userAccount = new UserAccount();
         Logger workoutLog = new Logger();
         LocalDate twoDaysAgo = LocalDate.now().minusDays(2);
-        workoutLog.addWorkout(createWorkout(twoDaysAgo, 50));
-        workoutLog.addWorkout(createWorkout(twoDaysAgo, 75));
+        workoutLog.addWorkout(createStrengthWorkout(twoDaysAgo, 50));
+        workoutLog.addWorkout(createStrengthWorkout(twoDaysAgo, 75));
         userAccount.setWorkoutLog(workoutLog);
         int days = 14;
 
@@ -80,9 +91,9 @@ public class UserProfileGraphTest {
         // Setup inside the test
         UserAccount userAccount = new UserAccount();
         Logger workoutLog = new Logger();
-        workoutLog.addWorkout(createWorkout(LocalDate.now(), 100));            // Today
-        workoutLog.addWorkout(createWorkout(LocalDate.now().minusDays(1), 80)); // Yesterday
-        workoutLog.addWorkout(createWorkout(LocalDate.now().minusDays(4), 120)); // 4 days ago
+        workoutLog.addWorkout(createStrengthWorkout(LocalDate.now(), 100));
+        workoutLog.addWorkout(createStrengthWorkout(LocalDate.now().minusDays(1), 80));
+        workoutLog.addWorkout(createStrengthWorkout(LocalDate.now().minusDays(4), 120));
         userAccount.setWorkoutLog(workoutLog);
         int days = 5;
 
@@ -102,7 +113,7 @@ public class UserProfileGraphTest {
         // Setup inside the test
         UserAccount userAccount = new UserAccount();
         Logger workoutLog = new Logger();
-        workoutLog.addWorkout(createWorkout(LocalDate.now().minusDays(8), 500)); // 8 days ago
+        workoutLog.addWorkout(createStrengthWorkout(LocalDate.now().minusDays(8), 500));
         userAccount.setWorkoutLog(workoutLog);
         int days = 7;
 
@@ -115,6 +126,34 @@ public class UserProfileGraphTest {
         }
     }
 
+    @Test
+    public void getDayDataPoints_withMixedWorkouts_returnsSummedScores() {
+        // Setup
+        UserAccount userAccount = new UserAccount();
+        Logger workoutLog = new Logger();
+        LocalDate today = LocalDate.now();
+        LocalDate yesterday = LocalDate.now().minusDays(1);
+
+        // Add a mix of workouts for today
+        workoutLog.addWorkout(createStrengthWorkout(today, 100)); // Score: 100
+        workoutLog.addWorkout(createBodyweightWorkout(today, 5, 10)); // Score: 50
+        // Total for today: 150
+
+        // Add a mix for yesterday
+        workoutLog.addWorkout(createCardioWorkout(yesterday, 30, 3)); // Score: (3/30)*100 = 10
+        workoutLog.addWorkout(createStrengthWorkout(yesterday, 40)); // Score: 40
+        // Total for yesterday: 50
+
+        userAccount.setWorkoutLog(workoutLog);
+        int days = 2;
+
+        // Execute
+        DataPoint[] points = userAccount.getDayDataPoints(days);
+
+        // Assert
+        assertEquals(50, (int) points[0].getY()); // Yesterday
+        assertEquals(150, (int) points[1].getY()); // Today
+    }
 
 // --- Tests for getMonthDataPoints ---
 
@@ -140,7 +179,7 @@ public class UserProfileGraphTest {
         // Setup inside the test
         UserAccount userAccount = new UserAccount();
         Logger workoutLog = new Logger();
-        workoutLog.addWorkout(createWorkout(LocalDate.now().withDayOfMonth(5), 200));
+        workoutLog.addWorkout(createStrengthWorkout(LocalDate.now().withDayOfMonth(5), 200));
         userAccount.setWorkoutLog(workoutLog);
         int months = 6;
 
@@ -158,8 +197,8 @@ public class UserProfileGraphTest {
         UserAccount userAccount = new UserAccount();
         Logger workoutLog = new Logger();
         LocalDate lastMonth = LocalDate.now().minusMonths(1);
-        workoutLog.addWorkout(createWorkout(lastMonth.withDayOfMonth(10), 150));
-        workoutLog.addWorkout(createWorkout(lastMonth.withDayOfMonth(20), 250));
+        workoutLog.addWorkout(createStrengthWorkout(lastMonth.withDayOfMonth(10), 150));
+        workoutLog.addWorkout(createStrengthWorkout(lastMonth.withDayOfMonth(20), 250));
         userAccount.setWorkoutLog(workoutLog);
         int months = 4;
 
@@ -176,8 +215,8 @@ public class UserProfileGraphTest {
         // Setup inside the test
         UserAccount userAccount = new UserAccount();
         Logger workoutLog = new Logger();
-        workoutLog.addWorkout(createWorkout(LocalDate.now(), 100)); // This month
-        workoutLog.addWorkout(createWorkout(LocalDate.now().minusMonths(2), 300)); // 2 months ago
+        workoutLog.addWorkout(createStrengthWorkout(LocalDate.now(), 100)); // This month
+        workoutLog.addWorkout(createStrengthWorkout(LocalDate.now().minusMonths(2), 300)); // 2 months ago
         userAccount.setWorkoutLog(workoutLog);
         int months = 4;
 
@@ -196,7 +235,7 @@ public class UserProfileGraphTest {
         // Setup inside the test
         UserAccount userAccount = new UserAccount();
         Logger workoutLog = new Logger();
-        workoutLog.addWorkout(createWorkout(LocalDate.now().minusYears(1), 1000));
+        workoutLog.addWorkout(createStrengthWorkout(LocalDate.now().minusYears(1), 1000));
         userAccount.setWorkoutLog(workoutLog);
         int months = 6;
 

@@ -4,7 +4,9 @@ import org.junit.Test;
 import java.util.List;
 import static org.junit.Assert.*;
 
+import com.example.herculean.workout.Bodyweight;
 import com.example.herculean.workout.ExerciseDatabase;
+import com.example.herculean.workout.Strength;
 import com.example.herculean.workout.Workout;
 
 public class CustomExerciseAndSearchTest {
@@ -17,7 +19,7 @@ public class CustomExerciseAndSearchTest {
         int initialCount = ExerciseDatabase.getAllExercises().size();
 
         // Add custom exercise
-        ExerciseDatabase.addCustomExercise("Cable Flies", "Chest");
+        ExerciseDatabase.addCustomExercise(new Strength("Cable Flies", "Chest", 0, 0, 0));
 
         // Verify exercise was added
         int newCount = ExerciseDatabase.getAllExercises().size();
@@ -27,7 +29,7 @@ public class CustomExerciseAndSearchTest {
     @Test
     public void CustomExerciseAppearsInDatabase() {
         // Add custom exercise
-        ExerciseDatabase.addCustomExercise("Donkey Kicks", "Legs");
+        ExerciseDatabase.addCustomExercise(new Bodyweight("Donkey Kicks", "Legs", 0, 0));
 
         // Search for it
         List<Workout> allExercises = ExerciseDatabase.getAllExercises();
@@ -46,7 +48,7 @@ public class CustomExerciseAndSearchTest {
 
     @Test
     public void CustomExerciseWithSpecialCharacters() {
-        ExerciseDatabase.addCustomExercise("Spider-Man Push-ups", "Chest");
+        ExerciseDatabase.addCustomExercise(new Bodyweight("Spider-Man Push-ups", "Chest", 0, 0));
 
         List<Workout> allExercises = ExerciseDatabase.getAllExercises();
         boolean found = false;
@@ -65,9 +67,9 @@ public class CustomExerciseAndSearchTest {
     public void MultipleCustomExercises() {
         int initialCount = ExerciseDatabase.getAllExercises().size();
 
-        ExerciseDatabase.addCustomExercise("Exercise 1", "Arms");
-        ExerciseDatabase.addCustomExercise("Exercise 2", "Legs");
-        ExerciseDatabase.addCustomExercise("Exercise 3", "Back");
+        ExerciseDatabase.addCustomExercise(new Strength("Exercise 1", "Arms", 0, 0, 0));
+        ExerciseDatabase.addCustomExercise(new Strength("Exercise 2", "Legs", 0, 0, 0));
+        ExerciseDatabase.addCustomExercise(new Strength("Exercise 3", "Back", 0, 0, 0));
 
         int newCount = ExerciseDatabase.getAllExercises().size();
         assertEquals(initialCount + 3, newCount);
@@ -173,7 +175,7 @@ public class CustomExerciseAndSearchTest {
     @Test
     public void SearchForCustomExercise() {
         // Add custom exercise
-        ExerciseDatabase.addCustomExercise("Unique Custom Exercise", "Core");
+        ExerciseDatabase.addCustomExercise(new Bodyweight("Unique Custom Exercise", "Core", 0, 0));
 
         List<Workout> allExercises = ExerciseDatabase.getAllExercises();
         List<Workout> filtered = new java.util.ArrayList<>();
@@ -194,7 +196,7 @@ public class CustomExerciseAndSearchTest {
     public void AddCustomExerciseThenSearch() {
         // Add custom exercise
         String customName = "My Special Exercise " + System.currentTimeMillis();
-        ExerciseDatabase.addCustomExercise(customName, "Arms");
+        ExerciseDatabase.addCustomExercise(new Strength(customName, "Arms", 0, 0, 0));
 
         // Search for it
         List<Workout> allExercises = ExerciseDatabase.getAllExercises();

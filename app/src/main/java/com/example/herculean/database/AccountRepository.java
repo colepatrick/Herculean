@@ -51,4 +51,22 @@ public class AccountRepository {
             }
         });
     }
+
+    public void updateAccount(String username, UserAccount account, ResultCallback<Void> cb) {
+        service.updateAccount(username, account).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    cb.onSuccess(null);
+                } else {
+                    cb.onError(new RuntimeException("HTTP " + response.code()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                cb.onError(t);
+            }
+        });
+    }
 }

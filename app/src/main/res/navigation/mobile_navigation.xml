@@ -16,6 +16,10 @@
             android:id="@+id/action_pastWorkouts_to_workoutInfo"
             app:destination="@id/nav_workout_info" />
 
+        <action
+            android:id="@+id/action_pastWorkouts_to_dayInfo"
+            app:destination="@id/nav_day_info" />
+
     </fragment>
 
 
@@ -52,7 +56,6 @@
             app:destination="@id/themesSettingsFragment" />
     </fragment>
 
-
     <fragment
         android:id="@+id/nav_workout_info"
         android:name="com.example.herculean.ui.past_workouts.WorkoutInfoFragment"
@@ -62,6 +65,18 @@
         <argument
             android:name="workout"
             app:argType="com.example.herculean.workout.Workout" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_day_info"
+        android:name="com.example.herculean.ui.past_workouts.DayInfoFragment"
+        android:label="Workouts for Day"
+        tools:layout="@layout/fragment_day_info">
+
+        <argument
+            android:name="workoutsForDay"
+            app:argType="java.io.Serializable" />
 
     </fragment>
 

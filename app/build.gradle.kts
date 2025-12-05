@@ -129,6 +129,7 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     androidTestImplementation("androidx.test.espresso:espresso-contrib:3.5.1")
     androidTestImplementation("androidx.test.uiautomator:uiautomator:2.3.0")
+    androidTestImplementation("com.squareup.okhttp3:mockwebserver:4.9.3")
 
     debugImplementation("androidx.fragment:fragment-testing:1.7.0")
     androidTestImplementation("junit:junit:4.13.2")

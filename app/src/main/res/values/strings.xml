@@ -58,6 +58,11 @@
     <string name="graphs_button">More Graphs</string>
     <string name="menu_reflow_graph">Graphs</string>
 
+    <string-array name="gender_array">
+        <item>Select Gender</item>
+        <item>Male</item>
+        <item>Female</item>
+    </string-array>
 
 
     <string-array name="workouts_per_week">

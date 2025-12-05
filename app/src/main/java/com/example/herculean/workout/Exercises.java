@@ -1,7 +1,5 @@
 package com.example.herculean.workout;
 
-import java.util.ArrayList;
-import java.util.List;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -9,17 +7,25 @@ import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.View;
 import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
-import com.example.herculean.datahandling.GlobalData;
 import com.example.herculean.R;
+import com.example.herculean.datahandling.GlobalData;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Exercises extends Dialog {
 
@@ -64,12 +70,9 @@ public class Exercises extends Dialog {
 
         title.setText("Select Exercise");
 
-        // Set up search functionality
         editSearch.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                // Not needed
-            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -78,12 +81,9 @@ public class Exercises extends Dialog {
             }
 
             @Override
-            public void afterTextChanged(Editable s) {
-                // Not needed
-            }
+            public void afterTextChanged(Editable s) {}
         });
 
-        // Display all exercises initially
         displayExercises();
 
         cancelButton.setOnClickListener(v -> dismiss());
@@ -93,11 +93,9 @@ public class Exercises extends Dialog {
         filteredExercises.clear();
 
         if (query.isEmpty()) {
-            // If search is empty, show all exercises
             filteredExercises.addAll(allExercises);
         } else {
             String lowerQuery = query.toLowerCase();
-            // Filter exercises by name or body part
             for (Workout workout : allExercises) {
                 if (workout.getExerciseName().toLowerCase().contains(lowerQuery) ||
                         workout.getBodyPart().toLowerCase().contains(lowerQuery)) {
@@ -106,7 +104,6 @@ public class Exercises extends Dialog {
             }
         }
 
-        // Refresh the displayed exercises
         displayExercises();
     }
 
@@ -114,7 +111,6 @@ public class Exercises extends Dialog {
         buttonContainer.removeAllViews();
 
         if (filteredExercises.isEmpty() && !currentSearchQuery.isEmpty()) {
-            // Show "Create Exercise" button when search has no results
             TextView noResults = new TextView(getContext());
             noResults.setText("No exercises found");
             noResults.setTextSize(16);
@@ -122,7 +118,6 @@ public class Exercises extends Dialog {
             noResults.setGravity(android.view.Gravity.CENTER);
             buttonContainer.addView(noResults);
 
-            // Create Exercise Button
             Button createButton = new Button(getContext());
             createButton.setText("Create Exercise: \"" + currentSearchQuery + "\"");
             createButton.setTextSize(16);
@@ -145,7 +140,6 @@ public class Exercises extends Dialog {
         }
 
         if (filteredExercises.isEmpty()) {
-            // No exercises at all (shouldn't happen with database)
             TextView noResults = new TextView(getContext());
             noResults.setText("No exercises available");
             noResults.setTextSize(16);
@@ -155,7 +149,6 @@ public class Exercises extends Dialog {
             return;
         }
 
-        // Create buttons for filtered exercises
         for (Workout exercise : filteredExercises) {
             Button exerciseButton = getButton(exercise);
             buttonContainer.addView(exerciseButton);
@@ -166,12 +159,10 @@ public class Exercises extends Dialog {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle("Create Custom Exercise");
 
-        // Create a layout for the dialog
         LinearLayout layout = new LinearLayout(getContext());
         layout.setOrientation(LinearLayout.VERTICAL);
         layout.setPadding(50, 40, 50, 10);
 
-        // Exercise name field (pre-filled with search query)
         TextView nameLabel = new TextView(getContext());
         nameLabel.setText("Exercise Name:");
         nameLabel.setPadding(0, 0, 0, 8);
@@ -182,7 +173,6 @@ public class Exercises extends Dialog {
         nameInput.setHint("e.g., Cable Flies");
         layout.addView(nameInput);
 
-        // Body part field
         TextView bodyPartLabel = new TextView(getContext());
         bodyPartLabel.setText("Body Part:");
         bodyPartLabel.setPadding(0, 20, 0, 8);
@@ -192,25 +182,70 @@ public class Exercises extends Dialog {
         bodyPartInput.setHint("e.g., Chest, Arms, Legs");
         layout.addView(bodyPartInput);
 
+        TextView workoutTypeLabel = new TextView(getContext());
+        workoutTypeLabel.setText("Workout Type:");
+        workoutTypeLabel.setPadding(0, 20, 0, 8);
+        layout.addView(workoutTypeLabel);
+
+        Spinner workoutTypeSpinner = new Spinner(getContext());
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, new String[]{"Strength", "Bodyweight", "Cardio"});
+        workoutTypeSpinner.setAdapter(adapter);
+        layout.addView(workoutTypeSpinner);
+
+        CheckBox distanceCheckBox = new CheckBox(getContext());
+        distanceCheckBox.setText("Track Distance");
+        distanceCheckBox.setVisibility(View.GONE);
+        layout.addView(distanceCheckBox);
+
+        workoutTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (parent.getItemAtPosition(position).toString().equals("Cardio")) {
+                    distanceCheckBox.setVisibility(View.VISIBLE);
+                } else {
+                    distanceCheckBox.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                distanceCheckBox.setVisibility(View.GONE);
+            }
+        });
+
         builder.setView(layout);
 
         builder.setPositiveButton("Create", (dialog, which) -> {
             String newExerciseName = nameInput.getText().toString().trim();
             String bodyPart = bodyPartInput.getText().toString().trim();
+            String workoutType = (String) workoutTypeSpinner.getSelectedItem();
 
             if (newExerciseName.isEmpty() || bodyPart.isEmpty()) {
                 Toast.makeText(getContext(), "Please fill in all fields", Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            // adds new exercise to database
-            ExerciseDatabase.addCustomExercise(newExerciseName, bodyPart);
-            GlobalData.currentUser.addCustomExercise(new Workout(exerciseName, bodyPart));
+            Workout newWorkout;
+            switch (workoutType) {
+                case "Strength":
+                    newWorkout = new Strength(newExerciseName, bodyPart, 0, 0, 0);
+                    break;
+                case "Bodyweight":
+                    newWorkout = new Bodyweight(newExerciseName, bodyPart, 0, 0);
+                    break;
+                case "Cardio":
+                    newWorkout = new Cardio(newExerciseName, bodyPart, distanceCheckBox.isChecked());
+                    break;
+                default:
+                    return;
+            }
+
+            ExerciseDatabase.addCustomExercise(newWorkout);
+            if (GlobalData.currentUser != null) {
+                GlobalData.currentUser.addCustomExercise(newWorkout);
+            }
 
             allExercises = ExerciseDatabase.getAllExercises();
-
-            // Create workout object and return to caller
-            Workout newWorkout = new Workout(newExerciseName, bodyPart);
 
             if (listener != null) {
                 listener.onExerciseSelected(newWorkout.getExerciseName());
