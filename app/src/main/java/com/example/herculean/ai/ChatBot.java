@@ -124,6 +124,13 @@ public class ChatBot extends AppCompatActivity {
     private static class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatHolder> {
         private final List<ChatMessage> messages = new ArrayList<>();
 
+        private int getColorAttr(View view, int attr) {
+            android.util.TypedValue typedValue = new android.util.TypedValue();
+            view.getContext().getTheme().resolveAttribute(attr, typedValue, true);
+            return typedValue.data;
+        }
+
+
         void addMessage(ChatMessage msg) {
             messages.add(msg);
             notifyItemInserted(messages.size() - 1);
@@ -139,17 +146,31 @@ public class ChatBot extends AppCompatActivity {
         public void onBindViewHolder(ChatHolder holder, int position) {
             ChatMessage message = messages.get(position);
             holder.textView.setText(message.text);
+
+            // Use ONLY attributes that your theme actually defines
+            int userBg  = getColorAttr(holder.itemView, androidx.appcompat.R.attr.colorPrimary);
+            int userText = getColorAttr(holder.itemView, com.google.android.material.R.attr.colorOnPrimary);
+
+            int botBg  = getColorAttr(holder.itemView, com.google.android.material.R.attr.colorSurface);
+            int botText = getColorAttr(holder.itemView, com.google.android.material.R.attr.colorOnSurface);
+
+
             if (message.fromUser) {
                 holder.textView.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_END);
-                holder.textView.setBackgroundColor(ContextCompat.getColor(holder.itemView.getContext(), android.R.color.holo_blue_light));
-            }
-            else {
+                holder.textView.setBackgroundColor(userBg);
+                holder.textView.setTextColor(userText);
+            } else {
                 holder.textView.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
-                holder.textView.setBackgroundColor(ContextCompat.getColor(holder.itemView.getContext(), android.R.color.darker_gray));
+                holder.textView.setBackgroundColor(botBg);
+                holder.textView.setTextColor(botText);
             }
+
             int pad = 30;
             holder.textView.setPadding(pad, pad, pad, pad);
         }
+
+
+
 
         @Override
         public int getItemCount() {
