@@ -1,9 +1,11 @@
 package com.example.herculean.ui.friends;
 
+import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateDecelerateInterpolator;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -14,6 +16,12 @@ import com.example.herculean.datahandling.GlobalData;
 import com.example.herculean.datahandling.UserAccount;
 import com.example.herculean.databinding.FragmentProfileBinding;
 import com.example.herculean.workout.Workout;
+
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.temporal.TemporalAdjusters;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FriendsProfileFragment extends Fragment {
 
@@ -41,9 +49,14 @@ public class FriendsProfileFragment extends Fragment {
                 .placeholder(R.drawable.avatar_filler)
                 .into(binding.profilePicture);
 
-        // Hide buttons
+        // Hide buttons and BMI/BMR (private info)
         binding.customizeButton.setVisibility(View.GONE);
         binding.friendsButton.setVisibility(View.GONE);
+        binding.bmi.setVisibility(View.GONE);
+        binding.bmr.setVisibility(View.GONE);
+
+        // Update weekly progress display for friend
+        updateWeeklyProgressDisplay(user);
 
         // ---------- Stats With Labels ----------
         if (!user.getWorkoutLog().getWorkouts().isEmpty()) {
@@ -57,14 +70,14 @@ public class FriendsProfileFragment extends Fragment {
             String favMuscle = user.getFavoriteMuscleGroup();
             if (favMuscle == null) favMuscle = "None";
 
-            binding.bestWorkoutDetails.setText("Best Workout:\n" + bestText);
-            binding.favoriteWorkoutType.setText("Favorite Workout Type:\n" + favType);
-            binding.favoriteMuscleGroup.setText("Favorite Muscle Group:\n" + favMuscle);
+            binding.bestWorkoutDetails.setText(bestText);
+            binding.favoriteWorkoutType.setText(favType);
+            binding.favoriteMuscleGroup.setText(favMuscle);
 
         } else {
-            binding.bestWorkoutDetails.setText("Best Workout:\nNo workouts yet");
-            binding.favoriteWorkoutType.setText("Favorite Workout Type:\nNone");
-            binding.favoriteMuscleGroup.setText("Favorite Muscle Group:\nNone");
+            binding.bestWorkoutDetails.setText("No workouts yet");
+            binding.favoriteWorkoutType.setText("None");
+            binding.favoriteMuscleGroup.setText("None");
         }
 
         // Graphs
@@ -82,8 +95,83 @@ public class FriendsProfileFragment extends Fragment {
                 )
         );
 
-        binding.streakText.setText("");
-
         return binding.getRoot();
+    }
+
+    private void updateWeeklyProgressDisplay(UserAccount user) {
+        if (user == null || user.getUserGoal() == null) {
+            binding.weekProgressText.setText("No goal set");
+            binding.weekProgressBar.setProgress(0);
+            binding.weekProgressBar.setMax(7);
+            binding.currentStreakText.setText("🔥 0 Week Streak");
+            return;
+        }
+
+        // Get required days per week from user goal
+        int requiredDays = user.getUserGoal().getDaysPerWeek();
+
+        // Get current week's workout count
+        int workoutDaysThisWeek = getWorkoutDaysThisWeek(user);
+
+        // Update progress bar
+        binding.weekProgressBar.setMax(requiredDays);
+        binding.weekProgressBar.setProgress(workoutDaysThisWeek);
+
+        // Animate progress bar
+        ObjectAnimator animation = ObjectAnimator.ofInt(
+                binding.weekProgressBar,
+                "progress",
+                0,
+                workoutDaysThisWeek
+        );
+        animation.setDuration(1000);
+        animation.setInterpolator(new AccelerateDecelerateInterpolator());
+        animation.start();
+
+        // Update progress text
+        String progressText = workoutDaysThisWeek + " / " + requiredDays + " days completed this week";
+        binding.weekProgressText.setText(progressText);
+
+        // Update streak display
+        int currentStreak = user.getUserStreak() != null
+                ? user.getUserStreak().getCurrentStreak()
+                : 0;
+        binding.currentStreakText.setText("🔥 " + currentStreak + " Week Streak");
+
+        // Change color based on completion
+        if (workoutDaysThisWeek >= requiredDays) {
+            binding.weekProgressBar.setProgressTintList(
+                    android.content.res.ColorStateList.valueOf(0xFF4CAF50) // Green
+            );
+        } else {
+            binding.weekProgressBar.setProgressTintList(
+                    android.content.res.ColorStateList.valueOf(0xFF2196F3) // Blue
+            );
+        }
+    }
+
+    private int getWorkoutDaysThisWeek(UserAccount user) {
+        LocalDate today = LocalDate.now();
+        LocalDate weekStart = today.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
+        LocalDate weekEnd = weekStart.plusDays(6);
+
+        List<LocalDate> workoutDates = new ArrayList<>();
+        for (Workout workout : user.getWorkoutLog().getWorkouts()) {
+            LocalDate workoutDate = workout.getDate();
+            if (workoutDate != null &&
+                    !workoutDate.isBefore(weekStart) &&
+                    !workoutDate.isAfter(weekEnd)) {
+                workoutDates.add(workoutDate);
+            }
+        }
+
+        // Count distinct days
+        return (int) workoutDates.stream().distinct().count();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
     }
 }
