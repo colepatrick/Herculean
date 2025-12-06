@@ -421,7 +421,6 @@ public class ProfileSettingsFragment extends Fragment {
                     new AlertDialog.Builder(getActivity())
                             .setTitle(R.string.confirm_logout)
                             .setPositiveButton(R.string.ok, (dialog2, id2) -> {
-                                GlobalData.currentUser = null;
                                 GlobalData.clearLastLoggedInUser();
                                 GlobalData.saveAccounts(getContext());
                                 startActivity(new Intent(getContext(), LoginActivity.class));
