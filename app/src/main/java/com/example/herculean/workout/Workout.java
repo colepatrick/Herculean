@@ -6,11 +6,11 @@ import android.os.Build;
 import java.io.Serializable;
 import java.time.LocalDate;
 
-public abstract class Workout implements Serializable {
+public class Workout implements Serializable {
+
     protected String exerciseName, bodyPart;
     protected LocalDate date;
 
-    //  constructor
     public Workout() {
         this.exerciseName = "";
         this.bodyPart = "";
@@ -27,20 +27,22 @@ public abstract class Workout implements Serializable {
         }
     }
 
-    // ---------- Getters ----------
+    // Getters
     public String getBodyPart() { return this.bodyPart; }
     public LocalDate getDate() { return date; }
     public String getExerciseName() { return this.exerciseName; }
-    public abstract double getScore();
 
-    // ---------- Setters ----------
+    // Dummy score so Gson works (you can override later)
+    public double getScore() { return 0; }
+
+    // Setters
     public void setExerciseName(String exerciseName) { this.exerciseName = exerciseName; }
     public void setDate(LocalDate date) { this.date = date; }
     public void setBodyPart(String bodyPart) { this.bodyPart = bodyPart; }
 
-
-    // ---------- Display ----------
     @SuppressLint("DefaultLocale")
     @Override
-    public abstract String toString();
+    public String toString() {
+        return String.format("%s (%s) on %s", exerciseName, bodyPart, date);
+    }
 }

@@ -66,28 +66,62 @@
                 android:id="@+id/divider"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
+                android:layout_marginTop="16dp"
                 android:background="?android:attr/listDivider" />
 
-            <TextView
-                android:id="@+id/streakText"
+            <!-- Weekly Progress Section -->
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="Streak: 0"
-                android:textAlignment="center"
-                android:textSize="20sp" />
+                android:orientation="vertical"
+                android:padding="16dp"
+                android:background="#F5F5F5"
+                android:layout_marginTop="8dp">
+
+                <TextView
+                    android:id="@+id/currentStreakText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="🔥 0 Week Streak"
+                    android:textAlignment="center"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="12dp" />
+
+                <TextView
+                    android:id="@+id/weekProgressText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="0 / 0 days completed this week"
+                    android:textAlignment="center"
+                    android:textSize="16sp"
+                    android:layout_marginBottom="8dp" />
+
+                <ProgressBar
+                    android:id="@+id/weekProgressBar"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:max="7"
+                    android:progress="0"
+                    android:progressTint="#2196F3"
+                    android:progressBackgroundTint="#E0E0E0" />
+
+            </LinearLayout>
 
             <View
                 android:id="@+id/divider2"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
+                android:layout_marginTop="8dp"
                 android:background="?android:attr/listDivider" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center_horizontal"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_marginTop="16dp">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -162,7 +196,8 @@
             <com.jjoe64.graphview.GraphView
                 android:id="@+id/workoutDaysGraph"
                 android:layout_width="match_parent"
-                android:layout_height="200dp" />
+                android:layout_height="200dp"
+                android:layout_marginTop="16dp" />
 
             <com.jjoe64.graphview.GraphView
                 android:id="@+id/workoutMonthGraph"

@@ -23,7 +23,9 @@ import com.jjoe64.graphview.DefaultLabelFormatter;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,16 +48,15 @@ public class ProfileFragment extends Fragment {
                         .navigate(R.id.nav_friends)
         );
 
-
         UserAccount displayUser = GlobalData.viewedUser != null
                 ? GlobalData.viewedUser
                 : GlobalData.currentUser;
 
-// Username + email
+        // Username + email
         binding.profileUsername.setText(displayUser.getUsername());
         binding.profileUserEmail.setText(displayUser.getEmail());
 
-// Profile picture
+        // Profile picture
         Glide.with(this)
                 .load(displayUser.getProfileImageUri())
                 .centerCrop()
@@ -94,23 +95,80 @@ public class ProfileFragment extends Fragment {
         refreshPastDaysGraph(14); // 14 day history
         refreshPastMonthsGraph(12); // 12 month history
 
-        updateStreakDisplay();
+        updateWeeklyProgressDisplay();
         return binding.getRoot();
     }
 
-    private void updateStreakDisplay() {
+    private void updateWeeklyProgressDisplay() {
         UserAccount currentUser = GlobalData.currentUser;
-        if (currentUser != null && currentUser.getUserStreak() != null) {
-            int streak = currentUser.getUserStreak().getCurrentStreak();
-            binding.streakText.setText("🔥 " + streak + " Week Streak");
+        if (currentUser == null || currentUser.getUserGoal() == null) {
+            binding.weekProgressText.setText("No goal set");
+            binding.weekProgressBar.setProgress(0);
+            binding.weekProgressBar.setMax(7);
+            binding.currentStreakText.setText("🔥 0 Week Streak");
+            return;
+        }
 
-            if (streak > 0) {
-                ObjectAnimator animator = ObjectAnimator.ofFloat(binding.streakText, "alpha", 0f, 1f);
-                animator.setDuration(1000);
-                animator.setInterpolator(new AccelerateDecelerateInterpolator());
-                animator.start();
+        // Get required days per week from user goal
+        int requiredDays = currentUser.getUserGoal().getDaysPerWeek();
+
+        // Get current week's workout count
+        int workoutDaysThisWeek = getWorkoutDaysThisWeek(currentUser);
+
+        // Update progress bar
+        binding.weekProgressBar.setMax(requiredDays);
+        binding.weekProgressBar.setProgress(workoutDaysThisWeek);
+
+        // Animate progress bar
+        ObjectAnimator animation = ObjectAnimator.ofInt(
+                binding.weekProgressBar,
+                "progress",
+                0,
+                workoutDaysThisWeek
+        );
+        animation.setDuration(1000);
+        animation.setInterpolator(new AccelerateDecelerateInterpolator());
+        animation.start();
+
+        // Update progress text
+        String progressText = workoutDaysThisWeek + " / " + requiredDays + " days completed this week";
+        binding.weekProgressText.setText(progressText);
+
+        // Update streak display
+        int currentStreak = currentUser.getUserStreak() != null
+                ? currentUser.getUserStreak().getCurrentStreak()
+                : 0;
+        binding.currentStreakText.setText("🔥 " + currentStreak + " Week Streak");
+
+        // Change color based on completion
+        if (workoutDaysThisWeek >= requiredDays) {
+            binding.weekProgressBar.setProgressTintList(
+                    android.content.res.ColorStateList.valueOf(0xFF4CAF50) // Green
+            );
+        } else {
+            binding.weekProgressBar.setProgressTintList(
+                    android.content.res.ColorStateList.valueOf(0xFF2196F3) // Blue
+            );
+        }
+    }
+
+    private int getWorkoutDaysThisWeek(UserAccount user) {
+        LocalDate today = LocalDate.now();
+        LocalDate weekStart = today.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
+        LocalDate weekEnd = weekStart.plusDays(6);
+
+        List<LocalDate> workoutDates = new ArrayList<>();
+        for (Workout workout : user.getWorkoutLog().getWorkouts()) {
+            LocalDate workoutDate = workout.getDate();
+            if (workoutDate != null &&
+                    !workoutDate.isBefore(weekStart) &&
+                    !workoutDate.isAfter(weekEnd)) {
+                workoutDates.add(workoutDate);
             }
         }
+
+        // Count distinct days
+        return (int) workoutDates.stream().distinct().count();
     }
 
     private void refreshPastDaysGraph(int days) {
@@ -128,11 +186,9 @@ public class ProfileFragment extends Fragment {
         binding.workoutDaysGraph.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter() {
             @Override
             public String formatLabel(double value, boolean isValueX) {
-                if (isValueX) { // For x values
-                    // show inverted day numbers, 0 days is today
+                if (isValueX) {
                     return super.formatLabel(days-value-1, isValueX);
-                } else { // For y values
-                    // show regular y numbers
+                } else {
                     return super.formatLabel(value, isValueX);
                 }
             }
@@ -154,11 +210,9 @@ public class ProfileFragment extends Fragment {
         binding.workoutMonthGraph.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter() {
             @Override
             public String formatLabel(double value, boolean isValueX) {
-                if (isValueX) { // For x values
-                    // show inverted month numbers 0 months is this month
+                if (isValueX) {
                     return super.formatLabel(months-value-1, isValueX);
-                } else { // For y values
-                    // show regular y numbers
+                } else {
                     return super.formatLabel(value, isValueX);
                 }
             }
@@ -168,7 +222,7 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        updateStreakDisplay();
+        updateWeeklyProgressDisplay();
     }
 
     @Override
