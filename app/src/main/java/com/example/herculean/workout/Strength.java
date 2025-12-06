@@ -12,6 +12,8 @@ public class Strength extends Workout {
 
     @Override
     public double getScore() {
-        return sets * reps * weight;
+        // Example scoring: weight × reps × sets
+        return (getWeight() * getReps() * getSets());
     }
+
 }

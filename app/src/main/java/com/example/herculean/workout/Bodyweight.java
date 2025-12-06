@@ -10,7 +10,8 @@ public class Bodyweight extends Workout {
     }
     @Override
     public double getScore() {
-        return sets * reps;
+        // Example scoring: reps × sets
+        return (getReps() * getSets());
     }
 
 }

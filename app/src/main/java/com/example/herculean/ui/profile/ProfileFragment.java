@@ -28,6 +28,8 @@ import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Arrays;
+
 
 public class ProfileFragment extends Fragment {
 
@@ -172,6 +174,10 @@ public class ProfileFragment extends Fragment {
     }
 
     private void refreshPastDaysGraph(int days) {
+
+        Log.d("GRAPH_DEBUG", "Day Points: "
+                + Arrays.toString(GlobalData.currentUser.getDayDataPoints(days)));
+
         DataPoint[] points = GlobalData.currentUser.getDayDataPoints(days);
         LineGraphSeries<DataPoint> series = new LineGraphSeries<>(points);
 
@@ -196,6 +202,9 @@ public class ProfileFragment extends Fragment {
     }
 
     private void refreshPastMonthsGraph(int months) {
+        Log.d("GRAPH_DEBUG", "Month Points: "
+                + Arrays.toString(GlobalData.currentUser.getMonthDataPoints(months)));
+
         DataPoint[] points = GlobalData.currentUser.getMonthDataPoints(months);
         LineGraphSeries<DataPoint> series = new LineGraphSeries<>(points);
 

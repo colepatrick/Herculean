@@ -164,13 +164,12 @@ public class Upload extends AppCompatActivity {
                 repValue,
                 weightValue
         );
-        newStrength.setDate(LocalDate.now());
 
-        // Prevent template/empty workout
-        if (newStrength.isEmptyWorkout()) {
-            Toast.makeText(this, "Invalid workout — not saved", Toast.LENGTH_SHORT).show();
-            return;
-        }
+        // 🔥 ENSURE SCORE CALCULATES CORRECTLY
+        newStrength.setSets(setValue);
+        newStrength.setReps(repValue);
+        newStrength.setWeight(weightValue);
+        newStrength.setDate(LocalDate.now());
 
         GlobalData.currentUser.workoutLog.addWorkout(newStrength);
         GlobalData.saveAccounts(this);
@@ -186,6 +185,7 @@ public class Upload extends AppCompatActivity {
         selectExerciseButton.setText("Select Exercise");
         strengthLayout.setVisibility(View.GONE);
     }
+
 
     // ----------------------------
     // Bodyweight Logging
@@ -216,6 +216,12 @@ public class Upload extends AppCompatActivity {
                 setValue,
                 repValue
         );
+
+// Guarantee proper scoring
+        newBodyweight.setSets(setValue);
+        newBodyweight.setReps(repValue);
+        newBodyweight.setDate(LocalDate.now());
+
         newBodyweight.setDate(LocalDate.now());
 
         GlobalData.currentUser.workoutLog.addWorkout(newBodyweight);

@@ -1,6 +1,7 @@
 package com.example.herculean.datahandling;
 
 import android.util.Patterns;
+import android.util.Log;
 
 import com.example.herculean.goals.UserGoal;
 import com.example.herculean.goals.UserSchedule;
@@ -17,6 +18,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 
 public class UserAccount implements Serializable {
     private String username, password, email, salt;
@@ -367,39 +369,67 @@ public class UserAccount implements Serializable {
     }
 
     // ──────────────────── Graph Data ────────────────────
-
     public DataPoint[] getDayDataPoints(int days) {
-        List<Workout> recents = getRecentWorkouts(LocalDate.now().minusDays(days)).getWorkouts();
         DataPoint[] points = new DataPoint[days];
-        int[] scores = new int[days];
+        List<Workout> all = getWorkoutLog().getWorkouts();
+
+        LocalDate today = LocalDate.now();
+
+        Log.d("GRAPH_DEBUG", "===== BUILDING DAY DATA POINTS =====");
+        Log.d("GRAPH_DEBUG", "Total workouts logged: " + all.size());
 
         for (int i = 0; i < days; i++) {
-            scores[i] = 0;
-            for (Workout workout : recents) {
-                if (LocalDate.now().minusDays(days - i - 1).isEqual(workout.getDate())) {
-                    scores[i] += workout.getScore();
+
+            LocalDate targetDay = today.minusDays(days - i - 1);
+            int score = 0;
+
+            Log.d("GRAPH_DEBUG", "Target day index " + i + " → " + targetDay);
+
+            for (Workout w : all) {
+
+                Log.d("GRAPH_DEBUG",
+                        "Workout=" + w.getExerciseName() +
+                                " | Date=" + w.getDate() +
+                                " | Score=" + w.getScore());
+
+                if (w.getDate() != null && w.getDate().isEqual(targetDay)) {
+                    score += w.getScore();
                 }
             }
-            points[i] = new DataPoint(i, scores[i]);
+
+            Log.d("GRAPH_DEBUG", "Final score for day " + targetDay + ": " + score);
+
+            points[i] = new DataPoint(i, score);
         }
+
+        Log.d("GRAPH_DEBUG", "===== DONE BUILDING DAY DATA POINTS =====");
         return points;
     }
+
 
     public DataPoint[] getMonthDataPoints(int months) {
-        List<Workout> recents = getRecentWorkouts(LocalDate.now().minusMonths(months)).getWorkouts();
         DataPoint[] points = new DataPoint[months];
-        int[] scores = new int[months];
+        List<Workout> all = getWorkoutLog().getWorkouts();
+
+        LocalDate today = LocalDate.now();
 
         for (int i = 0; i < months; i++) {
-            scores[i] = 0;
-            for (Workout workout : recents) {
-                if (LocalDate.now().minusMonths(months - i - 1).getMonth() ==
-                        workout.getDate().getMonth()) {
-                    scores[i] += workout.getScore();
+            LocalDate targetMonth = today.minusMonths(months - i - 1);
+            int score = 0;
+
+            for (Workout w : all) {
+                if (w.getDate() != null &&
+                        w.getDate().getMonth() == targetMonth.getMonth() &&
+                        w.getDate().getYear() == targetMonth.getYear()) {
+
+                    score += w.getScore();
                 }
             }
-            points[i] = new DataPoint(i, scores[i]);
+
+            points[i] = new DataPoint(i, score);
         }
+
         return points;
     }
+
 }
