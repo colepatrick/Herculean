@@ -66,6 +66,9 @@ public class Workout implements Serializable {
     public void setReps(int reps) { this.reps = reps; }
     public void setWeight(double weight) { this.weight = weight; }
 
+    public boolean isEmptyWorkout() {
+        return sets == 0 && reps == 0 && weight == 0 && duration == 0 && distance == 0;
+    }
     @SuppressLint("DefaultLocale")
     @Override
     public String toString() {
