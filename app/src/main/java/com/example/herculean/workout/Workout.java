@@ -54,7 +54,33 @@ public class Workout implements Serializable {
     public double getWeight() { return this.weight; }
 
     // Subclasses will override this.
-    public double getScore() { return 0; }
+    public double getScore() {
+        // Legacy / default scoring using whatever fields are filled.
+        // This works for old plain Workout objects AND for deserialized ones.
+
+        // Full strength info available
+        if (sets > 0 && reps > 0 && weight > 0) {
+            return weight * reps * sets;
+        }
+
+        // Bodyweight style
+        if (sets > 0 && reps > 0) {
+            return reps * sets;
+        }
+
+        // Cardio with distance + duration
+        if (distance > 0 && duration > 0) {
+            return distance / Math.max(duration, 1);  // e.g., miles per min
+        }
+
+        // Duration-only cardio
+        if (duration > 0) {
+            return duration;
+        }
+
+        // Nothing logged
+        return 0;
+    }
 
     // Setters for all possible fields.
     public void setExerciseName(String exerciseName) { this.exerciseName = exerciseName; }
