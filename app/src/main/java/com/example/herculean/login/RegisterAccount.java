@@ -1,5 +1,6 @@
 package com.example.herculean.login;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Patterns;
@@ -11,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.herculean.datahandling.GlobalData;
 import com.example.herculean.R;
+import com.example.herculean.datahandling.MainActivity;
 import com.example.herculean.datahandling.UserAccount;
 
 import retrofit2.Call;
@@ -20,6 +22,13 @@ import retrofit2.Response;
 public class RegisterAccount extends AppCompatActivity {
 
     private EditText usernameInput, passwordInput, emailInput;
+
+    private void navigateToMain() {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,12 +105,19 @@ public class RegisterAccount extends AppCompatActivity {
                                 public void onResponse(Call<Void> call, Response<Void> response) {
                                     if (response.isSuccessful()) {
                                         runOnUiThread(() -> {
+                                            // Store user locally
                                             GlobalData.jsonData.accounts.add(newUser);
+                                            GlobalData.currentUser = newUser;   // Auto-login ✔️
+                                            GlobalData.setLastLoggedInUser(newUser.getUsername()); // Remember user (optional)
                                             GlobalData.saveAccounts(RegisterAccount.this);
-                                            Toast.makeText(RegisterAccount.this, "Account created successfully!", Toast.LENGTH_SHORT).show();
-                                            finish();
+
+                                            Toast.makeText(RegisterAccount.this, "Account created! Logging you in...", Toast.LENGTH_SHORT).show();
+
+                                            // Navigate to main activity
+                                            navigateToMain();
                                         });
-                                    } else {
+                                    }
+                                    else {
                                         runOnUiThread(() -> Toast.makeText(RegisterAccount.this, "Server error on creation: " + response.code(), Toast.LENGTH_SHORT).show());
                                     }
                                 }
@@ -121,4 +137,6 @@ public class RegisterAccount extends AppCompatActivity {
     private boolean isValidEmail(String email) {
         return Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
+
+
 }
