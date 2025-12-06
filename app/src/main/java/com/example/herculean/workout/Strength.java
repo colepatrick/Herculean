@@ -3,10 +3,6 @@ package com.example.herculean.workout;
 import android.annotation.SuppressLint;
 
 public class Strength extends Workout {
-    private int sets;
-    private int reps;
-    private double weight;
-
     public Strength(String exerciseName, String bodyPart, int sets, int reps, double weight) {
         super(exerciseName, bodyPart);
         this.sets = sets;
@@ -14,25 +10,8 @@ public class Strength extends Workout {
         this.weight = weight;
     }
 
-    public int getSets() { return sets; }
-    public int getReps() { return reps; }
-    public double getWeight() { return weight; }
-
     @Override
     public double getScore() {
         return sets * reps * weight;
-    }
-
-    public void setSets(int sets) { this.sets = sets; }
-    public void setReps(int reps) { this.reps = reps; }
-    public void setWeight(double weight) { this.weight = weight; }
-
-    @SuppressLint("DefaultLocale")
-    @Override
-    public String toString() {
-        return String.format(
-                "%s | %s, %s - %d sets x %d reps @ %.1f lbs",
-                date, exerciseName, bodyPart, sets, reps, weight
-        );
     }
 }
