@@ -75,13 +75,14 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:padding="16dp"
-                android:background="#F5F5F5"
+                android:background="?attr/colorSurface"
                 android:layout_marginTop="8dp">
 
                 <TextView
                     android:id="@+id/currentStreakText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textColor="?attr/colorOnBackground"
                     android:text="🔥 0 Week Streak"
                     android:textAlignment="center"
                     android:textSize="20sp"
@@ -92,6 +93,7 @@
                     android:id="@+id/weekProgressText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textColor="?attr/colorOnBackground"
                     android:text="0 / 0 days completed this week"
                     android:textAlignment="center"
                     android:textSize="16sp"
